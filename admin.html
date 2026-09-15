@@ -4,369 +4,379 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>चाहाडे ट्रान्सपोर्ट - ॲडमिन कंट्रोल पॅनेल</title>
-    <!-- Tailwind CSS Live -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Yatra+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #1a0800; color: #fffaf0; }
-        .shahi-font { font-family: 'Yatra One', cursive; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: radial-gradient(circle at top, #521707 0%, #2b0b03 60%, #150501 100%);
+            color: #fffaf0; 
+        }
     </style>
 </head>
 <body class="p-2.5 md:p-6 min-h-screen">
 
     <div class="max-w-2xl mx-auto space-y-5">
         
-        <!-- 🚩 SHAHI KESARI ROYAL BANNER HEADER -->
-        <div class="relative bg-gradient-to-r from-orange-700 via-amber-600 to-red-700 border-2 border-amber-400 text-white rounded-3xl p-5 shadow-2xl shadow-orange-950/60 text-center overflow-hidden">
-            <div class="absolute -top-8 -right-8 w-32 h-32 bg-yellow-300/20 rounded-full blur-2xl"></div>
-            <div class="absolute -bottom-8 -left-8 w-32 h-32 bg-orange-900/40 rounded-full blur-2xl"></div>
-
-            <div class="relative z-10 space-y-1.5">
-                <span class="bg-black/30 text-amber-200 text-xs font-black px-4 py-1 rounded-full uppercase tracking-wider border border-amber-300/40 inline-flex items-center gap-1.5 shadow-sm">
-                    🚩 ॥ जय शिवराय ॥ मुख्य ॲडमिन पॅनेल 🚩
-                </span>
-                <h1 class="text-2xl md:text-3xl font-black tracking-tight text-yellow-100 drop-shadow-md">
-                    चाहाडे ट्रान्सपोर्ट कंट्रोल हब
-                </h1>
-                <p class="text-xs text-amber-100 font-bold tracking-wide">
-                    पालघर जिल्हा • ट्रक व्यवस्थापन • थेट बुकिंग नियंत्रण
-                </p>
-            </div>
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-orange-700 via-amber-600 to-red-700 border-2 border-amber-400 text-white rounded-3xl p-5 shadow-2xl text-center">
+            <span class="bg-black/30 text-amber-200 text-xs font-black px-4 py-1 rounded-full uppercase tracking-wider border border-amber-300/40 inline-flex items-center gap-1.5">
+                🚩 ॥ जय शिवराय ॥ मुख्य ॲडमिन पॅनेल 🚩
+            </span>
+            <h1 class="text-2xl md:text-3xl font-black tracking-tight text-yellow-100 mt-1">
+                चाहाडे ट्रान्सपोर्ट कंट्रोल हब
+            </h1>
+            <p class="text-xs text-amber-100 font-bold tracking-wide">
+                तारीखवार फोल्डर • गाड्यांचे दर • थेट फ्लीट नियंत्रण
+            </p>
         </div>
 
-        <!-- NAVIGATION TABS (ROYAL KESARI LOOK) -->
-        <div class="grid grid-cols-3 gap-2 bg-stone-900/90 p-1.5 rounded-2xl border border-orange-600/40 text-xs font-black">
-            <button onclick="switchTab('ordersTab')" id="btnOrders" class="py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg shadow-orange-900/40 transition flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-calendar-days text-sm"></i> <span>तारीखवार बुकिंग्स</span>
+        <!-- TABS -->
+        <div class="grid grid-cols-3 gap-2 bg-[#2d0c03] p-1.5 rounded-2xl border border-amber-600/40 text-xs font-black">
+            <button onclick="switchTab('ordersTab')" id="btnOrders" class="py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-folder-closed text-sm"></i> <span>तारीख फोल्डर्स</span>
+            </button>
+            <button onclick="switchTab('vehiclesTab')" id="btnVehicles" class="py-3 rounded-xl text-amber-200/70 hover:text-white transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-truck-moving text-sm"></i> <span>गाड्या व दर</span>
             </button>
             <button onclick="switchTab('trucksTab')" id="btnTrucks" class="py-3 rounded-xl text-amber-200/70 hover:text-white transition flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-truck text-sm"></i> <span>ट्रक मालक यादी</span>
-            </button>
-            <button onclick="switchTab('ratesTab')" id="btnRates" class="py-3 rounded-xl text-amber-200/70 hover:text-white transition flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-calculator text-sm"></i> <span>भाडे दर कंट्रोल</span>
+                <i class="fa-solid fa-users text-sm"></i> <span>ट्रक मालक यादी</span>
             </button>
         </div>
 
-        <!-- ================= TAB 1: DATE-WISE BOOKINGS ================= -->
+        <!-- ================= TAB 1: DATE-WISE FOLDERS (ACCORDION SYSTEM) ================= -->
         <div id="ordersTab" class="space-y-4">
-            <div class="bg-stone-900/95 border-2 border-orange-600/30 rounded-3xl p-4 md:p-5 shadow-xl space-y-4">
+            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-4">
                 
-                <!-- Date Filter Bar -->
-                <div class="bg-gradient-to-r from-orange-950/60 to-stone-900 p-3.5 rounded-2xl border border-amber-600/30 flex flex-wrap gap-2.5 items-center justify-between">
-                    <div class="flex items-center gap-2">
-                        <label class="text-xs font-bold text-amber-300">📅 तारीख निवडा:</label>
-                        <input type="date" id="filterDate" onchange="filterOrdersByDate()" 
-                            class="bg-stone-800 border-2 border-amber-500/40 text-amber-200 text-xs px-3 py-1.5 rounded-xl font-bold focus:outline-none focus:border-amber-400">
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="resetDateFilter()" class="bg-amber-700/60 hover:bg-amber-600 text-white text-xs px-3 py-1.5 rounded-xl font-bold transition">
-                            सर्व तारखा (All)
-                        </button>
-                        <button onclick="clearOrders()" class="bg-red-950 border border-red-500/40 text-red-300 text-xs px-3 py-1.5 rounded-xl hover:bg-red-900 font-bold transition">
-                            इतिहास पुसा
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Status Header -->
-                <div class="flex justify-between items-center px-1">
-                    <span id="bookingCountText" class="text-xs font-black text-amber-400 uppercase tracking-wider">
-                        लोड होत आहे...
-                    </span>
-                </div>
-
-                <!-- Bookings Render Area -->
-                <div id="ordersList" class="space-y-3.5">
-                    <!-- Dynamic Date Cards Rendered Here -->
-                </div>
-            </div>
-        </div>
-
-        <!-- ================= TAB 2: TRUCK FLEET MANAGEMENT ================= -->
-        <div id="trucksTab" class="hidden space-y-4">
-            
-            <!-- Add New Truck Form -->
-            <div class="bg-stone-900/95 border-2 border-orange-600/30 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
-                <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-circle-plus text-base text-orange-500"></i> नवीन ट्रक मालक जोडा (Add Truck Owner)
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
-                    <input type="text" id="ownerName" placeholder="मालकाचे नाव (उदा. सचिन पाटील)" 
-                        class="bg-stone-800 border-2 border-stone-700 rounded-xl px-3 py-2.5 text-white font-medium focus:outline-none focus:border-orange-500">
-                    
-                    <select id="ownerVehicle" class="bg-stone-800 border-2 border-stone-700 rounded-xl px-3 py-2.5 text-amber-200 font-bold focus:outline-none focus:border-orange-500">
-                        <option value="महिंद्रा बोलेरो पिकअप (1.5T)">महिंद्रा बोलेरो पिकअप (१.५ टन)</option>
-                        <option value="टाटा एस - छोटा हत्ती (1T)">टाटा एस - छोटा हत्ती (१ टन)</option>
-                        <option value="आयशर १४ फूट ट्रक (4-5T)">आयशर १४ फूट ट्रक (४-५ टन)</option>
-                        <option value="आयशर १९ फूट ट्रक (7-9T)">आयशर १९ फूट ट्रक (७-९ टन)</option>
-                        <option value="६-चाकी हेवी ट्रक (10T)">६-चाकी हेवी प्लॅटफॉर्म (१० टन)</option>
-                    </select>
-
-                    <input type="tel" id="ownerPhone" pattern="[0-9]{10}" placeholder="१० अंकी WhatsApp नंबर" 
-                        class="bg-stone-800 border-2 border-amber-600/40 rounded-xl px-3 py-2.5 text-amber-300 font-black focus:outline-none focus:border-amber-400">
-                </div>
-
-                <button type="button" onclick="addTruckOwner()" class="w-full py-3 bg-gradient-to-r from-orange-600 to-amber-600 hover:brightness-110 text-white font-black rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-orange-900/40 transition">
-                    ➕ ट्रक थेट वेबसाइटवर ॲड करा (Save & Publish)
-                </button>
-            </div>
-
-            <!-- Priority Reordering List -->
-            <div class="bg-stone-900/95 border-2 border-orange-600/30 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center bg-[#240802] p-3 rounded-2xl border border-amber-600/30">
                     <div>
                         <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-up-down-left-right text-orange-500"></i> ट्रकांची क्रमवारी (Display Ranking)
+                            <i class="fa-solid fa-folder-tree text-amber-400"></i> तारीखवार बुकिंग फोल्डर्स
                         </h2>
-                        <p class="text-[10px] text-amber-200/60 mt-0.5">वर असलेला ट्रक ग्राहकाला वेब पेजवर सर्वात आधी दिसेल.</p>
+                        <p class="text-[10px] text-amber-200/60 mt-0.5">फोल्डरवर टॅप करा आणि चालू / बंद करा.</p>
                     </div>
-                    <span id="truckCountBadge" class="bg-orange-950 text-amber-300 border border-amber-500/40 text-[10px] font-black px-2.5 py-1 rounded-lg">
-                        0 ट्रक्स
-                    </span>
+                    <button onclick="clearOrders()" class="bg-red-950 border border-red-500/40 text-red-300 text-xs px-3 py-1.5 rounded-xl hover:bg-red-900 font-bold transition">
+                        सर्व पुसा
+                    </button>
                 </div>
 
-                <div id="truckOwnerList" class="space-y-2 pt-2">
-                    <!-- Dynamic Truck Cards -->
+                <div id="bookingSummaryCount" class="text-xs font-black text-amber-400 px-1">
+                    लोड होत आहे...
+                </div>
+
+                <!-- DATE-WISE FOLDERS CONTAINER -->
+                <div id="dateFoldersContainer" class="space-y-3">
+                    <!-- Dynamic Folders Inserted Here -->
                 </div>
             </div>
         </div>
 
-        <!-- ================= TAB 3: LIVE PER-KM RATE SETTINGS ================= -->
-        <div id="ratesTab" class="hidden space-y-4">
-            <div class="bg-stone-900/95 border-2 border-orange-600/30 rounded-3xl p-4 md:p-5 shadow-xl space-y-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-sm font-black text-amber-400 uppercase tracking-wider flex items-center gap-2">
-                        <i class="fa-solid fa-coins text-orange-500"></i> प्रति-किलोमीटर भाडे दर सेटिंग (₹/KM)
-                    </h2>
-                    <span class="text-[10px] text-emerald-400 font-bold bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/40">● Live Active</span>
+        <!-- ================= TAB 2: VEHICLES & LIVE RATE CONTROLLER ================= -->
+        <div id="vehiclesTab" class="hidden space-y-4">
+            
+            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
+                <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-circle-plus text-base text-orange-500"></i> नवीन गाडी प्रकार ॲड करा
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
+                    <input type="text" id="newVehicleName" placeholder="गाडीचे नाव (उदा. Tata 407, 10-Wheeler)" 
+                        class="md:col-span-2 bg-[#240802] border-2 border-amber-600/30 rounded-xl px-3 py-2.5 text-white font-medium focus:outline-none focus:border-orange-500">
+                    <input type="number" id="newVehicleRate" placeholder="दर (₹/KM)" 
+                        class="bg-[#240802] border-2 border-amber-600/40 rounded-xl px-3 py-2.5 text-amber-300 font-black focus:outline-none focus:border-amber-400">
                 </div>
-
-                <div class="space-y-2.5 text-xs">
-                    <!-- Tata Ace -->
-                    <div class="bg-stone-800/90 p-3 rounded-2xl border border-stone-700 flex justify-between items-center">
-                        <div>
-                            <p class="font-bold text-white">टाटा एस - छोटा हत्ती (१ टन)</p>
-                            <p class="text-[10px] text-amber-200/60">Tata Ace Rate Per KM</p>
-                        </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="text-amber-400 font-black">₹</span>
-                            <input type="number" id="rate_ace" class="w-20 bg-stone-950 border-2 border-amber-500/40 rounded-lg px-2 py-1 text-center font-black text-amber-300 text-sm focus:outline-none">
-                            <span class="text-amber-200/60 text-[10px]">/KM</span>
-                        </div>
-                    </div>
-
-                    <!-- Bolero Pickup -->
-                    <div class="bg-stone-800/90 p-3 rounded-2xl border border-stone-700 flex justify-between items-center">
-                        <div>
-                            <p class="font-bold text-white">महिंद्रा बोलेरो पिकअप (१.५ टन)</p>
-                            <p class="text-[10px] text-amber-200/60">Bolero Pickup Rate Per KM</p>
-                        </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="text-amber-400 font-black">₹</span>
-                            <input type="number" id="rate_pickup" class="w-20 bg-stone-950 border-2 border-amber-500/40 rounded-lg px-2 py-1 text-center font-black text-amber-300 text-sm focus:outline-none">
-                            <span class="text-amber-200/60 text-[10px]">/KM</span>
-                        </div>
-                    </div>
-
-                    <!-- Eicher 14 Ft -->
-                    <div class="bg-stone-800/90 p-3 rounded-2xl border border-stone-700 flex justify-between items-center">
-                        <div>
-                            <p class="font-bold text-white">आयशर १४ फूट ट्रक (४-५ टन)</p>
-                            <p class="text-[10px] text-amber-200/60">Eicher 14Ft Rate Per KM</p>
-                        </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="text-amber-400 font-black">₹</span>
-                            <input type="number" id="rate_eicher14" class="w-20 bg-stone-950 border-2 border-amber-500/40 rounded-lg px-2 py-1 text-center font-black text-amber-300 text-sm focus:outline-none">
-                            <span class="text-amber-200/60 text-[10px]">/KM</span>
-                        </div>
-                    </div>
-
-                    <!-- Eicher 19 Ft -->
-                    <div class="bg-stone-800/90 p-3 rounded-2xl border border-stone-700 flex justify-between items-center">
-                        <div>
-                            <p class="font-bold text-white">आयशर १९ फूट हेवी ट्रक (७-९ टन)</p>
-                            <p class="text-[10px] text-amber-200/60">Eicher 19Ft Rate Per KM</p>
-                        </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="text-amber-400 font-black">₹</span>
-                            <input type="number" id="rate_eicher19" class="w-20 bg-stone-950 border-2 border-amber-500/40 rounded-lg px-2 py-1 text-center font-black text-amber-300 text-sm focus:outline-none">
-                            <span class="text-amber-200/60 text-[10px]">/KM</span>
-                        </div>
-                    </div>
-
-                    <!-- Base Charge -->
-                    <div class="bg-orange-950/40 p-3 rounded-2xl border-2 border-orange-500/40 flex justify-between items-center">
-                        <div>
-                            <p class="font-black text-amber-300">किमान फिक्स भाडे / बेस लोडिंग चार्ज</p>
-                            <p class="text-[10px] text-amber-200/60">Starting Base Charge</p>
-                        </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="text-amber-400 font-black">₹</span>
-                            <input type="number" id="base_charge" class="w-20 bg-stone-950 border-2 border-amber-500/60 rounded-lg px-2 py-1 text-center font-black text-yellow-300 text-sm focus:outline-none">
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button" onclick="saveAdminRates()" class="w-full py-3.5 bg-gradient-to-r from-orange-600 via-amber-600 to-red-600 hover:brightness-110 text-white font-black rounded-xl text-xs uppercase tracking-wider shadow-lg shadow-orange-900/40 transition">
-                    💾 सर्व भाडे दर सेव्ह करा (Save All Rates)
+                <button type="button" onclick="addNewVehicle()" class="w-full py-3 bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black rounded-xl text-xs uppercase tracking-wider shadow-lg transition">
+                    ➕ गाडी थेट वेबसाइटवर ॲड करा (Save & Publish)
                 </button>
+            </div>
+
+            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider">उपलब्ध गाड्या व प्रति-KM दर</h2>
+                    <span id="vehicleCountBadge" class="bg-orange-950 text-amber-300 border border-amber-500/40 text-[10px] font-black px-2.5 py-1 rounded-lg">0 गाड्या</span>
+                </div>
+                <div id="vehiclesListContainer" class="space-y-2.5 pt-1"></div>
+            </div>
+
+            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 shadow-xl flex justify-between items-center text-xs">
+                <div>
+                    <p class="font-black text-amber-300">किमान बेस लोडिंग चार्ज</p>
+                    <p class="text-[10px] text-amber-200/60">Starting Base Fare for trip</p>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-amber-400 font-black">₹</span>
+                    <input type="number" id="base_charge" class="w-24 bg-[#120300] border-2 border-amber-500/50 rounded-xl px-2 py-1.5 text-center font-black text-yellow-300 text-sm focus:outline-none">
+                    <button onclick="saveBaseCharge()" class="px-3.5 py-2 bg-emerald-600 text-white font-bold rounded-xl text-xs transition">सेव्ह</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= TAB 3: TRUCK OWNERS FLEET ================= -->
+        <div id="trucksTab" class="hidden space-y-4">
+            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
+                <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus text-orange-500"></i> नवीन ट्रक मालक जोडा
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
+                    <input type="text" id="ownerName" placeholder="मालकाचे नाव" class="bg-[#240802] border border-amber-600/30 rounded-xl px-3 py-2.5 text-white">
+                    <select id="ownerVehicle" class="bg-[#240802] border border-amber-600/30 rounded-xl px-3 py-2.5 text-amber-200 font-bold"></select>
+                    <input type="tel" id="ownerPhone" pattern="[0-9]{10}" placeholder="१० अंकी WhatsApp नंबर" class="bg-[#240802] border border-amber-600/40 rounded-xl px-3 py-2.5 text-amber-300 font-black">
+                </div>
+                <button type="button" onclick="addTruckOwner()" class="w-full py-3 bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black rounded-xl text-xs uppercase tracking-wider transition">➕ ट्रक ॲड करा</button>
+            </div>
+
+            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
+                <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider">ट्रकांची क्रमवारी</h2>
+                <div id="truckOwnerList" class="space-y-2 pt-1"></div>
             </div>
         </div>
 
     </div>
 
-    <!-- JAVASCRIPT CONTROL LOGIC -->
     <script>
         let allOrders = [];
-        let truckFleet = [
-            { id: "trk_1", name: "रमेश पाटील (Mahindra Bolero)", phone: "9876543210", vehicle: "महिंद्रा बोलेरो पिकअप (1.5T)" },
-            { id: "trk_2", name: "चाहाडे विलेज ग्रुप (Tata Ace)", phone: "9123456789", vehicle: "टाटा एस - छोटा हत्ती (1T)" },
-            { id: "trk_3", name: "बोईसर हेवी ट्रान्सपोर्ट (Eicher 14Ft)", phone: "9988776655", vehicle: "आयशर १४ फूट ट्रक (4-5T)" }
+
+        let vehicleCategories = [
+            { id: "v_pickup", name: "महिंद्रा बोलेरो / पिकअप (कमाल १.५ टन)", rate: 22 },
+            { id: "v_ace", name: "टाटा एस - छोटा हत्ती (कमाल १ टन)", rate: 16 },
+            { id: "v_eicher14", name: "आयशर १४ फूट ट्रक (कमाल ४-५ टन)", rate: 36 },
+            { id: "v_eicher19", name: "आयशर १९ फूट हेवी ट्रक (कमाल ७-९ टन)", rate: 48 },
+            { id: "v_wheeler6", name: "६-चाकी ओपन प्लॅटफॉर्म (कमाल १० टन)", rate: 62 }
         ];
 
-        let perKmRates = {
-            ace: 16,
-            pickup: 22,
-            eicher14: 36,
-            eicher19: 48,
-            baseCharge: 800
-        };
+        let truckFleet = [
+            { id: "trk_1", name: "रमेश पाटील", phone: "9876543210", vehicle: "महिंद्रा बोलेरो / पिकअप (कमाल १.५ टन)" },
+            { id: "trk_2", name: "चाहाडे विलेज ग्रुप", phone: "9123456789", vehicle: "टाटा एस - छोटा हत्ती (कमाल १ टन)" },
+            { id: "trk_3", name: "बोईसर हेवी ट्रान्सपोर्ट", phone: "9988776655", vehicle: "आयशर १४ फूट ट्रक (कमाल ४-५ टन)" }
+        ];
 
         function initAdmin() {
-            // 1. Load Fleet
+            // Load Vehicles
+            const savedVehicles = localStorage.getItem('chahade_vehicle_categories');
+            if (savedVehicles) vehicleCategories = JSON.parse(savedVehicles);
+            renderVehicles();
+
+            // Load Base Charge
+            const savedBase = localStorage.getItem('chahade_base_charge');
+            document.getElementById('base_charge').value = savedBase || 800;
+
+            // Load Fleet
             const savedTrucks = localStorage.getItem('chahade_truck_owners');
             if (savedTrucks) truckFleet = JSON.parse(savedTrucks);
             renderTrucks();
 
-            // 2. Load Rates
-            const savedRates = localStorage.getItem('chahade_perkm_rates');
-            if (savedRates) perKmRates = JSON.parse(savedRates);
-            document.getElementById('rate_ace').value = perKmRates.ace || 16;
-            document.getElementById('rate_pickup').value = perKmRates.pickup || 22;
-            document.getElementById('rate_eicher14').value = perKmRates.eicher14 || 36;
-            document.getElementById('rate_eicher19').value = perKmRates.eicher19 || 48;
-            document.getElementById('base_charge').value = perKmRates.baseCharge || 800;
-
-            // 3. Load Date-Wise Orders
-            loadAndRenderOrders();
+            // Load Accordion Folders
+            loadAndRenderFolders();
         }
 
-        // Render Date-Wise Orders
-        function loadAndRenderOrders(filteredDate = null) {
+        // ================= DATE-WISE FOLDERS LOGIC =================
+        function loadAndRenderFolders() {
             allOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-            const list = document.getElementById('ordersList');
-            list.innerHTML = "";
+            const container = document.getElementById('dateFoldersContainer');
+            container.innerHTML = "";
 
-            let displayOrders = allOrders;
-            if (filteredDate) {
-                displayOrders = allOrders.filter(o => o.loadingDate === filteredDate);
-            }
+            document.getElementById('bookingSummaryCount').innerText = `एकूण नोंदणीकृत ऑर्डर्स: ${allOrders.length}`;
 
-            document.getElementById('bookingCountText').innerText = `एकूण ${displayOrders.length} बुकिंग्स सापडल्या:`;
-
-            if (displayOrders.length === 0) {
-                list.innerHTML = `<div class="text-center py-10 text-amber-200/50 text-xs italic bg-stone-950/70 rounded-2xl border border-stone-800">निवडलेल्या तारखेला कोणतीही बुकिंग उपलब्ध नाही.</div>`;
+            if (allOrders.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-amber-200/50 text-xs italic bg-[#240802] rounded-2xl border border-amber-600/20">कोणतीही बुकिंग उपलब्ध नाही. ग्राहक ऑर्डर आल्यानंतर येथे तारखेनुसार स्वतंत्र फोल्डर तयार होईल.</div>`;
                 return;
             }
 
-            displayOrders.forEach(o => {
-                const card = document.createElement('div');
-                card.className = "bg-stone-800/90 border-2 border-orange-500/30 rounded-2xl p-4 space-y-2.5 shadow-lg relative overflow-hidden";
-                card.innerHTML = `
-                    <!-- Top Bar with Loading Date -->
-                    <div class="flex justify-between items-center">
-                        <span class="bg-gradient-to-r from-orange-600 to-amber-600 text-white text-xs font-black px-3.5 py-1 rounded-xl shadow-sm flex items-center gap-1.5">
-                            <i class="fa-solid fa-calendar-day"></i> लोडिंग तारीख: ${o.loadingDate || 'नोंद नाही'}
+            // Group Orders by Loading Date
+            const grouped = {};
+            allOrders.forEach(order => {
+                const dateKey = order.loadingDate || "तारीख नोंद नाही";
+                if (!grouped[dateKey]) grouped[dateKey] = [];
+                grouped[dateKey].push(order);
+            });
+
+            // Sort Dates Descending
+            const sortedDates = Object.keys(grouped).sort().reverse();
+
+            sortedDates.forEach((dateKey, index) => {
+                const ordersInDate = grouped[dateKey];
+                const totalDateFare = ordersInDate.reduce((sum, o) => sum + (Number(o.fare) || 0), 0);
+                const folderId = `folder_content_${index}`;
+                const iconId = `folder_icon_${index}`;
+
+                const folderCard = document.createElement('div');
+                folderCard.className = "bg-[#240802] border-2 border-amber-500/40 rounded-2xl overflow-hidden shadow-lg transition";
+
+                folderCard.innerHTML = `
+                    <!-- FOLDER HEADER (TAP TO TOGGLE) -->
+                    <button onclick="toggleFolder('${folderId}', '${iconId}')" 
+                        class="w-full p-4 flex justify-between items-center bg-gradient-to-r from-[#2f0b02] to-[#1c0501] hover:brightness-110 transition text-left border-b border-amber-600/20">
+                        <div class="flex items-center gap-3">
+                            <span class="w-10 h-10 rounded-xl bg-orange-950/80 border border-amber-500/50 flex items-center justify-center text-amber-300 text-lg shadow">
+                                📁
+                            </span>
+                            <div>
+                                <p class="font-black text-amber-200 text-sm tracking-wide">तारीख: ${dateKey}</p>
+                                <p class="text-[11px] text-amber-300/70 font-semibold">
+                                    ${ordersInDate.length} बुकिंग्स • एकूण भाडे: ₹${totalDateFare.toLocaleString('en-IN')}
+                                </p>
+                            </div>
+                        </div>
+                        <span id="${iconId}" class="text-amber-400 font-black text-sm px-2.5 py-1 rounded-lg bg-black/40 border border-amber-500/30 transition duration-300">
+                            उघडा ⬇️
                         </span>
-                        <span class="text-emerald-400 font-black text-lg">₹${o.fare}</span>
-                    </div>
+                    </button>
 
-                    <!-- Route Details -->
-                    <div class="bg-stone-900/90 p-3 rounded-xl border border-stone-700 grid grid-cols-2 gap-2 text-xs">
-                        <div>
-                            <p class="text-[10px] text-amber-400 uppercase font-black">माल भरणे (From):</p>
-                            <p class="font-bold text-white">${o.from}</p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-amber-400 uppercase font-black">खाली करणे (To):</p>
-                            <p class="font-bold text-yellow-300">${o.to}</p>
-                        </div>
-                    </div>
+                    <!-- FOLDER CONTENTS (HIDDEN BY DEFAULT) -->
+                    <div id="${folderId}" class="hidden p-3.5 space-y-3 bg-[#180400]/90">
+                        ${ordersInDate.map(o => `
+                            <div class="bg-[#290a03] border border-amber-600/30 rounded-xl p-3.5 space-y-2 shadow-inner">
+                                <div class="flex justify-between items-center">
+                                    <span class="bg-amber-500/20 text-amber-300 text-[11px] font-black px-2.5 py-1 rounded-lg border border-amber-500/30">
+                                        ⏰ वेळ: ${o.loadingTime || ''} (#${o.id || ''})
+                                    </span>
+                                    <span class="text-emerald-400 font-black text-base">₹${o.fare}</span>
+                                </div>
+                                
+                                <div class="bg-[#120300] p-2.5 rounded-lg border border-amber-600/20 grid grid-cols-2 gap-2 text-xs">
+                                    <div><p class="text-[10px] text-amber-400/80 font-black">भरणे (From):</p><p class="font-bold text-white">${o.from}</p></div>
+                                    <div><p class="text-[10px] text-amber-400/80 font-black">खाली करणे (To):</p><p class="font-bold text-yellow-300">${o.to}</p></div>
+                                </div>
 
-                    <!-- Material & Assigned Driver -->
-                    <div class="text-xs space-y-1 text-stone-300">
-                        <p><i class="fa-solid fa-box text-orange-400 mr-1"></i> माल: <strong>${o.material || '-'}</strong> (${o.weight || '-'})</p>
-                        <p><i class="fa-solid fa-truck text-orange-400 mr-1"></i> वाटप केलेला ट्रक: <strong class="text-amber-200">${o.driver}</strong></p>
-                        <p class="text-[10px] text-stone-500">बुकिंग नोंद वेळ: ${o.bookedOn || ''} ${o.time || ''} (#${o.id || ''})</p>
-                    </div>
+                                <div class="text-xs space-y-1 text-amber-100/90">
+                                    <p>गाडी: <strong>${o.vehicle || ''}</strong></p>
+                                    <p>माल: <strong>${o.material || '-'}</strong> (${o.weight || '-'})</p>
+                                    <p>ड्रायव्हर: <strong class="text-amber-200">${o.driver}</strong></p>
+                                </div>
 
-                    <!-- Call & WhatsApp Actions -->
-                    <div class="pt-2 flex justify-between items-center border-t border-stone-700">
-                        <span class="text-xs text-stone-300">ग्राहक: <strong class="text-emerald-400 font-black">📞 ${o.customer}</strong></span>
-                        <a href="tel:${o.customer}" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-md shadow-emerald-950">
-                            <i class="fa-solid fa-phone"></i> थेट कॉल करा
-                        </a>
+                                <div class="pt-2 flex justify-between items-center border-t border-amber-600/20">
+                                    <span class="text-xs text-stone-300">ग्राहक: <strong class="text-emerald-400 font-black">📞 ${o.customer}</strong></span>
+                                    <a href="tel:${o.customer}" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-3.5 py-1.5 rounded-lg transition flex items-center gap-1">
+                                        <i class="fa-solid fa-phone"></i> कॉल
+                                    </a>
+                                </div>
+                            </div>
+                        `).join('')}
                     </div>
                 `;
-                list.appendChild(card);
+
+                container.appendChild(folderCard);
             });
         }
 
-        function filterOrdersByDate() {
-            const selectedDate = document.getElementById('filterDate').value;
-            if (selectedDate) loadAndRenderOrders(selectedDate);
-        }
+        // Single Tap Open / Close Toggle Logic
+        function toggleFolder(folderId, iconId) {
+            const content = document.getElementById(folderId);
+            const icon = document.getElementById(iconId);
 
-        function resetDateFilter() {
-            document.getElementById('filterDate').value = "";
-            loadAndRenderOrders();
-        }
-
-        function clearOrders() {
-            if (confirm("तुम्हाला खात्री आहे का? सर्व जुनी बुकिंग लिस्ट कायमची डिलीट होईल!")) {
-                localStorage.removeItem('chahade_admin_orders');
-                loadAndRenderOrders();
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.innerText = "बंद करा ⬆️";
+                icon.className = "text-yellow-300 font-black text-sm px-2.5 py-1 rounded-lg bg-amber-600 border border-amber-300 transition duration-300";
+            } else {
+                content.classList.add('hidden');
+                icon.innerText = "उघडा ⬇️";
+                icon.className = "text-amber-400 font-black text-sm px-2.5 py-1 rounded-lg bg-black/40 border border-amber-500/30 transition duration-300";
             }
         }
 
-        // Truck Fleet Logic
+        function clearOrders() {
+            if (confirm("तुम्हाला खात्री आहे का? सर्व फोल्डर्स व जुनी बुकिंग लिस्ट डिलीट होईल!")) {
+                localStorage.removeItem('chahade_admin_orders');
+                loadAndRenderFolders();
+            }
+        }
+
+        // ================= VEHICLES & RATES LOGIC =================
+        function renderVehicles() {
+            const container = document.getElementById('vehiclesListContainer');
+            const ownerVehSelect = document.getElementById('ownerVehicle');
+            container.innerHTML = "";
+            ownerVehSelect.innerHTML = "";
+
+            document.getElementById('vehicleCountBadge').innerText = `${vehicleCategories.length} उपलब्ध गाड्या`;
+
+            vehicleCategories.forEach((v, index) => {
+                const opt = document.createElement('option');
+                opt.value = v.name;
+                opt.innerText = v.name;
+                ownerVehSelect.appendChild(opt);
+
+                const row = document.createElement('div');
+                row.className = "bg-[#240802] border-2 border-amber-600/30 rounded-2xl p-3.5 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 shadow-md";
+                row.innerHTML = `
+                    <div>
+                        <p class="font-black text-white text-xs md:text-sm">${v.name}</p>
+                        <p class="text-[10px] text-amber-200/60 mt-0.5">ID: ${v.id}</p>
+                    </div>
+                    
+                    <div class="flex items-center gap-2 self-end md:self-auto">
+                        <span class="text-amber-400 font-black text-xs">₹</span>
+                        <input type="number" value="${v.rate}" id="input_rate_${index}" 
+                            class="w-20 bg-[#120300] border-2 border-amber-500/50 rounded-xl px-2 py-1.5 text-center font-black text-amber-300 text-xs focus:outline-none">
+                        <span class="text-amber-200/60 text-[10px]">/KM</span>
+                        
+                        <button onclick="updateSingleRate(${index})" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl text-xs transition">बदला</button>
+                        <button onclick="deleteVehicleCategory(${index})" class="px-2.5 py-1.5 bg-red-950 border border-red-500/40 text-red-300 hover:bg-red-900 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function addNewVehicle() {
+            const name = document.getElementById('newVehicleName').value.trim();
+            const rate = Number(document.getElementById('newVehicleRate').value);
+
+            if(!name || !rate) return alert("कृपया नाव व दर टाका!");
+
+            vehicleCategories.push({ id: "v_" + Date.now(), name: name, rate: rate });
+            localStorage.setItem('chahade_vehicle_categories', JSON.stringify(vehicleCategories));
+            document.getElementById('newVehicleName').value = "";
+            document.getElementById('newVehicleRate').value = "";
+            renderVehicles();
+            alert("✅ नवीन गाडी जोडली गेली!");
+        }
+
+        function updateSingleRate(index) {
+            const newRate = Number(document.getElementById(`input_rate_${index}`).value);
+            if(!newRate || newRate <= 0) return alert("योग्य दर टाका!");
+            vehicleCategories[index].rate = newRate;
+            localStorage.setItem('chahade_vehicle_categories', JSON.stringify(vehicleCategories));
+            alert(`✅ दर ₹${newRate}/KM सेव्ह झाला!`);
+            renderVehicles();
+        }
+
+        function deleteVehicleCategory(index) {
+            if(confirm(`"${vehicleCategories[index].name}" गाडी डिलीट करायची आहे?`)) {
+                vehicleCategories.splice(index, 1);
+                localStorage.setItem('chahade_vehicle_categories', JSON.stringify(vehicleCategories));
+                renderVehicles();
+            }
+        }
+
+        function saveBaseCharge() {
+            const base = document.getElementById('base_charge').value;
+            localStorage.setItem('chahade_base_charge', base);
+            alert("✅ बेस भाडे सेव्ह झाले!");
+        }
+
+        // ================= TRUCK FLEET =================
         function renderTrucks() {
             const container = document.getElementById('truckOwnerList');
             container.innerHTML = "";
-            document.getElementById('truckCountBadge').innerText = `${truckFleet.length} ट्रक्स ॲक्टिव्ह`;
-
             truckFleet.forEach((truck, index) => {
                 const card = document.createElement('div');
-                card.className = "bg-stone-800/90 border border-stone-700 rounded-2xl p-3 flex justify-between items-center gap-2";
+                card.className = "bg-[#240802] border border-amber-600/30 rounded-2xl p-3 flex justify-between items-center gap-2";
                 card.innerHTML = `
                     <div class="flex items-center gap-2.5">
-                        <span class="w-6 h-6 rounded-lg bg-orange-950 border border-amber-500/40 text-amber-300 font-black text-xs flex items-center justify-center">
-                            #${index + 1}
-                        </span>
+                        <span class="w-6 h-6 rounded-lg bg-orange-950 border border-amber-500/40 text-amber-300 font-black text-xs flex items-center justify-center">#${index + 1}</span>
                         <div>
                             <p class="font-black text-white text-xs">${truck.name}</p>
-                            <p class="text-[11px] text-amber-300 font-bold flex items-center gap-1 mt-0.5">
-                                <i class="fa-brands fa-whatsapp text-emerald-400"></i> ${truck.phone} 
-                                <span class="text-stone-500">•</span> 
-                                <span class="text-stone-400 text-[10px]">${truck.vehicle || ''}</span>
-                            </p>
+                            <p class="text-[11px] text-amber-300 font-bold mt-0.5">📞 ${truck.phone} • <span class="text-stone-400 text-[10px]">${truck.vehicle || ''}</span></p>
                         </div>
                     </div>
-
                     <div class="flex items-center gap-1">
-                        <button onclick="moveTruck(${index}, -1)" ${index === 0 ? 'disabled class="opacity-30"' : ''} 
-                            class="px-2 py-1 bg-stone-700 hover:bg-stone-600 text-amber-300 rounded-lg text-xs font-bold transition">
-                            ⬆️ वर
-                        </button>
-                        <button onclick="moveTruck(${index}, 1)" ${index === truckFleet.length - 1 ? 'disabled class="opacity-30"' : ''} 
-                            class="px-2 py-1 bg-stone-700 hover:bg-stone-600 text-amber-300 rounded-lg text-xs font-bold transition">
-                            ⬇️ खाली
-                        </button>
-                        <button onclick="deleteTruck(${index})" class="px-2 py-1 bg-red-950 border border-red-500/40 text-red-300 rounded-lg text-xs font-bold hover:bg-red-900 transition">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
+                        <button onclick="moveTruck(${index}, -1)" ${index === 0 ? 'disabled class="opacity-30"' : ''} class="px-2 py-1 bg-[#381005] text-amber-300 rounded-lg text-xs font-bold">⬆️</button>
+                        <button onclick="moveTruck(${index}, 1)" ${index === truckFleet.length - 1 ? 'disabled class="opacity-30"' : ''} class="px-2 py-1 bg-[#381005] text-amber-300 rounded-lg text-xs font-bold">⬇️</button>
+                        <button onclick="deleteTruck(${index})" class="px-2 py-1 bg-red-950 text-red-300 rounded-lg text-xs font-bold"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `;
                 container.appendChild(card);
@@ -378,17 +388,12 @@
             const phone = document.getElementById('ownerPhone').value.trim();
             const vehicle = document.getElementById('ownerVehicle').value;
 
-            if (!name || phone.length < 10) {
-                alert("कृपया ट्रक मालकाचे नाव आणि १० अंकी मोबाईल नंबर टाका!");
-                return;
-            }
-
+            if (!name || phone.length < 10) return alert("नाव आणि नंबर भरा!");
             truckFleet.unshift({ id: "trk_" + Date.now(), name: `${name} (${vehicle})`, phone: phone, vehicle: vehicle });
             localStorage.setItem('chahade_truck_owners', JSON.stringify(truckFleet));
             document.getElementById('ownerName').value = "";
             document.getElementById('ownerPhone').value = "";
             renderTrucks();
-            alert("✅ नवीन ट्रक यशस्वीपणे जोडला गेला आहे!");
         }
 
         function moveTruck(index, dir) {
@@ -402,32 +407,20 @@
         }
 
         function deleteTruck(index) {
-            if (confirm("हा ट्रक लिस्ट मधून काढायचा आहे का?")) {
+            if (confirm("ट्रक काढायचा आहे?")) {
                 truckFleet.splice(index, 1);
                 localStorage.setItem('chahade_truck_owners', JSON.stringify(truckFleet));
                 renderTrucks();
             }
         }
 
-        function saveAdminRates() {
-            perKmRates = {
-                ace: Number(document.getElementById('rate_ace').value) || 16,
-                pickup: Number(document.getElementById('rate_pickup').value) || 22,
-                eicher14: Number(document.getElementById('rate_eicher14').value) || 36,
-                eicher19: Number(document.getElementById('rate_eicher19').value) || 48,
-                baseCharge: Number(document.getElementById('base_charge').value) || 800
-            };
-            localStorage.setItem('chahade_perkm_rates', JSON.stringify(perKmRates));
-            alert("✅ सर्व भाडे दर (Rates) सेव्ह झाले आहेत!");
-        }
-
         function switchTab(tabId) {
-            ['ordersTab', 'trucksTab', 'ratesTab'].forEach(t => document.getElementById(t).classList.add('hidden'));
-            ['btnOrders', 'btnTrucks', 'btnRates'].forEach(b => document.getElementById(b).className = "py-3 rounded-xl text-amber-200/70 hover:text-white transition flex items-center justify-center gap-1.5");
+            ['ordersTab', 'vehiclesTab', 'trucksTab'].forEach(t => document.getElementById(t).classList.add('hidden'));
+            ['btnOrders', 'btnVehicles', 'btnTrucks'].forEach(b => document.getElementById(b).className = "py-3 rounded-xl text-amber-200/70 hover:text-white transition flex items-center justify-center gap-1.5");
             
             document.getElementById(tabId).classList.remove('hidden');
-            const activeBtn = tabId === 'ordersTab' ? 'btnOrders' : tabId === 'trucksTab' ? 'btnTrucks' : 'btnRates';
-            document.getElementById(activeBtn).className = "py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg shadow-orange-900/40 transition flex items-center justify-center gap-1.5";
+            const activeBtn = tabId === 'ordersTab' ? 'btnOrders' : tabId === 'vehiclesTab' ? 'btnVehicles' : 'btnTrucks';
+            document.getElementById(activeBtn).className = "py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg transition flex items-center justify-center gap-1.5";
         }
 
         window.onload = initAdmin;
