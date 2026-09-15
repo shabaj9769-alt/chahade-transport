@@ -52,6 +52,7 @@
         </div>
 
         <div class="p-4 md:p-6 space-y-4">
+            
             <!-- Rules -->
             <div class="bg-[#4d1607]/60 border-l-4 border-amber-400 p-3.5 rounded-r-2xl border border-amber-500/30 text-left">
                 <p class="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
@@ -61,6 +62,29 @@
                     <p>• <strong>मध्यस्थ पोर्टल:</strong> मालवाहतुकीची व सुरक्षेची जबाबदारी संबंधित स्वतंत्र वाहन मालकाची राहील.</p>
                     <p>• <strong>५०% ॲडव्हान्स:</strong> लोडिंग पॉईंटवर ५०% ॲडव्हान्स रोख किंवा UPI द्वारे चालकाकडे देणे बंधनकारक आहे.</p>
                 </div>
+            </div>
+
+            <!-- SUCCESS CONFIRMATION MODAL (SHOWS DIRECTLY ON APP) -->
+            <div id="bookingSuccessBox" class="hidden bg-gradient-to-b from-[#1b4317] to-[#0d230b] border-2 border-emerald-400 p-5 rounded-2xl text-center space-y-3 shadow-2xl animate-fade-in">
+                <div class="w-14 h-14 mx-auto rounded-full bg-emerald-500 text-stone-950 flex items-center justify-center text-2xl font-black shadow-lg">
+                    ✓
+                </div>
+                <div>
+                    <h3 class="text-lg font-black text-emerald-200">बुकिंग यशस्वीरीत्या नोंदवली गेली!</h3>
+                    <p class="text-xs text-stone-200 mt-1">आपली ऑर्डर आमच्या कंट्रोल पॅनेलवर प्राप्त झाली आहे.</p>
+                </div>
+                <div class="bg-black/40 p-3 rounded-xl border border-emerald-500/40 text-left text-xs space-y-1.5 text-emerald-100">
+                    <p>🆔 <strong>बुकिंग ID:</strong> <span id="successOrderId" class="text-amber-300 font-black"></span></p>
+                    <p>📅 <strong>तारीख व वेळ:</strong> <span id="successDateTime" class="text-white"></span></p>
+                    <p>💰 <strong>अंदाजे भाडे:</strong> <span id="successFare" class="text-amber-300 font-bold"></span></p>
+                    <p class="text-[11px] text-stone-300 pt-1 border-t border-emerald-500/30">
+                        📞 <em>चाहाडे ट्रान्सपोर्ट कार्यालयाकडून गाडी निश्चितीसाठी थोड्याच वेळात आपल्याशी संपर्क केला जाईल.</em>
+                    </p>
+                </div>
+                <button type="button" onclick="resetFormForNextBooking()" 
+                    class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-xl text-xs uppercase tracking-wider transition">
+                    नवीन बुकिंग करा (New Booking)
+                </button>
             </div>
 
             <!-- Booking Form -->
@@ -148,7 +172,7 @@
                         class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
                 </div>
 
-                <!-- 5. Weight (AUTO-SYNCS WITH VEHICLE) -->
+                <!-- 5. Weight -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                         <span class="flex items-center gap-1.5"><i class="fa-solid fa-weight-scale text-amber-400"></i> ५. मालाचे अंदाजे वजन</span>
@@ -279,7 +303,7 @@
                             <span>५०% पोहोचल्यावर: <strong id="balanceDisplay" class="text-emerald-300">₹ 0</strong></span>
                         </div>
 
-                        <!-- ⚠️ GENERAL ESTIMATE NOTE -->
+                        <!-- ⚠️ ESTIMATE NOTE -->
                         <div class="bg-[#6b1c06]/80 border border-amber-400/40 p-3 rounded-xl text-left">
                             <p class="text-[11px] text-amber-100 leading-relaxed font-semibold">
                                 <i class="fa-solid fa-triangle-exclamation text-amber-300 mr-1"></i>
@@ -287,7 +311,7 @@
                             </p>
                         </div>
 
-                        <!-- 🛑 NEW: ORDER CONFIRMATION & CANCELLATION LIABILITY DISCLAIMER -->
+                        <!-- 🛑 CONFIRMATION & CANCELLATION DISCLAIMER -->
                         <div class="bg-[#280500] border-2 border-red-500/50 p-3.5 rounded-xl text-left space-y-1.5 shadow-inner">
                             <p class="text-xs font-black text-red-400 uppercase tracking-wider flex items-center gap-1.5">
                                 <i class="fa-solid fa-phone-volume text-amber-400"></i> मॅन्युअल कन्फर्मेशन व कॅन्सलेशन नियम:
@@ -299,10 +323,10 @@
                         </div>
                     </div>
 
-                    <!-- Dispatch Order To Admin WhatsApp -->
-                    <button type="button" onclick="dispatchOrderDirectToAdmin()" 
+                    <!-- DIRECT CONFIRM ON APP (NO REDIRECTION TO WHATSAPP) -->
+                    <button type="button" onclick="confirmOrderDirectlyOnApp()" 
                         class="w-full py-4 px-4 bg-gradient-to-r from-emerald-600 to-green-600 hover:brightness-110 text-white font-black rounded-2xl shadow-xl text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-95 border border-emerald-300/40">
-                        <i class="fa-brands fa-whatsapp text-xl"></i> थेट ॲडमिनला बुकिंग पाठवा (ADMIN WHATSAPP)
+                        <i class="fa-solid fa-circle-check text-xl"></i> बुकिंग ऑर्डर कन्फर्म करा (CONFIRM BOOKING)
                     </button>
                 </div>
 
@@ -311,8 +335,6 @@
     </div>
 
     <script>
-        const DISPATCH_ADMIN_PHONE = "918779612829";
-
         let calculatedPrice = 0;
         let routeKm = 0;
         let isFareCardOpen = false;
@@ -451,7 +473,8 @@
             resultCard.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function dispatchOrderDirectToAdmin() {
+        // DIRECT CONFIRMATION ON APP (SAVES TO ADMIN DATABASE DIRECTLY)
+        function confirmOrderDirectlyOnApp() {
             const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value;
             const drop = document.getElementById('drop').options[document.getElementById('drop').selectedIndex].text;
             const fullAddress = document.getElementById('fullAddress').value;
@@ -473,6 +496,7 @@
                 loadingTime: completeTimeString,
                 from: palgharLoadingPoint,
                 to: drop,
+                fullAddress: fullAddress,
                 customer: customerMobile,
                 vehicle: vehicle,
                 material: material,
@@ -481,28 +505,31 @@
                 status: "Pending Assignment"
             };
 
+            // 1. Save to Database for Admin Panel
             let orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
             orders.unshift(newOrder);
             localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
 
-            const orderDetails = 
-                `*🚩 चाहाडे ट्रान्सपोर्ट - थेट ॲडमिन बुकिंग ऑर्डर 🚚*%0A%0A` +
-                `🆔 *बुकिंग ID:* ${newOrder.id}%0A` +
-                `📅 *गाडी हवी ती तारीख:* ${loadingDate}%0A` +
-                `⏰ *गाडी हवी ती वेळ:* ${encodeURIComponent(completeTimeString)}%0A` +
-                `📍 *माल भरणे (Loading):* ${encodeURIComponent(palgharLoadingPoint)} (पालघर)%0A` +
-                `🎯 *खाली करण्याचे ठिकाण:* ${encodeURIComponent(drop)}%0A` +
-                `🛣️ *अंदाजे अंतर:* ~${routeKm} KM%0A` +
-                `🏠 *पत्ता:* ${encodeURIComponent(fullAddress)}%0A` +
-                `📦 *माल:* ${encodeURIComponent(material)}%0A` +
-                `⚖️ *वजन:* ${encodeURIComponent(cargoWeight)}%0A` +
-                `🚛 *गाडीचा प्रकार:* ${encodeURIComponent(vehicle)}%0A` +
-                `👤 *ग्राहकाचा नंबर:* ${customerMobile}%0A` +
-                `💰 *अंदाजे भाडे:* ₹${calculatedPrice}%0A` +
-                `💵 *५०% लोडिंग ॲडव्हान्स:* ₹${Math.round(calculatedPrice * 0.5)}%0A%0A` +
-                `⚠️ *टीप:* बुकिंग कन्फर्म झाल्यावर ट्रक मालकाचा मॅन्युअल कन्फर्मेशन कॉल येईल. लोड कॅन्सल करण्याची जबाबदारी ग्राहक व मालक यांची राहील.`;
+            // 2. Hide Form & Show Success Box On Screen
+            document.getElementById('transportForm').classList.add('hidden');
+            
+            const successBox = document.getElementById('bookingSuccessBox');
+            document.getElementById('successOrderId').innerText = newOrder.id;
+            document.getElementById('successDateTime').innerText = `${loadingDate} (${completeTimeString})`;
+            document.getElementById('successFare').innerText = `₹ ${calculatedPrice.toLocaleString('en-IN')}`;
+            
+            successBox.classList.remove('hidden');
+            window.scrollTo({ top: 100, behavior: 'smooth' });
+        }
 
-            window.open(`https://wa.me/${DISPATCH_ADMIN_PHONE}?text=${orderDetails}`, '_blank');
+        function resetFormForNextBooking() {
+            document.getElementById('bookingSuccessBox').classList.add('hidden');
+            document.getElementById('transportForm').classList.remove('hidden');
+            document.getElementById('transportForm').reset();
+            document.getElementById('fareResultCard').classList.add('hidden');
+            isFareCardOpen = false;
+            document.getElementById('calcBtnText').innerText = "अंदाजे भाडे तपासा (Show Fare)";
+            loadData();
         }
 
         window.onload = loadData;
