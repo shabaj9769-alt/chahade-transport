@@ -72,7 +72,7 @@
                         <i class="fa-solid fa-location-dot text-amber-400"></i> १. माल भरण्याचा जिल्हा
                     </label>
                     <input type="text" id="pickup" value="पालघर जिल्हा मुख्य हब (Palghar District Hub)" readonly
-                        class="w-full px-4 py-3 bg-[#4a1507]/80 border-2 border-amber-500/60 rounded-xl font-bold text-amber-200 text-sm focus:outline-none cursor-default">
+                        class="w-full px-4 py-3 bg-[#4a1507]/80 border-2 border-amber-500/60 rounded-xl font-bold text-amber-200 text-sm focus:outline-none cursor-default shadow-inner">
                 </div>
 
                 <!-- 1.1 Palghar Area -->
@@ -148,18 +148,19 @@
                         class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
                 </div>
 
-                <!-- 5. Weight -->
+                <!-- 5. Weight (AUTO-SYNCS WITH VEHICLE) -->
                 <div>
-                    <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-weight-scale text-amber-400"></i> ५. मालाचे अंदाजे वजन
+                    <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-weight-scale text-amber-400"></i> ५. मालाचे अंदाजे वजन</span>
+                        <span class="text-[10px] text-emerald-400 font-bold">● गाडी आपोआप निवडली जाईल</span>
                     </label>
-                    <select id="cargoWeight" required class="w-full px-3 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-amber-200 text-xs focus:outline-none focus:border-amber-400 transition">
-                        <option value="५०० किलो पर्यंत">५०० किलो पर्यंत (हलका माल)</option>
-                        <option value="५०० किलो ते १ टन">५०० किलो ते १ टन (छोटा हत्ती)</option>
-                        <option value="१ टन ते १.७ टन" selected>१ टन ते १.७ टन (बोलेरो पिकअप)</option>
-                        <option value="२ टन ते ४.५ टन">२ टन ते ४.५ टन (आयशर १४ फूट)</option>
-                        <option value="५ टन ते ९ टन">५ टन ते ९ टन (आयशर १९ फूट)</option>
-                        <option value="१० टन किंवा जास्त">१० टन किंवा जास्त (६ चाकी / हेवी)</option>
+                    <select id="cargoWeight" onchange="syncWeightToVehicle()" required class="w-full px-3 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-amber-200 text-xs focus:outline-none focus:border-amber-400 transition">
+                        <option value="५०० किलो पर्यंत" data-vindex="1">५०० किलो पर्यंत (हलका माल - टाटा एस)</option>
+                        <option value="५०० किलो ते १ टन" data-vindex="1">५०० किलो ते १ टन (छोटा हत्ती)</option>
+                        <option value="१ टन ते १.७ टन" data-vindex="0" selected>१ टन ते १.७ टन (बोलेरो पिकअप)</option>
+                        <option value="२ टन ते ४.५ टन" data-vindex="2">२ टन ते ४.५ टन (आयशर १४ फूट)</option>
+                        <option value="५ टन ते ९ टन" data-vindex="3">५ टन ते ९ टन (आयशर १९ फूट)</option>
+                        <option value="१० टन किंवा जास्त" data-vindex="4">१० टन किंवा जास्त (६ चाकी / हेवी)</option>
                     </select>
                 </div>
 
@@ -203,33 +204,54 @@
                     </div>
                 </div>
 
-                <!-- 7. Mobile -->
+                <!-- 7. STRICT 10-DIGIT MOBILE NUMBER -->
                 <div>
-                    <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-phone text-emerald-400"></i> ७. ग्राहकाचा संपर्क नंबर
+                    <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-phone text-emerald-400"></i> ७. ग्राहकाचा संपर्क नंबर</span>
+                        <span id="mobileCountBadge" class="text-[10px] text-amber-400 font-black">0/10 अंक</span>
                     </label>
-                    <input type="tel" id="mobile" pattern="[0-9]{10}" placeholder="१० अंकी मोबाईल नंबर टाका" required
-                        class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold tracking-widest text-amber-200 placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
+                    <input type="tel" id="mobile" maxlength="10" 
+                        placeholder="१० अंकी मोबाईल नंबर टाका" required
+                        oninput="validateMobileInput(this)"
+                        class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-black tracking-widest text-amber-200 placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
+                    <p id="mobileErrorMsg" class="hidden text-[10px] text-red-400 font-bold mt-1">
+                        ⚠️ फक्त ० ते ९ अंक टाका! स्पेशल चिन्ह किंवा स्पेस चालणार नाही.
+                    </p>
                 </div>
 
                 <!-- 8. Commercial Vehicles -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                         <span><i class="fa-solid fa-truck-moving text-amber-400"></i> ८. लागणारी मालवाहतूक गाडी (Vehicle Category)</span>
-                        <span class="text-[10px] text-emerald-400">● Live Rates Sync</span>
+                        <span class="text-[10px] text-emerald-400 font-bold">● Auto-Matched</span>
                     </label>
-                    <select id="vehicle" class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
+                    <select id="vehicle" onchange="syncVehicleToWeight()" class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
                     </select>
                 </div>
 
-                <!-- 9. Truck Owner -->
+                <!-- 9. PROTECTED SYSTEM ALLOCATION (DRIVERS HIDDEN FROM CUSTOMER) -->
                 <div class="bg-[#4d1607]/80 p-4 rounded-2xl border-2 border-amber-500/50 space-y-2">
-                    <label class="block text-xs font-black text-amber-300 uppercase tracking-wider flex items-center justify-between">
-                        <span><i class="fa-solid fa-truck text-amber-400"></i> ९. उपलब्ध ट्रक मालक निवडा</span>
-                        <span class="text-[10px] text-emerald-400">● ॲक्टिव्ह फ्लीट</span>
-                    </label>
-                    <select id="truckOwnerSelect" class="w-full px-3 py-2.5 bg-[#330e04] border-2 border-amber-500/40 rounded-xl font-bold text-sm text-amber-200 focus:outline-none">
-                    </select>
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-shield-halved text-emerald-400"></i> ९. वाहन व चालक वाटप (Fleet Allocation)
+                        </span>
+                        <span class="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-md font-bold">
+                            ● अधिकृत नेटवर्क
+                        </span>
+                    </div>
+
+                    <div class="w-full px-3.5 py-3 bg-[#330e04] border-2 border-amber-500/40 rounded-xl flex items-center justify-between text-xs font-bold text-amber-200 shadow-inner">
+                        <span class="flex items-center gap-2">
+                            🚚 <span>चाहाडे नेटवर्क व्हेरिफाईड चालक (Auto Assigned)</span>
+                        </span>
+                        <span class="text-[10px] text-amber-400 bg-black/40 px-2 py-0.5 rounded border border-amber-500/30">
+                            🔒 सुरक्षित
+                        </span>
+                    </div>
+                    
+                    <p class="text-[10px] text-amber-200/70 font-medium">
+                        *भाडे निश्चित झाल्यावर चाहाडे ट्रान्सपोर्ट कार्यालयाकडून उपलब्ध चालक त्वरित नियुक्त केला जाईल.
+                    </p>
                 </div>
 
                 <!-- Calculate Fare Button -->
@@ -259,24 +281,26 @@
                         <div class="bg-[#6b1c06]/80 border border-amber-400/40 p-3 rounded-xl mt-3 text-left">
                             <p class="text-[11px] text-amber-100 leading-relaxed font-semibold">
                                 <i class="fa-solid fa-triangle-exclamation text-amber-300 mr-1"></i>
-                                <strong>महत्त्वाची सूचना:</strong> हे दाखवलेले भाडे फक्त प्राथमिक अंदाज (Estimated Fare) आहे, हे फायनल बिल नाही. अंतिम बिल गाडी मालकाशी बोलून निश्चित करावे.
+                                <strong>महत्त्वाची सूचना:</strong> हे दाखवलेले भाडे फक्त प्राथमिक अंदाज (Estimated Fare) आहे, हे फायनल बिल नाही. अंतिम बिल ट्रान्सपोर्ट कार्यालयाशी बोलून निश्चित करावे.
                             </p>
                         </div>
                     </div>
 
-                    <button type="button" onclick="dispatchOrderToTruckOwner()" 
+                    <!-- Dispatch Order To Dispatch Admin WhatsApp -->
+                    <button type="button" onclick="dispatchOrderDirectToAdmin()" 
                         class="w-full py-4 px-4 bg-gradient-to-r from-emerald-600 to-green-600 hover:brightness-110 text-white font-black rounded-2xl shadow-xl text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-95 border border-emerald-300/40">
-                        <i class="fa-brands fa-whatsapp text-xl"></i> ऑर्डर पाठवा (फक्त TRUCK OWNER ला WHATSAPP)
+                        <i class="fa-brands fa-whatsapp text-xl"></i> बुकिंग ऑर्डर कन्फर्म करा (WHATSAPP)
                     </button>
                 </div>
 
             </form>
-            
-            <!-- (Admin link yahan se poori tarah delete kar diya gaya hai) -->
         </div>
     </div>
 
     <script>
+        // Central Dispatch Admin Mobile Number (Aapka WhatsApp Number)
+        const DISPATCH_ADMIN_PHONE = "918779612829";
+
         let calculatedPrice = 0;
         let routeKm = 0;
         let isFareCardOpen = false;
@@ -291,12 +315,6 @@
 
         let baseFixedCharge = 800;
 
-        let registeredTrucks = [
-            { id: 1, name: "रमेश पाटील (Mahindra Bolero)", phone: "9876543210" },
-            { id: 2, name: "चाहाडे विलेज ग्रुप (Tata Ace)", phone: "9123456789" },
-            { id: 3, name: "बोईसर हेवी ट्रान्सपोर्ट (Eicher 14Ft)", phone: "9988776655" }
-        ];
-
         function loadData() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('loadingDate').value = today;
@@ -310,25 +328,61 @@
 
             const vehicleSelect = document.getElementById('vehicle');
             vehicleSelect.innerHTML = '';
-            availableVehicleCategories.forEach(v => {
+            availableVehicleCategories.forEach((v, index) => {
                 const opt = document.createElement('option');
                 opt.value = v.id;
                 opt.setAttribute('data-rate', v.rate);
+                opt.setAttribute('data-index', index);
                 opt.innerText = `${v.name} (₹${v.rate}/KM)`;
                 vehicleSelect.appendChild(opt);
             });
 
-            const savedTrucks = localStorage.getItem('chahade_truck_owners');
-            if(savedTrucks) registeredTrucks = JSON.parse(savedTrucks);
-            
-            const truckSelect = document.getElementById('truckOwnerSelect');
-            truckSelect.innerHTML = '';
-            registeredTrucks.forEach(t => {
-                const opt = document.createElement('option');
-                opt.value = t.phone;
-                opt.innerText = `${t.name} (📞 ${t.phone})`;
-                truckSelect.appendChild(opt);
-            });
+            syncWeightToVehicle();
+        }
+
+        function syncWeightToVehicle() {
+            const weightSelect = document.getElementById('cargoWeight');
+            const vehicleSelect = document.getElementById('vehicle');
+            const targetIndex = Number(weightSelect.options[weightSelect.selectedIndex].getAttribute('data-vindex')) || 0;
+
+            if (vehicleSelect.options.length > targetIndex) {
+                vehicleSelect.selectedIndex = targetIndex;
+            }
+        }
+
+        function syncVehicleToWeight() {
+            const vehicleSelect = document.getElementById('vehicle');
+            const weightSelect = document.getElementById('cargoWeight');
+            const currentIndex = vehicleSelect.selectedIndex;
+
+            for (let i = 0; i < weightSelect.options.length; i++) {
+                if (Number(weightSelect.options[i].getAttribute('data-vindex')) === currentIndex) {
+                    weightSelect.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        function validateMobileInput(input) {
+            const errorMsg = document.getElementById('mobileErrorMsg');
+            const badge = document.getElementById('mobileCountBadge');
+
+            const cleanDigits = input.value.replace(/[^0-9]/g, '');
+
+            if (input.value !== cleanDigits) {
+                errorMsg.classList.remove('hidden');
+            } else {
+                errorMsg.classList.add('hidden');
+            }
+
+            input.value = cleanDigits.slice(0, 10);
+            badge.innerText = `${input.value.length}/10 अंक`;
+
+            if (input.value.length === 10) {
+                badge.className = "text-[10px] text-emerald-400 font-black";
+            } else {
+                badge.className = "text-[10px] text-amber-400 font-black";
+            }
         }
 
         function toggleCalculateFare() {
@@ -359,8 +413,8 @@
                 return;
             }
 
-            if(!mobile || mobile.length < 10) {
-                alert("कृपया १० अंकी मोबाईल नंबर टाका!");
+            if(!mobile || mobile.length !== 10) {
+                alert("कृपया बरोबर १० अंकी मोबाईल नंबर टाका!");
                 document.getElementById('mobile').focus();
                 return;
             }
@@ -385,7 +439,8 @@
             resultCard.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function dispatchOrderToTruckOwner() {
+        // Send booking directly to Central Transport Dispatch WhatsApp (Protected from Bargaining)
+        function dispatchOrderDirectToAdmin() {
             const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value;
             const drop = document.getElementById('drop').options[document.getElementById('drop').selectedIndex].text;
             const fullAddress = document.getElementById('fullAddress').value;
@@ -399,15 +454,6 @@
             const completeTimeString = `${timeHour} ${timeAmPm}`;
 
             const vehicle = document.getElementById('vehicle').options[document.getElementById('vehicle').selectedIndex].text;
-            const truckOwnerSelect = document.getElementById('truckOwnerSelect');
-            let driverPhone = truckOwnerSelect.value;
-            const driverName = truckOwnerSelect.options[truckOwnerSelect.selectedIndex].text;
-
-            if(!driverPhone || driverPhone.length < 10) {
-                alert("निवडलेल्या ट्रक मालकाचा नंबर उपलब्ध नाही!");
-                return;
-            }
-            if(!driverPhone.startsWith("91") && driverPhone.length === 10) driverPhone = "91" + driverPhone;
 
             const newOrder = {
                 id: "ORD-" + Math.floor(1000 + Math.random() * 9000),
@@ -417,11 +463,11 @@
                 from: palgharLoadingPoint,
                 to: drop,
                 customer: customerMobile,
-                driver: driverName,
                 vehicle: vehicle,
                 material: material,
                 weight: cargoWeight,
-                fare: calculatedPrice
+                fare: calculatedPrice,
+                status: "Pending Assignment"
             };
 
             let orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
@@ -429,7 +475,8 @@
             localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
 
             const orderDetails = 
-                `*🚩 चाहाडे ट्रान्सपोर्ट - नवीन मालवाहतूक भाडे बुकिंग 🚚*%0A%0A` +
+                `*🚩 चाहाडे ट्रान्सपोर्ट - नवीन थेट मालवाहतूक बुकिंग 🚚*%0A%0A` +
+                `🆔 *बुकिंग ID:* ${newOrder.id}%0A` +
                 `📅 *गाडी हवी ती तारीख:* ${loadingDate}%0A` +
                 `⏰ *गाडी हवी ती वेळ:* ${encodeURIComponent(completeTimeString)}%0A` +
                 `📍 *माल भरणे (Loading):* ${encodeURIComponent(palgharLoadingPoint)} (पालघर)%0A` +
@@ -442,9 +489,9 @@
                 `👤 *ग्राहकाचा नंबर:* ${customerMobile}%0A` +
                 `💰 *अंदाजे भाडे:* ₹${calculatedPrice}%0A` +
                 `💵 *५०% लोडिंग ॲडव्हान्स:* ₹${Math.round(calculatedPrice * 0.5)}%0A%0A` +
-                `⚠️ *टीप:* हे प्राथमिक अंदाजे भाडे आहे. आपण थेट ग्राहकाशी फोनवर बोलून अंतिम भाडे निश्चित करावे.`;
+                `_स्थिती: ट्रान्सपोर्ट ऑफिसकडून गाडी व ड्रायव्हर वाटप प्रतीक्षेत._`;
 
-            window.open(`https://wa.me/${driverPhone}?text=${orderDetails}`, '_blank');
+            window.open(`https://wa.me/${DISPATCH_ADMIN_PHONE}?text=${orderDetails}`, '_blank');
         }
 
         window.onload = loadData;
