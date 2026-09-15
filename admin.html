@@ -3,309 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>चाहाडे ट्रान्सपोर्ट - ॲडमिन कंट्रोल पॅनेल</title>
+    <title>चाहाडे ट्रान्सपोर्ट - ॲडमिन डॅशबोर्ड</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: radial-gradient(circle at top, #521707 0%, #2b0b03 60%, #150501 100%);
+            background: radial-gradient(circle at top, #7c2d12 0%, #431407 50%, #270a03 100%);
             color: #fffaf0; 
         }
     </style>
 </head>
-<body class="p-2.5 md:p-6 min-h-screen">
+<body class="p-3 md:p-6 min-h-screen flex items-center justify-center">
 
-    <!-- 🔒 SECURITY LOCK SCREEN -->
-    <div id="lockScreenModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#140501]/95 backdrop-blur-md">
-        <div class="max-w-xs w-full bg-[#350f05] border-2 border-amber-500/70 p-6 rounded-3xl text-center shadow-2xl space-y-4">
-            <div class="w-16 h-16 mx-auto rounded-full bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-3xl shadow-lg border-2 border-amber-200">
+    <!-- 🔒 SECURE PIN LOCK MODAL -->
+    <div id="pinLockModal" class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
+        <div class="max-w-sm w-full bg-[#3a1005] border-2 border-amber-500 p-6 rounded-3xl text-center space-y-4 shadow-2xl">
+            <div class="w-16 h-16 mx-auto rounded-full bg-amber-500/20 border border-amber-400 flex items-center justify-center text-3xl">
                 🔒
             </div>
             <div>
-                <h2 class="text-base font-black text-amber-200">ॲडमिन सुरक्षा लॉक</h2>
-                <p class="text-[11px] text-amber-300/70 mt-0.5">कंट्रोल पॅनेल उघडण्यासाठी PIN टाका</p>
+                <h2 class="text-xl font-black text-amber-200">ॲडमिन पिन लॉक</h2>
+                <p class="text-xs text-amber-300/70 mt-1">डॅशबोर्ड उघडण्यासाठी ४ अंकी पिन टाका</p>
             </div>
-
-            <div class="space-y-2">
-                <input type="password" id="adminPinInput" maxlength="6" placeholder="• • • •" 
-                    class="w-full py-3 bg-[#1d0601] border-2 border-amber-500/50 rounded-2xl text-center font-black text-2xl tracking-widest text-amber-300 focus:outline-none focus:border-amber-400">
-                
-                <p id="lockErrorMsg" class="hidden text-xs text-red-400 font-bold">⚠️ चुकीचा PIN! पुन्हा प्रयत्न करा.</p>
-                
-                <button type="button" onclick="verifyAdminPin()" 
-                    class="w-full py-3 bg-gradient-to-r from-orange-600 to-amber-600 hover:brightness-110 text-white font-black rounded-xl text-xs uppercase tracking-wider shadow-lg transition">
-                    🔓 अनलॉक करा (Unlock)
-                </button>
-            </div>
-            <p class="text-[10px] text-amber-200/40">Default Security PIN: 1234</p>
+            <input type="password" id="adminPinInput" maxlength="4" placeholder="••••" 
+                class="w-full text-center tracking-[1em] text-2xl py-3 bg-[#200701] border-2 border-amber-500/60 rounded-xl text-amber-300 focus:outline-none">
+            <button type="button" onclick="verifyAdminPin()" 
+                class="w-full py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-black rounded-xl text-sm uppercase tracking-wider shadow-lg">
+                अनलॉक करा (Login)
+            </button>
+            <p id="pinErrorMsg" class="hidden text-xs text-red-400 font-bold">चुकाचा पिन! पुन्हा प्रयत्न करा.</p>
         </div>
     </div>
 
-    <!-- 👑 MAIN ADMIN DASHBOARD -->
-    <div id="adminMainContent" class="hidden max-w-2xl mx-auto space-y-5">
+    <!-- 📊 MAIN ADMIN DASHBOARD -->
+    <div id="adminDashboardContent" class="max-w-3xl w-full bg-[#2a0b03] border-2 border-amber-500/60 rounded-3xl shadow-2xl overflow-hidden hidden">
         
         <!-- Header -->
-        <div class="relative bg-gradient-to-r from-orange-700 via-amber-600 to-red-700 border-2 border-amber-400 text-white rounded-3xl p-5 shadow-2xl text-center">
-            <div class="flex justify-between items-center px-1 mb-1">
-                <span class="bg-black/30 text-amber-200 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider border border-amber-300/40">
-                    🚩 ॥ जय शिवराय ॥
-                </span>
+        <div class="bg-gradient-to-r from-orange-800 via-amber-600 to-red-800 p-5 text-center border-b border-amber-400/40 relative">
+            <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">🛠️ चाहाडे ट्रान्सपोर्ट ॲडमिन पॅनेल</h1>
+            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">मालवाहतूक ऑर्डर व्यवस्थापन व वाहन नियंत्रण</p>
+            <button onclick="lockAdminPanel()" class="absolute top-4 right-4 bg-black/40 hover:bg-black/60 text-amber-300 text-xs px-3 py-1.5 rounded-lg border border-amber-400/30 font-bold transition">
+                🔒 लॉक आऊट
+            </button>
+        </div>
+
+        <div class="p-4 md:p-6 space-y-6">
+
+            <!-- 🚛 VEHICLE AVAILABILITY TOGGLES -->
+            <div class="bg-[#3a1005] border-2 border-amber-500/40 p-4 rounded-2xl space-y-3">
+                <div class="flex justify-between items-center border-b border-amber-600/30 pb-2">
+                    <h3 class="text-xs font-black text-amber-300 uppercase tracking-wider">
+                        <i class="fa-solid fa-toggle-on text-emerald-400 mr-1"></i> गाड्यांची लाईव्ह उपलब्धता (Live Status Switch)
+                    </h3>
+                    <span class="text-[10px] text-amber-300/70">बंद केल्यास ग्राहकांना गाडी दिसणार नाही</span>
+                </div>
+                <div id="vehicleTogglesContainer" class="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-1"></div>
+            </div>
+
+            <!-- 📁 REGISTRIES (Owners & Drivers) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                <div class="flex gap-1.5 items-center">
-                    <button onclick="testAudioRing()" class="text-[10px] bg-emerald-900/80 hover:bg-emerald-800 text-emerald-200 font-bold px-2 py-1 rounded-lg border border-emerald-500/40">
-                        🔔 रिंग टेस्ट
-                    </button>
-                    <button onclick="changeAdminPin()" class="text-[10px] bg-black/40 hover:bg-black/60 text-amber-300 font-bold px-2 py-1 rounded-lg border border-amber-500/30">
-                        🔑 PIN बदला
-                    </button>
-                    <button onclick="lockAdminPanel()" class="text-[10px] bg-red-950/80 hover:bg-red-900 text-red-300 font-bold px-2 py-1 rounded-lg border border-red-500/40">
-                        🔒 लॉक
-                    </button>
-                </div>
-            </div>
-            
-            <h1 class="text-2xl md:text-3xl font-black tracking-tight text-yellow-100 drop-shadow mt-1">
-                चाहाडे ट्रान्सपोर्ट कंट्रोल हब
-            </h1>
-            <p class="text-xs text-amber-100 font-bold tracking-wide">
-                तारीख फोल्डर • गाडी ऑन/ऑफ स्वीच • थेट ड्रायव्हर वाटप
-            </p>
-        </div>
-
-        <!-- TABS -->
-        <div class="grid grid-cols-3 gap-2 bg-[#2d0c03] p-1.5 rounded-2xl border border-amber-600/40 text-xs font-black">
-            <button onclick="switchTab('ordersTab')" id="btnOrders" class="py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg transition flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-folder-closed text-sm"></i> <span>तारीख फोल्डर्स</span>
-            </button>
-            <button onclick="switchTab('vehiclesTab')" id="btnVehicles" class="py-3 rounded-xl text-amber-200/70 hover:text-white transition flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-truck-moving text-sm"></i> <span>गाड्या (ऑन/ऑफ व दर)</span>
-            </button>
-            <button onclick="switchTab('trucksTab')" id="btnTrucks" class="py-3 rounded-xl text-amber-200/70 hover:text-white transition flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-users text-sm"></i> <span>मालक व ड्रायव्हर</span>
-            </button>
-        </div>
-
-        <!-- ================= TAB 1: DATE-WISE BOOKINGS ================= -->
-        <div id="ordersTab" class="space-y-4">
-            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-4">
-                
-                <div class="flex justify-between items-center bg-[#240802] p-3 rounded-2xl border border-amber-600/30">
-                    <div>
-                        <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-folder-tree text-amber-400"></i> तारीखवार बुकिंग फोल्डर्स
-                        </h2>
-                        <p class="text-[10px] text-amber-200/60 mt-0.5">टॅप करून उघडा/बंद करा • ड्रायव्हर वाटप केल्यास ग्राहकाला ॲपवर नंबर दिसेल</p>
+                <!-- Truck Owners Registry -->
+                <div class="bg-[#3a1005] border border-amber-500/40 p-4 rounded-2xl space-y-3">
+                    <div class="flex justify-between items-center border-b border-amber-600/30 pb-2">
+                        <span class="text-xs font-black text-amber-300 uppercase">🏢 ट्रक मालक नोंदणी (Owners)</span>
+                        <button type="button" onclick="openOwnerModal()" class="text-[10px] bg-amber-600 hover:bg-amber-500 text-stone-950 font-black px-2.5 py-1 rounded-lg">+ नवीन जोडा</button>
                     </div>
-                    <button onclick="clearAllOrdersHistory()" class="bg-red-950 border border-red-500/40 text-red-300 text-xs px-3 py-1.5 rounded-xl hover:bg-red-900 font-bold transition">
-                        सर्व इतिहास पुसा
-                    </button>
+                    <div id="ownersList" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
                 </div>
 
-                <div id="bookingSummaryCount" class="text-xs font-black text-amber-400 px-1">लोड होत आहे...</div>
-                <div id="dateFoldersContainer" class="space-y-3"></div>
-            </div>
-        </div>
-
-        <!-- ================= TAB 2: VEHICLES & ON/OFF LIVE AVAILABILITY ================= -->
-        <div id="vehiclesTab" class="hidden space-y-4">
-            
-            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
-                <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-circle-plus text-base text-orange-500"></i> नवीन गाडी प्रकार ॲड करा
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
-                    <input type="text" id="newVehicleName" placeholder="गाडीचे नाव (उदा. Tata 407, 10-Wheeler)" 
-                        class="md:col-span-2 bg-[#240802] border-2 border-amber-600/30 rounded-xl px-3 py-2.5 text-white font-medium focus:outline-none focus:border-orange-500">
-                    <input type="number" id="newVehicleRate" placeholder="दर (₹/KM)" 
-                        class="bg-[#240802] border-2 border-amber-600/40 rounded-xl px-3 py-2.5 text-amber-300 font-black focus:outline-none focus:border-amber-400">
-                </div>
-                <button type="button" onclick="addNewVehicle()" class="w-full py-3 bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black rounded-xl text-xs uppercase tracking-wider shadow-lg transition">
-                    ➕ गाडी थेट वेबसाइटवर ॲड करा (Save & Publish)
-                </button>
-            </div>
-
-            <!-- VEHICLES AVAILABILITY & RATES LIST -->
-            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider">गाड्यांचे स्टेटस व प्रति-KM दर</h2>
-                        <p class="text-[10px] text-amber-200/60 mt-0.5">गाडी उपलब्ध नसल्यास बंद (OFF) करा, ग्राहक ॲपवर त्वरित अपडेट होईल.</p>
+                <!-- Drivers Registry -->
+                <div class="bg-[#3a1005] border border-amber-500/40 p-4 rounded-2xl space-y-3">
+                    <div class="flex justify-between items-center border-b border-amber-600/30 pb-2">
+                        <span class="text-xs font-black text-amber-300 uppercase">👤 चालक नोंदणी (Drivers)</span>
+                        <button type="button" onclick="openDriverModal()" class="text-[10px] bg-amber-600 hover:bg-amber-500 text-stone-950 font-black px-2.5 py-1 rounded-lg">+ नवीन जोडा</button>
                     </div>
-                    <span id="vehicleCountBadge" class="bg-orange-950 text-amber-300 border border-amber-500/40 text-[10px] font-black px-2.5 py-1 rounded-lg">0 गाड्या</span>
-                </div>
-                <div id="vehiclesListContainer" class="space-y-2.5 pt-1"></div>
-            </div>
-
-            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 shadow-xl flex justify-between items-center text-xs">
-                <div>
-                    <p class="font-black text-amber-300">किमान बेस लोडिंग चार्ज</p>
-                    <p class="text-[10px] text-amber-200/60">Starting Base Fare for trip</p>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <span class="text-amber-400 font-black">₹</span>
-                    <input type="number" id="base_charge" class="w-24 bg-[#120300] border-2 border-amber-500/50 rounded-xl px-2 py-1.5 text-center font-black text-yellow-300 text-sm focus:outline-none">
-                    <button onclick="saveBaseCharge()" class="px-3.5 py-2 bg-emerald-600 text-white font-bold rounded-xl text-xs transition">सेव्ह</button>
+                    <div id="driversList" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
                 </div>
             </div>
-        </div>
 
-        <!-- ================= TAB 3: TRUCK FLEET OWNERS ================= -->
-        <div id="trucksTab" class="hidden space-y-4">
-            <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
-                <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-user-plus text-orange-500"></i> नवीन नोंदणी (मालक / ड्रायव्हर)
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-2 text-xs">
-                    <select id="userRole" class="bg-[#240802] border-2 border-amber-600/40 rounded-xl px-3 py-2.5 text-amber-200 font-bold">
-                        <option value="owner">👑 ट्रक मालक (Truck Owner)</option>
-                        <option value="driver">🚚 ड्रायव्हर (Driver)</option>
-                    </select>
-
-                    <input type="text" id="ownerName" placeholder="नाव" class="bg-[#240802] border border-amber-600/30 rounded-xl px-3 py-2.5 text-white">
-                    <select id="ownerVehicle" class="bg-[#240802] border border-amber-600/30 rounded-xl px-3 py-2.5 text-amber-200 font-bold"></select>
-                    <input type="tel" id="ownerPhone" pattern="[0-9]{10}" placeholder="१० अंकी WhatsApp नंबर" class="bg-[#240802] border border-amber-600/40 rounded-xl px-3 py-2.5 text-amber-300 font-black">
-                </div>
-
-                <button type="button" onclick="addFleetMember()" 
-                    class="w-full py-3 bg-gradient-to-r from-orange-600 to-amber-600 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-lg">
-                    ➕ स्वतंत्र फोल्डरमध्ये सेव्ह करा
-                </button>
-            </div>
-
-            <!-- FOLDER 1: TRUCK OWNERS -->
-            <div class="bg-[#240802] border-2 border-amber-500/40 rounded-2xl overflow-hidden shadow-lg">
-                <button onclick="toggleSingleFolder('ownersFolderContent', 'ownersFolderIcon')" 
-                    class="w-full p-4 flex justify-between items-center bg-gradient-to-r from-[#2f0b02] to-[#1c0501] hover:brightness-110 transition text-left border-b border-amber-600/30">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-xl bg-orange-950/80 border border-amber-500/50 flex items-center justify-center text-amber-300 text-lg shadow">👑</span>
-                        <div>
-                            <p class="font-black text-amber-200 text-sm tracking-wide">📁 ट्रक मालक यादी (Truck Owners Folder)</p>
-                            <p id="ownerCountLabel" class="text-[11px] text-amber-300/70 font-semibold">0 नोंदणीकृत मालक</p>
-                        </div>
+            <!-- 📦 INCOMING ORDERS ACCORDION -->
+            <div class="space-y-3">
+                <div class="flex justify-between items-center px-1">
+                    <h3 class="text-sm font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
+                        <span>📥 प्राप्त बुकिंग्स व ऑर्डर्स (Date-wise Folders)</span>
+                        <span id="orderCountBadge" class="bg-amber-500 text-stone-950 text-xs px-2 py-0.5 rounded-full font-black">0</span>
+                    </h3>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="testHornSound()" class="text-[11px] bg-orange-950 border border-orange-500/40 text-orange-300 px-3 py-1 rounded-lg font-bold">
+                            🔔 हॉर्न टेस्ट
+                        </button>
+                        <button type="button" onclick="clearAllOrders()" class="text-[11px] bg-red-950 border border-red-500/40 text-red-300 px-3 py-1 rounded-lg font-bold">
+                            🗑️ सर्व पुसा
+                        </button>
                     </div>
-                    <span id="ownersFolderIcon" class="text-amber-400 font-black text-xs px-2.5 py-1 rounded-lg bg-black/40 border border-amber-500/30">उघडा ⬇️</span>
-                </button>
-                <div id="ownersFolderContent" class="hidden p-3.5 space-y-2 bg-[#180400]/90"></div>
+                </div>
+
+                <div id="adminOrdersAccordion" class="space-y-3"></div>
             </div>
 
-            <!-- FOLDER 2: DRIVERS -->
-            <div class="bg-[#240802] border-2 border-amber-500/40 rounded-2xl overflow-hidden shadow-lg">
-                <button onclick="toggleSingleFolder('driversFolderContent', 'driversFolderIcon')" 
-                    class="w-full p-4 flex justify-between items-center bg-gradient-to-r from-[#2f0b02] to-[#1c0501] hover:brightness-110 transition text-left border-b border-amber-600/30">
-                    <div class="flex items-center gap-3">
-                        <span class="w-10 h-10 rounded-xl bg-orange-950/80 border border-amber-500/50 flex items-center justify-center text-amber-300 text-lg shadow">🚚</span>
-                        <div>
-                            <p class="font-black text-amber-200 text-sm tracking-wide">📁 ड्रायव्हर यादी (Drivers Folder)</p>
-                            <p id="driverCountLabel" class="text-[11px] text-amber-300/70 font-semibold">0 नोंदणीकृत ड्रायव्हर</p>
-                        </div>
-                    </div>
-                    <span id="driversFolderIcon" class="text-amber-400 font-black text-xs px-2.5 py-1 rounded-lg bg-black/40 border border-amber-500/30">उघडा ⬇️</span>
-                </button>
-                <div id="driversFolderContent" class="hidden p-3.5 space-y-2 bg-[#180400]/90"></div>
-            </div>
         </div>
-
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- ➕ MODAL: ADD OWNER -->
+    <div id="ownerModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+        <div class="bg-[#3a1005] border border-amber-500 p-5 rounded-2xl max-w-sm w-full space-y-3">
+            <h3 class="text-xs font-black text-amber-300 uppercase">नवीन ट्रक मालक जोडा</h3>
+            <input type="text" id="ownerName" placeholder="मालकाचे नाव" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white">
+            <input type="tel" id="ownerPhone" maxlength="10" placeholder="मोबाईल नंबर" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white">
+            <div class="flex gap-2 pt-2">
+                <button type="button" onclick="saveOwner()" class="w-full py-2 bg-emerald-600 text-white font-black rounded-xl text-xs">जतन करा</button>
+                <button type="button" onclick="closeOwnerModal()" class="w-full py-2 bg-stone-700 text-white font-black rounded-xl text-xs">रद्द करा</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ➕ MODAL: ADD DRIVER -->
+    <div id="driverModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+        <div class="bg-[#3a1005] border border-amber-500 p-5 rounded-2xl max-w-sm w-full space-y-3">
+            <h3 class="text-xs font-black text-amber-300 uppercase">नवीन चालक जोडा</h3>
+            <input type="text" id="driverName" placeholder="चालकाचे नाव" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white">
+            <input type="tel" id="driverPhone" maxlength="10" placeholder="मोबाईल नंबर" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white">
+            <div class="flex gap-2 pt-2">
+                <button type="button" onclick="saveDriver()" class="w-full py-2 bg-emerald-600 text-white font-black rounded-xl text-xs">जतन करा</button>
+                <button type="button" onclick="closeDriverModal()" class="w-full py-2 bg-stone-700 text-white font-black rounded-xl text-xs">रद्द करा</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        let DEFAULT_PIN = "1234";
-        let lastKnownOrderCount = 0;
+        const ADMIN_PIN = "1234";
 
-        function getStoredPin() {
-            return localStorage.getItem('chahade_admin_pin') || DEFAULT_PIN;
-        }
-
-        function playTruckHornRing() {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                function beep(freq, duration, delay) {
-                    setTimeout(() => {
-                        const osc = audioCtx.createOscillator();
-                        const gain = audioCtx.createGain();
-                        osc.type = "sawtooth";
-                        osc.frequency.value = freq;
-                        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-                        osc.connect(gain);
-                        gain.connect(audioCtx.destination);
-                        osc.start();
-                        osc.stop(audioCtx.currentTime + duration);
-                    }, delay);
-                }
-                beep(420, 0.35, 0);
-                beep(520, 0.45, 250);
-                beep(420, 0.35, 750);
-                beep(520, 0.55, 1000);
-            } catch(e) {
-                console.log(e);
-            }
-        }
-
-        function testAudioRing() {
-            playTruckHornRing();
-            alert("🔔 रिंगटोन ठीक काम करत आहे!");
-        }
-
-        function startOrderWatcher() {
-            const currentOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-            lastKnownOrderCount = currentOrders.length;
-
-            setInterval(() => {
-                const liveOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-                if (liveOrders.length > lastKnownOrderCount) {
-                    playTruckHornRing();
-                    lastKnownOrderCount = liveOrders.length;
-                    loadAndRenderFolders();
-                }
-            }, 3000);
-        }
-
-        function verifyAdminPin() {
-            const input = document.getElementById('adminPinInput').value;
-            const errorMsg = document.getElementById('lockErrorMsg');
-            const stored = getStoredPin();
-
-            if (input === stored) {
-                document.getElementById('lockScreenModal').classList.add('hidden');
-                document.getElementById('adminMainContent').classList.remove('hidden');
-                initAdmin();
-                startOrderWatcher();
-            } else {
-                errorMsg.classList.remove('hidden');
-                document.getElementById('adminPinInput').value = "";
-                document.getElementById('adminPinInput').focus();
-            }
-        }
-
-        function lockAdminPanel() {
-            document.getElementById('lockScreenModal').classList.remove('hidden');
-            document.getElementById('adminMainContent').classList.add('hidden');
-            document.getElementById('adminPinInput').value = "";
-            document.getElementById('lockErrorMsg').classList.add('hidden');
-        }
-
-        function changeAdminPin() {
-            const currentPin = prompt("सध्याचा PIN टाका:");
-            if (currentPin !== getStoredPin()) {
-                alert("चुकीचा PIN!");
-                return;
-            }
-            const newPin = prompt("नवीन ४ किंवा ६ अंकी PIN टाका:");
-            if (newPin && newPin.length >= 4) {
-                localStorage.setItem('chahade_admin_pin', newPin);
-                alert("✅ नवीन PIN सेव्ह झाला!");
-            }
-        }
-
-        document.getElementById('adminPinInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') verifyAdminPin();
-        });
-
-        let allOrders = [];
         let vehicleCategories = [
             { id: "v_pickup", name: "महिंद्रा बोलेरो / पिकअप (कमाल १.५ टन)", rate: 22, available: true },
             { id: "v_ace", name: "टाटा एस - छोटा हत्ती (कमाल १ टन)", rate: 16, available: true },
@@ -314,420 +144,300 @@
             { id: "v_wheeler6", name: "६-चाकी ओपन प्लॅटफॉर्म (कमाल १० टन)", rate: 62, available: true }
         ];
 
-        let truckOwners = [
-            { id: "own_1", name: "रमेश पाटील (प्रोप्राईटर)", phone: "9876543210", vehicle: "महिंद्रा बोलेरो पिकअप (१.५ टन)" },
-            { id: "own_2", name: "चाहाडे विलेज ट्रान्सपोर्ट ओनर", phone: "9123456789", vehicle: "टाटा एस - छोटा हत्ती (१ टन)" }
-        ];
+        function verifyAdminPin() {
+            const entered = document.getElementById('adminPinInput').value;
+            const errorMsg = document.getElementById('pinErrorMsg');
+            if (entered === ADMIN_PIN) {
+                document.getElementById('pinLockModal').classList.add('hidden');
+                document.getElementById('adminDashboardContent').classList.remove('hidden');
+                initAdminDashboard();
+            } else {
+                errorMsg.classList.remove('hidden');
+            }
+        }
 
-        let truckDrivers = [
-            { id: "drv_1", name: "गणेश शिंदे (चालक)", phone: "9988776655", vehicle: "आयशर १४ फूट ट्रक (४-५ टन)" },
-            { id: "drv_2", name: "विकास जाधव (चालक)", phone: "9822114433", vehicle: "महिंद्रा बोलेरो पिकअप (१.५ टन)" }
-        ];
+        function lockAdminPanel() {
+            document.getElementById('adminPinInput').value = "";
+            document.getElementById('adminDashboardContent').classList.add('hidden');
+            document.getElementById('pinLockModal').classList.remove('hidden');
+        }
 
-        function initAdmin() {
+        function initAdminDashboard() {
             const savedVehicles = localStorage.getItem('chahade_vehicle_categories');
             if (savedVehicles) vehicleCategories = JSON.parse(savedVehicles);
-            renderVehicles();
 
-            const savedBase = localStorage.getItem('chahade_base_charge');
-            document.getElementById('base_charge').value = savedBase || 800;
-
-            const savedOwners = localStorage.getItem('chahade_truck_owners_list');
-            if (savedOwners) truckOwners = JSON.parse(savedOwners);
-
-            const savedDrivers = localStorage.getItem('chahade_truck_drivers_list');
-            if (savedDrivers) truckDrivers = JSON.parse(savedDrivers);
-
-            renderFleetFolders();
-            loadAndRenderFolders();
+            renderVehicleToggles();
+            renderOwners();
+            renderDrivers();
+            renderOrdersAccordion();
+            checkForNewOrdersAudioAlert();
         }
 
-        function toggleSingleFolder(contentId, iconId) {
-            const content = document.getElementById(contentId);
-            const icon = document.getElementById(iconId);
-
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                icon.innerText = "बंद करा ⬆️";
-                icon.className = "text-yellow-300 font-black text-xs px-2.5 py-1 rounded-lg bg-amber-600 border border-amber-300";
-            } else {
-                content.classList.add('hidden');
-                icon.innerText = "उघडा ⬇️";
-                icon.className = "text-amber-400 font-black text-xs px-2.5 py-1 rounded-lg bg-black/40 border border-amber-500/30";
-            }
-        }
-
-        // ================= DATE-WISE ACCORDION FOLDERS =================
-        function loadAndRenderFolders() {
-            allOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-            const container = document.getElementById('dateFoldersContainer');
+        function renderVehicleToggles() {
+            const container = document.getElementById('vehicleTogglesContainer');
             container.innerHTML = "";
-
-            document.getElementById('bookingSummaryCount').innerText = `एकूण नोंदणीकृत ऑर्डर्स: ${allOrders.length}`;
-
-            if (allOrders.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-amber-200/50 text-xs italic bg-[#240802] rounded-2xl border border-amber-600/20">कोणतीही बुकिंग उपलब्ध नाही. नवीन बुकिंग येताच इथे फोल्डर तयार होईल.</div>`;
-                return;
-            }
-
-            const allFleetMembers = [...truckOwners, ...truckDrivers];
-
-            const grouped = {};
-            allOrders.forEach(order => {
-                const dateKey = order.loadingDate || "तारीख नोंद नाही";
-                if (!grouped[dateKey]) grouped[dateKey] = [];
-                grouped[dateKey].push(order);
-            });
-
-            const sortedDates = Object.keys(grouped).sort().reverse();
-
-            sortedDates.forEach((dateKey, index) => {
-                const ordersInDate = grouped[dateKey];
-                const totalDateFare = ordersInDate.reduce((sum, o) => sum + (Number(o.fare) || 0), 0);
-                const folderId = `date_folder_${index}`;
-                const iconId = `date_icon_${index}`;
-
-                const folderCard = document.createElement('div');
-                folderCard.className = "bg-[#240802] border-2 border-amber-500/40 rounded-2xl overflow-hidden shadow-lg transition";
-
-                folderCard.innerHTML = `
-                    <div class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-[#2f0b02] to-[#1c0501] border-b border-amber-600/20">
-                        <div onclick="toggleSingleFolder('${folderId}', '${iconId}')" class="flex items-center gap-3 cursor-pointer flex-1">
-                            <span class="w-10 h-10 rounded-xl bg-orange-950/80 border border-amber-500/50 flex items-center justify-center text-amber-300 text-lg shadow">📁</span>
-                            <div>
-                                <p class="font-black text-amber-200 text-sm tracking-wide">तारीख: ${dateKey}</p>
-                                <p class="text-[11px] text-amber-300/70 font-semibold">
-                                    ${ordersInDate.length} बुकिंग्स • एकूण: ₹${totalDateFare.toLocaleString('en-IN')}
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center gap-2">
-                            <button onclick="deleteEntireDateFolder('${dateKey}')" title="या तारखेचा पूर्ण फोल्डर डिलीट करा" 
-                                class="px-2.5 py-1.5 bg-red-950/80 border border-red-500/40 text-red-300 hover:bg-red-900 rounded-lg text-xs font-bold transition flex items-center gap-1">
-                                <i class="fa-solid fa-trash-can"></i> <span class="hidden md:inline">फोल्डर पुसा</span>
-                            </button>
-                            
-                            <button onclick="toggleSingleFolder('${folderId}', '${iconId}')" id="${iconId}" 
-                                class="text-amber-400 font-black text-xs px-2.5 py-1.5 rounded-lg bg-black/40 border border-amber-500/30">
-                                उघडा ⬇️
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="${folderId}" class="hidden p-3.5 space-y-3 bg-[#180400]/90">
-                        ${ordersInDate.map((o) => `
-                            <div class="bg-[#290a03] border border-amber-600/30 rounded-xl p-3.5 space-y-2.5 shadow-inner relative">
-                                
-                                <div class="flex justify-between items-center">
-                                    <span class="bg-amber-500/20 text-amber-300 text-[11px] font-black px-2.5 py-1 rounded-lg border border-amber-500/30">
-                                        ⏰ वेळ: ${o.loadingTime || ''} (#${o.id || ''})
-                                    </span>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-emerald-400 font-black text-base">₹${o.fare}</span>
-                                        <button onclick="deleteSingleOrder('${o.id}')" title="ही ऑर्डर डिलीट करा" 
-                                            class="px-2 py-1 bg-red-950 border border-red-500/50 text-red-300 hover:bg-red-800 rounded-lg text-[11px] font-bold transition">
-                                            <i class="fa-solid fa-trash-can"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="bg-[#120300] p-2.5 rounded-lg border border-amber-600/20 grid grid-cols-2 gap-2 text-xs">
-                                    <div><p class="text-[10px] text-amber-400/80 font-black">भरणे (From):</p><p class="font-bold text-white">${o.from}</p></div>
-                                    <div><p class="text-[10px] text-amber-400/80 font-black">खाली करणे (To):</p><p class="font-bold text-yellow-300">${o.to}</p></div>
-                                </div>
-                                
-                                <div class="text-xs space-y-1 text-amber-100/90">
-                                    <p>गाडी: <strong>${o.vehicle || ''}</strong></p>
-                                    <p>माल: <strong>${o.material || '-'}</strong> (${o.weight || '-'})</p>
-                                    ${o.fullAddress ? `<p class="text-[11px] text-stone-300">पत्ता: ${o.fullAddress}</p>` : ''}
-                                </div>
-
-                                <div class="text-xs">
-                                    ${o.assignedDriverPhone ? `
-                                        <span class="inline-flex items-center gap-1 text-[11px] font-black text-emerald-400 bg-emerald-950/80 px-2.5 py-1 rounded-lg border border-emerald-500/40">
-                                            ✓ वाटप झालेले चालक: ${o.assignedDriverName} (${o.assignedDriverPhone})
-                                        </span>
-                                    ` : `
-                                        <span class="inline-flex items-center gap-1 text-[11px] font-black text-amber-400 bg-amber-950/80 px-2.5 py-1 rounded-lg border border-amber-500/40">
-                                            ⏳ चालक वाटप झालेले नाही
-                                        </span>
-                                    `}
-                                </div>
-
-                                <div class="bg-[#1b0501] p-2.5 rounded-xl border border-amber-500/40 space-y-1.5">
-                                    <label class="block text-[10px] font-black text-amber-300 uppercase">
-                                        🎯 ही ऑर्डर कोणत्या ड्रायव्हर/मालकाला पाठवायची?
-                                    </label>
-                                    <div class="flex gap-1.5">
-                                        <select id="assign_select_${o.id}" class="w-full bg-[#2a0b03] border border-amber-600/40 rounded-lg text-xs font-bold text-amber-200 px-2 py-1.5 focus:outline-none">
-                                            ${allFleetMembers.map(m => `<option value="${m.phone}" data-name="${m.name}">${m.name} (${m.phone})</option>`).join('')}
-                                        </select>
-                                        <button onclick="forwardOrderToSpecificDriver('${o.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3 py-1.5 rounded-lg whitespace-nowrap flex items-center gap-1">
-                                            <i class="fa-brands fa-whatsapp"></i> पाठवा
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="pt-2 flex justify-between items-center border-t border-amber-600/20">
-                                    <span class="text-xs text-stone-300">ग्राहक: <strong class="text-emerald-400 font-black">📞 ${o.customer}</strong></span>
-                                    <a href="tel:${o.customer}" class="bg-amber-700 hover:bg-amber-600 text-white font-bold text-xs px-3 py-1 rounded-lg transition flex items-center gap-1">
-                                        <i class="fa-solid fa-phone"></i> कॉल
-                                    </a>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                container.appendChild(folderCard);
-            });
-        }
-
-        function deleteSingleOrder(orderId) {
-            if (confirm("तुम्हाला ही ऑर्डर डिलीट करायची आहे का?")) {
-                allOrders = allOrders.filter(o => o.id !== orderId);
-                localStorage.setItem('chahade_admin_orders', JSON.stringify(allOrders));
-                loadAndRenderFolders();
-            }
-        }
-
-        function deleteEntireDateFolder(dateKey) {
-            if (confirm(`तारीख ${dateKey} चे सर्व ऑर्डर्स डिलीट करायचे आहेत का?`)) {
-                allOrders = allOrders.filter(o => o.loadingDate !== dateKey);
-                localStorage.setItem('chahade_admin_orders', JSON.stringify(allOrders));
-                loadAndRenderFolders();
-            }
-        }
-
-        function clearAllOrdersHistory() {
-            if (confirm("सर्व फोल्डर्स आणि संपूर्ण बुकिंग इतिहास डिलीट करायचा आहे का?")) {
-                localStorage.removeItem('chahade_admin_orders');
-                loadAndRenderFolders();
-            }
-        }
-
-        function forwardOrderToSpecificDriver(orderId) {
-            const select = document.getElementById(`assign_select_${orderId}`);
-            if(!select || !select.value) {
-                alert("कृपया आधी ड्रायव्हर निवडा!");
-                return;
-            }
-
-            let driverPhone = select.value.trim();
-            const selectedOption = select.options[select.selectedIndex];
-            const driverName = selectedOption.getAttribute('data-name') || selectedOption.text;
-
-            if(!driverPhone.startsWith("91") && driverPhone.length === 10) driverPhone = "91" + driverPhone;
-
-            const orderIndex = allOrders.findIndex(o => o.id === orderId);
-            if(orderIndex === -1) return alert("ऑर्डर सापडली नाही!");
-
-            allOrders[orderIndex].assignedDriverName = driverName;
-            allOrders[orderIndex].assignedDriverPhone = select.value.trim();
-            allOrders[orderIndex].status = "Assigned";
-            localStorage.setItem('chahade_admin_orders', JSON.stringify(allOrders));
-
-            const order = allOrders[orderIndex];
-
-            const msg = 
-                `*🚚 चाहाडे ट्रान्सपोर्ट - नवीन ट्रिप वाटप (New Job Assigned)*%0A%0A` +
-                `🆔 *बुकिंग ID:* ${order.id}%0A` +
-                `📅 *लोडिंग तारीख:* ${order.loadingDate}%0A` +
-                `⏰ *लोडिंग वेळ:* ${encodeURIComponent(order.loadingTime)}%0A` +
-                `📍 *भरणे (Loading):* ${encodeURIComponent(order.from)} (पालघर)%0A` +
-                `🎯 *खाली करणे (Drop):* ${encodeURIComponent(order.to)}%0A` +
-                `📦 *माल:* ${encodeURIComponent(order.material)}%0A` +
-                `⚖️ *वजन:* ${encodeURIComponent(order.weight)}%0A` +
-                `🚛 *गाडी:* ${encodeURIComponent(order.vehicle)}%0A` +
-                `👤 *ग्राहकाशी संपर्क करा:* ${order.customer}%0A` +
-                `💰 *भाडे (Est. Fare):* ₹${order.fare}%0A` +
-                `💵 *५०% लोडिंग ॲडव्हान्स:* ₹${Math.round(order.fare * 0.5)}%0A%0A` +
-                `⚠️ *मॅन्युअल कन्फर्मेशन व कॅन्सलेशन नियम:* कृपया त्वरित ग्राहकाशी बोलून गाडी व भाडे निश्चित करावे. बुकिंगनंतर लोड कॅन्सल झाल्यास त्याची संपूर्ण जबाबदारी ग्राहक आणि तुमची (ट्रक मालक) राहील; पोर्टलची यात कोणतीही मध्यस्थी जबाबदारी राहणार नाही.`;
-
-            window.open(`https://wa.me/${driverPhone}?text=${msg}`, '_blank');
-            loadAndRenderFolders();
-        }
-
-        // ================= VEHICLES & AVAILABILITY TOGGLE (NEW) =================
-        function renderVehicles() {
-            const container = document.getElementById('vehiclesListContainer');
-            const ownerVehSelect = document.getElementById('ownerVehicle');
-            container.innerHTML = "";
-            ownerVehSelect.innerHTML = "";
-
-            document.getElementById('vehicleCountBadge').innerText = `${vehicleCategories.length} उपलब्ध गाड्या`;
-
-            vehicleCategories.forEach((v, index) => {
-                const opt = document.createElement('option');
-                opt.value = v.name;
-                opt.innerText = v.name;
-                ownerVehSelect.appendChild(opt);
-
-                const isAvail = v.available !== false;
-
-                const row = document.createElement('div');
-                row.className = `border-2 rounded-2xl p-3.5 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 shadow-md ${isAvail ? 'bg-[#240802] border-amber-600/30' : 'bg-stone-900/90 border-red-500/40 opacity-80'}`;
-                
-                row.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <button onclick="toggleVehicleAvailability(${index})" 
-                            class="px-2.5 py-1.5 rounded-xl text-xs font-black transition ${isAvail ? 'bg-emerald-600 text-white shadow' : 'bg-red-950 border border-red-500 text-red-300'}">
-                            ${isAvail ? '🟢 उपलब्ध (ON)' : '🔴 बंद (OFF)'}
-                        </button>
-                        <div>
-                            <p class="font-black text-white text-xs md:text-sm">${v.name}</p>
-                            <p class="text-[10px] text-amber-200/60 mt-0.5">
-                                Status: <strong class="${isAvail ? 'text-emerald-400' : 'text-red-400'}">${isAvail ? 'बुकिंग चालू आहे' : 'ग्राहकांसाठी बंद आहे'}</strong>
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-2 self-end md:self-auto">
-                        <span class="text-amber-400 font-black text-xs">₹</span>
-                        <input type="number" value="${v.rate}" id="input_rate_${index}" 
-                            class="w-20 bg-[#120300] border-2 border-amber-500/50 rounded-xl px-2 py-1.5 text-center font-black text-amber-300 text-xs focus:outline-none">
-                        <span class="text-amber-200/60 text-[10px]">/KM</span>
-                        
-                        <button onclick="updateSingleRate(${index})" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl text-xs transition">बदला</button>
-                        <button onclick="deleteVehicleCategory(${index})" class="px-2.5 py-1.5 bg-red-950 border border-red-500/40 text-red-300 hover:bg-red-900 rounded-xl text-xs font-bold transition"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                `;
-                container.appendChild(row);
-            });
-        }
-
-        // Toggle Vehicle ON / OFF
-        function toggleVehicleAvailability(index) {
-            vehicleCategories[index].available = !(vehicleCategories[index].available !== false);
-            localStorage.setItem('chahade_vehicle_categories', JSON.stringify(vehicleCategories));
-            renderVehicles();
-        }
-
-        function addNewVehicle() {
-            const name = document.getElementById('newVehicleName').value.trim();
-            const rate = Number(document.getElementById('newVehicleRate').value);
-            if(!name || !rate) return alert("कृपया नाव व दर टाका!");
-
-            vehicleCategories.push({ id: "v_" + Date.now(), name: name, rate: rate, available: true });
-            localStorage.setItem('chahade_vehicle_categories', JSON.stringify(vehicleCategories));
-            document.getElementById('newVehicleName').value = "";
-            document.getElementById('newVehicleRate').value = "";
-            renderVehicles();
-            alert("✅ नवीन गाडी जोडली गेली!");
-        }
-
-        function updateSingleRate(index) {
-            const newRate = Number(document.getElementById(`input_rate_${index}`).value);
-            if(!newRate || newRate <= 0) return alert("योग्य दर टाका!");
-            vehicleCategories[index].rate = newRate;
-            localStorage.setItem('chahade_vehicle_categories', JSON.stringify(vehicleCategories));
-            alert(`✅ दर ₹${newRate}/KM सेव्ह झाला!`);
-            renderVehicles();
-        }
-
-        function deleteVehicleCategory(index) {
-            if(confirm(`"${vehicleCategories[index].name}" गाडी डिलीट करायची आहे?`)) {
-                vehicleCategories.splice(index, 1);
-                localStorage.setItem('chahade_vehicle_categories', JSON.stringify(vehicleCategories));
-                renderVehicles();
-            }
-        }
-
-        function saveBaseCharge() {
-            const base = document.getElementById('base_charge').value;
-            localStorage.setItem('chahade_base_charge', base);
-            alert("✅ बेस भाडे सेव्ह झाले!");
-        }
-
-        // ================= FLEET: OWNERS & DRIVERS =================
-        function renderFleetFolders() {
-            const ownerContainer = document.getElementById('ownersFolderContent');
-            const driverContainer = document.getElementById('driversFolderContent');
-            ownerContainer.innerHTML = "";
-            driverContainer.innerHTML = "";
-
-            document.getElementById('ownerCountLabel').innerText = `${truckOwners.length} नोंदणीकृत मालक`;
-            document.getElementById('driverCountLabel').innerText = `${truckDrivers.length} नोंदणीकृत ड्रायव्हर`;
-
-            truckOwners.forEach((own, idx) => {
-                const card = document.createElement('div');
-                card.className = "bg-[#290a03] border border-amber-600/30 rounded-xl p-3 flex justify-between items-center text-xs";
-                card.innerHTML = `
-                    <div>
-                        <p class="font-black text-amber-200">${own.name}</p>
-                        <p class="text-[11px] text-amber-300/70 font-semibold mt-0.5">📞 ${own.phone} • ${own.vehicle || ''}</p>
-                    </div>
-                    <button onclick="deleteOwner(${idx})" class="px-2.5 py-1.5 bg-red-950 border border-red-500/40 text-red-300 hover:bg-red-900 rounded-lg font-bold">
-                        <i class="fa-solid fa-trash-can"></i>
+            vehicleCategories.forEach((v, idx) => {
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between bg-[#200701] p-2.5 rounded-xl border border-amber-500/20 text-xs";
+                div.innerHTML = `
+                    <span class="font-bold text-amber-200">${v.name}</span>
+                    <button onclick="toggleVehicleStatus(${idx})" class="px-3 py-1 rounded-lg font-black text-[11px] ${v.available ? 'bg-emerald-600 text-white' : 'bg-red-950 text-red-300 border border-red-500/40'}">
+                        ${v.available ? '● चालू (ON)' : '✕ बंद (OFF)'}
                     </button>
                 `;
-                ownerContainer.appendChild(card);
-            });
-
-            truckDrivers.forEach((drv, idx) => {
-                const card = document.createElement('div');
-                card.className = "bg-[#290a03] border border-amber-600/30 rounded-xl p-3 flex justify-between items-center text-xs";
-                card.innerHTML = `
-                    <div>
-                        <p class="font-black text-emerald-300">${drv.name}</p>
-                        <p class="text-[11px] text-amber-300/70 font-semibold mt-0.5">📞 ${drv.phone} • ${drv.vehicle || ''}</p>
-                    </div>
-                    <button onclick="deleteDriver(${idx})" class="px-2.5 py-1.5 bg-red-950 border border-red-500/40 text-red-300 hover:bg-red-900 rounded-lg font-bold">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </button>
-                `;
-                driverContainer.appendChild(card);
+                container.appendChild(div);
             });
         }
 
-        function addFleetMember() {
-            const role = document.getElementById('userRole').value;
+        function toggleVehicleStatus(index) {
+            vehicleCategories[index].available = !vehicleCategories[index].available;
+            localStorage.setItem('chahade_vehicle_categories', JSON.stringify(vehicleCategories));
+            renderVehicleToggles();
+        }
+
+        function renderOwners() {
+            const list = document.getElementById('ownersList');
+            const owners = JSON.parse(localStorage.getItem('chahade_owners') || '[]');
+            list.innerHTML = owners.length === 0 ? '<p class="text-[11px] text-amber-300/50 italic">कोणताही मालक जोडलेला नाही.</p>' : '';
+            owners.forEach((o, idx) => {
+                list.innerHTML += `
+                    <div class="flex justify-between items-center bg-[#200701] p-2 rounded-xl border border-amber-500/20 text-xs">
+                        <div><p class="font-bold text-white">${o.name}</p><p class="text-[10px] text-amber-300">📞 ${o.phone}</p></div>
+                        <button onclick="deleteOwner(${idx})" class="text-red-400 hover:text-red-300 p-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>`;
+            });
+        }
+
+        function openOwnerModal() { document.getElementById('ownerModal').classList.remove('hidden'); }
+        function closeOwnerModal() { document.getElementById('ownerModal').classList.add('hidden'); }
+        function saveOwner() {
             const name = document.getElementById('ownerName').value.trim();
             const phone = document.getElementById('ownerPhone').value.trim();
-            const vehicle = document.getElementById('ownerVehicle').value;
-
-            if(!name || phone.length < 10) return alert("कृपया नाव आणि १० अंकी नंबर भरा!");
-
-            if(role === "owner") {
-                truckOwners.unshift({ id: "own_" + Date.now(), name: `${name} (मालक)`, phone: phone, vehicle: vehicle });
-                localStorage.setItem('chahade_truck_owners_list', JSON.stringify(truckOwners));
-            } else {
-                truckDrivers.unshift({ id: "drv_" + Date.now(), name: `${name} (चालक)`, phone: phone, vehicle: vehicle });
-                localStorage.setItem('chahade_truck_drivers_list', JSON.stringify(truckDrivers));
-            }
-
-            document.getElementById('ownerName').value = "";
-            document.getElementById('ownerPhone').value = "";
-            renderFleetFolders();
-            loadAndRenderFolders();
-            alert("✅ नोंदणी यशस्वी झाली!");
+            if(!name || phone.length !== 10) { alert("कृपया योग्य नाव व १० अंकी नंबर टाका!"); return; }
+            let owners = JSON.parse(localStorage.getItem('chahade_owners') || '[]');
+            owners.push({ name, phone });
+            localStorage.setItem('chahade_owners', JSON.stringify(owners));
+            document.getElementById('ownerName').value = ""; document.getElementById('ownerPhone').value = "";
+            closeOwnerModal(); renderOwners();
+        }
+        function deleteOwner(idx) {
+            let owners = JSON.parse(localStorage.getItem('chahade_owners') || '[]');
+            owners.splice(idx, 1);
+            localStorage.setItem('chahade_owners', JSON.stringify(owners));
+            renderOwners();
         }
 
-        function deleteOwner(index) {
-            if(confirm("हा मालक यादीतून काढायचा आहे का?")) {
-                truckOwners.splice(index, 1);
-                localStorage.setItem('chahade_truck_owners_list', JSON.stringify(truckOwners));
-                renderFleetFolders();
-                loadAndRenderFolders();
+        function renderDrivers() {
+            const list = document.getElementById('driversList');
+            const drivers = JSON.parse(localStorage.getItem('chahade_drivers') || '[]');
+            list.innerHTML = drivers.length === 0 ? '<p class="text-[11px] text-amber-300/50 italic">कोणताही चालक जोडलेला नाही.</p>' : '';
+            drivers.forEach((d, idx) => {
+                list.innerHTML += `
+                    <div class="flex justify-between items-center bg-[#200701] p-2 rounded-xl border border-amber-500/20 text-xs">
+                        <div><p class="font-bold text-white">${d.name}</p><p class="text-[10px] text-amber-300">📞 ${d.phone}</p></div>
+                        <button onclick="deleteDriver(${idx})" class="text-red-400 hover:text-red-300 p-1"><i class="fa-solid fa-trash"></i></button>
+                    </div>`;
+            });
+        }
+
+        function openDriverModal() { document.getElementById('driverModal').classList.remove('hidden'); }
+        function closeDriverModal() { document.getElementById('driverModal').classList.add('hidden'); }
+        function saveDriver() {
+            const name = document.getElementById('driverName').value.trim();
+            const phone = document.getElementById('driverPhone').value.trim();
+            if(!name || phone.length !== 10) { alert("कृपया योग्य नाव व १० अंकी नंबर टाका!"); return; }
+            let drivers = JSON.parse(localStorage.getItem('chahade_drivers') || '[]');
+            drivers.push({ name, phone });
+            localStorage.setItem('chahade_drivers', JSON.stringify(drivers));
+            document.getElementById('driverName').value = ""; document.getElementById('driverPhone').value = "";
+            closeDriverModal(); renderDrivers();
+        }
+        function deleteDriver(idx) {
+            let drivers = JSON.parse(localStorage.getItem('chahade_drivers') || '[]');
+            drivers.splice(idx, 1);
+            localStorage.setItem('chahade_drivers', JSON.stringify(drivers));
+            renderDrivers();
+        }
+
+        function renderOrdersAccordion() {
+            const accordion = document.getElementById('adminOrdersAccordion');
+            const orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
+            document.getElementById('orderCountBadge').innerText = orders.length;
+
+            accordion.innerHTML = orders.length === 0 ? '<p class="text-xs text-amber-300/50 text-center py-6 italic">सध्या कोणतीही नवीन ऑर्डर नाही.</p>' : '';
+
+            // Group by loadingDate
+            let grouped = {};
+            orders.forEach(o => {
+                let d = o.loadingDate || 'इतर तारीख';
+                if(!grouped[d]) grouped[d] = [];
+                grouped[d].push(o);
+            });
+
+            Object.keys(grouped).sort().reverse().forEach((dateKey, dateIdx) => {
+                let dateOrders = grouped[dateKey];
+                let folderId = `folder_${dateIdx}`;
+
+                let folderDiv = document.createElement('div');
+                folderDiv.className = "bg-[#3a1005] border border-amber-500/40 rounded-2xl overflow-hidden shadow-md";
+                
+                let headerBtn = document.createElement('button');
+                headerBtn.type = "button";
+                headerBtn.className = "w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-[#4a1507] to-[#2b0802] text-left";
+                headerBtn.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span>📁</span>
+                        <div>
+                            <p class="text-xs font-black text-amber-200">लोडिंग तारीख: ${dateKey}</p>
+                            <p class="text-[10px] text-amber-300/70">एकूण ऑर्डर्स: ${dateOrders.length}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span onclick="event.stopPropagation(); deleteDateFolder('${dateKey}')" class="text-[10px] bg-red-950 border border-red-500/40 text-red-300 px-2 py-1 rounded font-bold hover:bg-red-900">फाइल पुसा</span>
+                        <span class="text-xs font-bold text-amber-300 bg-black/40 px-2 py-1 rounded">उघडा ⬇️</span>
+                    </div>
+                `;
+
+                let contentDiv = document.createElement('div');
+                contentDiv.id = folderId;
+                contentDiv.className = "hidden p-3 space-y-3 bg-[#200701] border-t border-amber-500/30";
+
+                dateOrders.forEach(o => {
+                    let card = document.createElement('div');
+                    card.className = "bg-[#330e04] border border-amber-500/30 p-3 rounded-xl space-y-2 text-xs relative";
+                    
+                    let drivers = JSON.parse(localStorage.getItem('chahade_drivers') || '[]');
+                    let driverOptions = drivers.map(d => `<option value="${d.name}|${d.phone}">${d.name} (${d.phone})</option>`).join('');
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center border-b border-amber-600/30 pb-1.5">
+                            <span class="text-amber-300 font-black">#${o.id} (${o.bookedOn})</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-emerald-400 font-bold">₹${o.fare}</span>
+                                <button onclick="deleteSingleOrder('${o.id}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <p class="text-white">📅 वेळ: <strong>${o.loadingDate} (${o.loadingTime})</strong></p>
+                        <p class="text-stone-300">📍 भरणे: <strong>${o.from}</strong> ➔ 🎯 खाली करणे: <strong>${o.to}</strong></p>
+                        <p class="text-stone-300">🏠 सविस्तर पत्ता: ${o.fullAddress}</p>
+                        <p class="text-amber-200">📦 माल: ${o.material} | वजन: ${o.weight}</p>
+                        <p class="text-amber-300">🚛 गाडी: ${o.vehicle}</p>
+                        <p class="text-emerald-400 font-bold">📞 ग्राहक नंबर: ${o.customer}</p>
+
+                        <!-- Driver Assignment Section -->
+                        <div class="bg-[#200701] p-2.5 rounded-xl border border-amber-500/40 space-y-2 mt-2">
+                            <p class="text-[11px] font-bold text-amber-200">चालक नियुक्त करा (Assign Driver):</p>
+                            <div class="flex gap-2">
+                                <select id="sel_${o.id}" class="w-full bg-[#3a1005] border border-amber-500/50 rounded-lg px-2 py-1.5 text-xs text-white">
+                                    <option value="">-- चालक निवडा --</option>
+                                    ${driverOptions}
+                                </select>
+                                <button onclick="assignDriverToOrder('${o.id}')" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-500 text-stone-950 font-black rounded-lg text-xs whitespace-nowrap">
+                                    वाटप करा
+                                </button>
+                            </div>
+                            ${o.assignedDriverName ? `
+                                <div class="bg-emerald-950/80 border border-emerald-500/40 p-2 rounded-lg text-[11px] text-emerald-200 flex justify-between items-center">
+                                    <span>✓ नियुक्त: <strong>${o.assignedDriverName}</strong> (${o.assignedDriverPhone})</span>
+                                    <a href="https://wa.me/91${o.customer}?text=${getWhatsAppText(o)}" target="_blank" 
+                                        class="px-2 py-1 bg-emerald-600 text-white font-black rounded text-[10px] flex items-center gap-1 shadow">
+                                        <i class="fa-brands fa-whatsapp"></i> WhatsApp पाठवा
+                                    </a>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    contentDiv.appendChild(card);
+                });
+
+                headerBtn.onclick = () => {
+                    contentDiv.classList.toggle('hidden');
+                };
+
+                folderDiv.appendChild(headerBtn);
+                folderDiv.appendChild(contentDiv);
+                accordion.appendChild(folderDiv);
+            });
+        }
+
+        function assignDriverToOrder(orderId) {
+            const select = document.getElementById(`sel_${orderId}`);
+            if(!select.value) { alert("कृपया आधी चालक निवडा!"); return; }
+            let [dName, dPhone] = select.value.split('|');
+
+            let orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
+            orders = orders.map(o => {
+                if(o.id === orderId) {
+                    o.assignedDriverName = dName;
+                    o.assignedDriverPhone = dPhone;
+                }
+                return o;
+            });
+            localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
+            renderOrdersAccordion();
+            alert("चालक यशस्वीरीत्या नियुक्त केला गेला!");
+        }
+
+        function getWhatsAppText(o) {
+            return `🚚 चाहाडे ट्रान्सपोर्ट - नवीन ट्रिप वाटप (New Job Assigned)%0a%0a` +
+            `🆔 बुकिंग ID: ${o.id}%0a` +
+            `📅 लोडिंग तारीख: ${o.loadingDate}%0a` +
+            `⏰ लोडिंग वेळ: ${o.loadingTime}%0a` +
+            `📍 भरणे (Loading): ${o.from} (पालघर)%0a` +
+            `🎯 खाली करणे (Drop): ${o.to}%0a` +
+            `📦 माल: ${o.material}%0a` +
+            `⚖️ वजन: ${o.weight}%0a` +
+            `🚛 गाडी: ${o.vehicle}%0a` +
+            `👤 ग्राहकाशी संपर्क करा: ${o.customer}%0a` +
+            `💰 भाडे (Est. Fare): ₹${o.fare}%0a` +
+            `💵 ५०% लोडिंग ॲडव्हान्स (लोडिंगपूर्वी ग्राहकाकडून रोख/UPI घ्यावा): ₹${Math.round(o.fare * 0.5)}%0a%0a` +
+            `⚠️ मॅन्युअल कन्फर्मेशन व कॅन्सलेशन नियम: कृपया त्वरित ग्राहकाशी बोलून गाडी व भाडे निश्चित करावे. बुकिंगनंतर लोड कॅन्सल झाल्यास त्याची संपूर्ण जबाबदारी ग्राहक आणि तुमची (ट्रक मालक) राहील; पोर्टलची यात कोणतीही मध्यस्थी जबाबदारी राहणार नाही.`;
+        }
+
+        function deleteSingleOrder(id) {
+            if(confirm("ही ऑर्डर काढून टाकायची आहे का?")) {
+                let orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
+                orders = orders.filter(o => o.id !== id);
+                localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
+                renderOrdersAccordion();
             }
         }
 
-        function deleteDriver(index) {
-            if(confirm("हा ड्रायव्हर यादीतून काढायचा आहे का?")) {
-                truckDrivers.splice(index, 1);
-                localStorage.setItem('chahade_truck_drivers_list', JSON.stringify(truckDrivers));
-                renderFleetFolders();
-                loadAndRenderFolders();
+        function deleteDateFolder(dateKey) {
+            if(confirm(`तारीख ${dateKey} च्या सर्व ऑर्डर्स पुसायच्या आहेत का?`)) {
+                let orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
+                orders = orders.filter(o => o.loadingDate !== dateKey);
+                localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
+                renderOrdersAccordion();
             }
         }
 
-        function switchTab(tabId) {
-            ['ordersTab', 'vehiclesTab', 'trucksTab'].forEach(t => document.getElementById(t).classList.add('hidden'));
-            ['btnOrders', 'btnVehicles', 'btnTrucks'].forEach(b => document.getElementById(b).className = "py-3 rounded-xl text-amber-200/70 hover:text-white transition flex items-center justify-center gap-1.5");
-            
-            document.getElementById(tabId).classList.remove('hidden');
-            const activeBtn = tabId === 'ordersTab' ? 'btnOrders' : tabId === 'vehiclesTab' ? 'btnVehicles' : 'btnTrucks';
-            document.getElementById(activeBtn).className = "py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-lg transition flex items-center justify-center gap-1.5";
+        function clearAllOrders() {
+            if(confirm("सर्व ऑर्डर्स पुसायच्या आहेत का?")) {
+                localStorage.removeItem('chahade_admin_orders');
+                renderOrdersAccordion();
+            }
+        }
+
+        function testHornSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(300, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.3);
+            } catch(e) { console.log(e); }
+        }
+
+        function checkForNewOrdersAudioAlert() {
+            // Background check mock
         }
     </script>
 </body>
