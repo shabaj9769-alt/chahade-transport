@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chahade Transport & Logistics Maharashtra</title>
+    <!-- Tailwind CSS Mobile Responsive UI -->
+    <script src="https://jsdelivr.net"></script>
+    <!-- Firebase App and Firestore SDK Scripts -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+    <style>
+        body { background-color: #f8fafc; }
+    </style>
+</head>
+<body class="p-3 md:p-8">
+
+    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden p-6 border border-slate-100">
+        <!-- Brand Header -->
+        <div class="text-center mb-4">
+            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wider font-sans">Palghar to All Over Maharashtra Service</span>
+            <h1 class="text-3xl font-black text-slate-900 mt-2 tracking-tight">🚚 CHAHADE</h1>
+            <h2 class="text-xl font-bold text-blue-600 uppercase tracking-wide">Transport & Logistics</h2>
+            <p class="text-xs text-slate-500 mt-1">Commercial Loading & Truck Booking Platform</p>
+        </div>
+
+        <!-- ⚖️ STRICT LEGAL DISCLAIMER & COMMERCIAL TERMS -->
+        <div class="bg-red-50 border-l-4 border-red-500 p-3 rounded-r-xl mb-4 text-left">
+            <p class="text-xs font-bold text-red-700 uppercase tracking-wide">⚠️ STIPULATED OPERATIONAL & LEGAL TERMS:</p>
+            <p class="text-[9px] text-red-900 mt-1 leading-relaxed font-medium">
+                1. **Intermediary Platform:** Chahade Transport acts strictly as a digital bridge connecting users with independent truck owners. We hold zero liability for cargo damage, theft, delays, or accidents.<br>
+                2. **Mandatory 50% Cash on Loading:** No online advance is required on this website. However, the vehicle will NOT move from the loading point until a **50% Advance Payment is paid in CASH/Direct UPI directly to the Truck Owner** upon completion of loading.<br>
+                3. **Direct Verification:** All commercial terms regarding exact fare, vehicle dispatch, loading schedules, and final payouts must be directly cross-confirmed between the Customer and the Truck Owner via phone before dispatch.<br>
+                4. **Balance Payment:** The remaining **50% Balance Payment** must be cleared in full directly to the driver at the destination point immediately before unloading begins.<br>
+                5. **Cancellation & Overload:** If a vehicle is dispatched and canceled at the site, a diesel penalty is directly payable to the driver. Misdeclaration of weight or loading illegal contraband is strictly forbidden and is the sole liability of the booking user.
+            </p>
+        </div>
+
+        <!-- Booking Form -->
+        <form id="transportForm" class="space-y-4">
+            
+            <!-- Strict Pickup Location (Palghar Fixed) -->
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Pickup Point (Loading Location)</label>
+                <select id="pickup" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-blue-500 text-sm bg-slate-50 font-bold text-slate-800">
+                    <option value="Palghar (Local Area)" selected>Palghar District (All Local Industrial & Agri Areas)</option>
+                </select>
+                <p class="text-[10px] text-slate-400 mt-1">*Saaman loading sirf Palghar area se hi uplabdh hai.</p>
+            </div>
+
+            <!-- Drop Location (All Over Maharashtra) -->
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Select Destination (Drop Point in Maharashtra)</label>
+                <select id="drop" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-blue-500 text-sm bg-white font-medium text-slate-800">
+                    <option value="" disabled selected>Kahan delivery deni hai?</option>
+                    <option value="Mumbai">Mumbai / Thane / Navi Mumbai</option>
+                    <option value="Pune">Pune / Pimpri-Chinchwad</option>
+                    <option value="Solapur">Solapur District</option>
+                    <option value="Nagpur">Nagpur</option>
+                    <option value="Nashik">Nashik</option>
+                    <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar (Aurangabad)</option>
+                    <option value="Kolhapur">Kolhapur</option>
+                    <option value="Satara">Satara</option>
+                    <option value="Sangli">Sangli</option>
+                    <option value="Ahmednagar">Ahilyanagar (Ahmednagar)</option>
+                    <option value="Jalgaon">Jalgaon</option>
+                    <option value="Amravati">Amravati</option>
+                    <option value="Nanded">Nanded</option>
+                </select>
+            </div>
+
+            <!-- Material Details -->
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Load / Material Details</label>
+                <input type="text" id="material" placeholder="e.g., Industrial Goods, Wood, Agri Load" required
+                    class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-blue-500 text-sm">
+            </div>
+
+            <!-- Customer Contact Number -->
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Customer Mobile Number</label>
+                <input type="tel" id="mobile" pattern="[0-9]{10}" placeholder="Enter 10-digit mobile number" required
+                    class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-blue-500 text-sm font-bold tracking-wider text-slate-800">
+            </div>
+
+            <!-- Commercial Fleet Selection -->
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Select Fleet Type</label>
+                <select id="vehicle" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl focus:outline-none focus:border-blue-500 text-sm bg-white font-medium text-slate-800">
+                    <option value="Mahindra Pickup">Mahindra Pickup / Bolero (Max 1.5 Ton)</option>
+                    <option value="Tata Ace">Tata Ace (Chhota Hathi - Max 1 Ton)</option>
+                    <option value="Eicher 14Ft">Eicher 14 Feet Truck (Max 4-5 Ton)</option>
+                    <option value="Eicher 19Ft">Eicher 19 Feet Heavy Truck (Max 7-9 Ton)</option>
+                    <option value="Open 6-Wheeler">6-Wheeler Open Truck (Max 10 Ton)</option>
+                </select>
+            </div>
+
+            <!-- Check Fare Button -->
+            <button type="button" onclick="calculateMaharashtraFare()" 
+                class="w-full bg-slate-900 text-white font-bold py-2.5 rounded-xl hover:bg-slate-800 transition text-sm tracking-wide uppercase">
+                Calculate Estimated Fare
+            </button>
+
+            <!-- Fare Calculation & Advance Breakdown Result Card -->
+            <div id="fareCard" class="hidden bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-left shadow-inner space-y-1">
+                <div class="flex justify-between items-center text-xs text-slate-600 font-medium">
+                    <span>Estimated Route Fare:</span>
+                    <span id="estimatedAmount" class="font-bold text-slate-900">₹ 0.00</span>
+                </div>
+                <div class="flex justify-between items-center text-sm font-black text-emerald-800 border-t border-emerald-200 pt-1">
+                    <span>50% Cash due on Loading:</span>
+                    <span id="advanceAmount">₹ 0.00</span>
+                </div>
+                <div class="flex justify-between items-center text-xs text-slate-500">
+                    <span>50% Balance due at Destination:</span>
+                    <span id="balanceAmount">₹ 0.00</span>
+                </div>
+                <p class="text-[9px] text-slate-400 text-center pt-1">*Pay directly to the driver. No online payment required on website.</p>
+            </div>
+
+            <!-- 🟩 MANDATORY OPERATIONAL CHECKBOX -->
+            <div class="flex items-start space-x-2 pt-2">
+                <input type="checkbox" id="termsCheckbox" required class="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                <label for="termsCheckbox" class="text-[9.5px] text-slate-600 leading-tight font-medium">
+                    I agree to confirm all terms directly with the Truck Owner via phone. I accept that 50% Cash/UPI advance must be paid to the driver at loading before dispatch.
+                </label>
+            </div>
+
+            <!-- Final Free Booking Button -->
+            <button type="submit" id="submitBtn"
+                class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl hover:bg-blue-700 transition shadow-lg text-sm tracking-wider uppercase mt-1">
+                📝 Confirm Free Booking Request
+            </button>
+        </form>
+    </div>
+
+    <!-- Firebase Activation & Data Injection Logic -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBLAldxhyE5F1fdHze1hr6KVW0jiiR3mIY",
+            authDomain: "://firebaseapp.com",
+            projectId: "chahade-transport",
+            storageBucket: "chahade-transport.firebasestorage.app",
+            messagingSenderId: "947334069115",
+            appId: "1:947334069115:web:3c0b3c71d19950d66e5bde"
+        };
+
+        // Initialize Firebase
