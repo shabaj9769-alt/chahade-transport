@@ -53,7 +53,7 @@
 
         <div class="p-4 md:p-6 space-y-4">
             
-            <!-- 🔍 SECTION: CHECK BOOKING (ACCORDION TOGGLE) -->
+            <!-- 🔍 SECTION: CHECK & REMOVE BOOKING HISTORY -->
             <div class="bg-[#2a0b03] border-2 border-amber-500/40 rounded-2xl overflow-hidden shadow-lg">
                 <button type="button" onclick="toggleTrackOrderFolder()" 
                     class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-[#381005] to-[#200701] text-left">
@@ -78,7 +78,17 @@
                             शोध घ्या
                         </button>
                     </div>
-                    <div id="trackedOrdersList" class="space-y-2"></div>
+
+                    <!-- Clear Search History Header -->
+                    <div id="historyActionHeader" class="hidden flex justify-between items-center px-1 pt-1">
+                        <span id="historyMatchCount" class="text-[11px] font-bold text-amber-300"></span>
+                        <button type="button" onclick="clearCustomerSearchedHistory()" 
+                            class="text-[10px] bg-red-950 border border-red-500/40 text-red-300 px-2 py-1 rounded-lg font-bold hover:bg-red-900 transition">
+                            🗑️ सर्व इतिहास पुसा
+                        </button>
+                    </div>
+
+                    <div id="trackedOrdersList" class="space-y-2.5"></div>
                 </div>
             </div>
 
@@ -270,7 +280,7 @@
                     </p>
                 </div>
 
-                <!-- 8. Commercial Vehicles (LIVE AVAILABILITY SYNC) -->
+                <!-- 8. Commercial Vehicles -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                         <span><i class="fa-solid fa-truck-moving text-amber-400"></i> ८. लागणारी मालवाहतूक गाडी (Vehicle Category)</span>
@@ -344,7 +354,6 @@
                         </div>
                     </div>
 
-                    <!-- DIRECT CONFIRM BUTTON -->
                     <button type="button" onclick="confirmOrderDirectlyOnApp()" 
                         class="w-full py-4 px-4 bg-gradient-to-r from-emerald-600 to-green-600 hover:brightness-110 text-white font-black rounded-2xl shadow-xl text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-95 border border-emerald-300/40">
                         <i class="fa-solid fa-circle-check text-xl"></i> बुकिंग ऑर्डर कन्फर्म करा (CONFIRM BOOKING)
@@ -389,7 +398,6 @@
                 opt.setAttribute('data-rate', v.rate);
                 opt.setAttribute('data-index', index);
                 
-                // Show Availability Live
                 if (v.available === false) {
                     opt.disabled = true;
                     opt.innerText = `🚫 ${v.name} (तात्पुरती उपलब्ध नाही)`;
@@ -402,7 +410,7 @@
             syncWeightToVehicle();
         }
 
-        // ACCORDION TOGGLE (OPEN / CLOSE ON RE-TAP)
+        // TOGGLE TRACKING FOLDER
         function toggleTrackOrderFolder() {
             const content = document.getElementById('trackOrderContent');
             const icon = document.getElementById('trackOrderToggleIcon');
@@ -415,10 +423,13 @@
             }
         }
 
-        // CUSTOMER ORDER SEARCH (NO PENDING - ONLY CONFIRMED STATUS)
+        // SEARCH & RENDER WITH DELETE BUTTON
         function searchCustomerOrders() {
             const searchPhone = document.getElementById('trackMobileInput').value.trim();
             const resultsContainer = document.getElementById('trackedOrdersList');
+            const actionHeader = document.getElementById('historyActionHeader');
+            const matchCount = document.getElementById('historyMatchCount');
+            
             resultsContainer.innerHTML = "";
 
             if (!searchPhone || searchPhone.length < 10) {
@@ -430,21 +441,34 @@
             const matchedOrders = allOrders.filter(o => o.customer === searchPhone);
 
             if (matchedOrders.length === 0) {
+                actionHeader.classList.add('hidden');
                 resultsContainer.innerHTML = `<p class="text-xs text-amber-300/60 italic py-2">या नंबरवर कोणतीही बुकिंग सापडली नाही.</p>`;
                 return;
             }
 
+            actionHeader.classList.remove('hidden');
+            matchCount.innerText = `एकूण ${matchedOrders.length} बुकिंग्स सापडल्या:`;
+
             matchedOrders.forEach(o => {
                 const card = document.createElement('div');
-                card.className = "bg-[#280902] border border-amber-500/30 p-3 rounded-xl space-y-2 text-xs";
+                card.className = "bg-[#280902] border border-amber-500/30 p-3 rounded-xl space-y-2 text-xs relative";
                 
                 const isAssigned = o.assignedDriverPhone && o.assignedDriverName;
 
                 card.innerHTML = `
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center border-b border-amber-600/30 pb-1.5">
                         <span class="text-amber-300 font-black">#${o.id}</span>
-                        <span class="text-emerald-400 font-bold">₹${o.fare}</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-emerald-400 font-bold">₹${o.fare}</span>
+                            
+                            <!-- CUSTOMER INDIVIDUAL ORDER REMOVE BUTTON -->
+                            <button onclick="removeCustomerOrder('${o.id}')" title="या स्क्रीनवरून ही बुकिंग काढून टाका" 
+                                class="px-2 py-0.5 bg-red-950 border border-red-500/40 text-red-300 hover:bg-red-900 rounded text-[10px] font-bold transition flex items-center gap-1">
+                                <i class="fa-solid fa-trash-can"></i> काढा
+                            </button>
+                        </div>
                     </div>
+                    
                     <p class="text-stone-300">📅 ${o.loadingDate} (${o.loadingTime})</p>
                     <p class="text-stone-300">📍 ${o.from} ➔ 🎯 ${o.to}</p>
                     <p class="text-amber-200">🚛 गाडी: <strong>${o.vehicle}</strong></p>
@@ -468,13 +492,34 @@
                             </div>
                         ` : `
                             <p class="text-[10px] text-stone-300 italic pt-1 border-t border-emerald-500/30">
-                                चाहाडे ट्रान्सपोर्ट कार्यालयाकडून ड्रायव्हर नियुक्त होताच इथे थेट कॉल करण्याचा पर्याय सुरू होईल.
+                                चाहाडे ट्रान्सपोर्ट कार्यालयाकडून ड्रायव्हर नियुक्त होताच येथे थेट कॉल करण्याचा पर्याय सुरू होईल.
                             </p>
                         `}
                     </div>
                 `;
                 resultsContainer.appendChild(card);
             });
+        }
+
+        // REMOVE SINGLE ORDER FROM DATABASE
+        function removeCustomerOrder(orderId) {
+            if (confirm("तुम्हाला ही बुकिंग यादीतून काढून टाकायची आहे का?")) {
+                let allOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
+                allOrders = allOrders.filter(o => o.id !== orderId);
+                localStorage.setItem('chahade_admin_orders', JSON.stringify(allOrders));
+                searchCustomerOrders();
+            }
+        }
+
+        // CLEAR ALL SEARCHED ORDERS FOR THIS NUMBER
+        function clearCustomerSearchedHistory() {
+            const searchPhone = document.getElementById('trackMobileInput').value.trim();
+            if (confirm("या नंबरच्या सर्व जुन्या बुकिंग्स काढून टाकायच्या आहेत का?")) {
+                let allOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
+                allOrders = allOrders.filter(o => o.customer !== searchPhone);
+                localStorage.setItem('chahade_admin_orders', JSON.stringify(allOrders));
+                searchCustomerOrders();
+            }
         }
 
         function syncWeightToVehicle() {
