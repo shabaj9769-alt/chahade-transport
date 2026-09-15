@@ -229,7 +229,7 @@
                     </select>
                 </div>
 
-                <!-- 9. PROTECTED SYSTEM ALLOCATION (DRIVERS HIDDEN FROM CUSTOMER) -->
+                <!-- 9. PROTECTED SYSTEM ALLOCATION -->
                 <div class="bg-[#4d1607]/80 p-4 rounded-2xl border-2 border-amber-500/50 space-y-2">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -250,7 +250,7 @@
                     </div>
                     
                     <p class="text-[10px] text-amber-200/70 font-medium">
-                        *भाडे निश्चित झाल्यावर चाहाडे ट्रान्सपोर्ट कार्यालयाकडून उपलब्ध चालक त्वरित नियुक्त केला जाईल.
+                        *भाडे निश्चित झाल्यावर चाहाडे ट्रान्सपोर्ट कार्यालयाकडून उपलब्ध चालक थेट नियुक्त केला जाईल.
                     </p>
                 </div>
 
@@ -260,9 +260,10 @@
                     <i class="fa-solid fa-calculator text-base"></i> <span id="calcBtnText">अंदाजे भाडे तपासा (Show Fare)</span>
                 </button>
 
-                <!-- Fare Card -->
+                <!-- 📊 FARE RESULT CARD -->
                 <div id="fareResultCard" class="hidden space-y-4 pt-3 border-t-2 border-amber-500/40">
                     <div class="bg-[#4a1507]/90 border-2 border-amber-400/70 p-4 rounded-2xl space-y-3 shadow-xl">
+                        
                         <div class="flex justify-between items-center bg-[#300c03] px-3 py-2 rounded-xl border border-amber-500/30 text-xs">
                             <span class="text-amber-200 font-bold">🛣️ एकूण रस्ता अंतर:</span>
                             <span id="distanceDisplay" class="font-black text-amber-300">0 KM</span>
@@ -278,18 +279,30 @@
                             <span>५०% पोहोचल्यावर: <strong id="balanceDisplay" class="text-emerald-300">₹ 0</strong></span>
                         </div>
 
-                        <div class="bg-[#6b1c06]/80 border border-amber-400/40 p-3 rounded-xl mt-3 text-left">
+                        <!-- ⚠️ GENERAL ESTIMATE NOTE -->
+                        <div class="bg-[#6b1c06]/80 border border-amber-400/40 p-3 rounded-xl text-left">
                             <p class="text-[11px] text-amber-100 leading-relaxed font-semibold">
                                 <i class="fa-solid fa-triangle-exclamation text-amber-300 mr-1"></i>
                                 <strong>महत्त्वाची सूचना:</strong> हे दाखवलेले भाडे फक्त प्राथमिक अंदाज (Estimated Fare) आहे, हे फायनल बिल नाही. अंतिम बिल ट्रान्सपोर्ट कार्यालयाशी बोलून निश्चित करावे.
                             </p>
                         </div>
+
+                        <!-- 🛑 NEW: ORDER CONFIRMATION & CANCELLATION LIABILITY DISCLAIMER -->
+                        <div class="bg-[#280500] border-2 border-red-500/50 p-3.5 rounded-xl text-left space-y-1.5 shadow-inner">
+                            <p class="text-xs font-black text-red-400 uppercase tracking-wider flex items-center gap-1.5">
+                                <i class="fa-solid fa-phone-volume text-amber-400"></i> मॅन्युअल कन्फर्मेशन व कॅन्सलेशन नियम:
+                            </p>
+                            <p class="text-[11px] text-stone-300 leading-relaxed font-medium">
+                                • ऑर्डर कन्फर्म केल्यानंतर थेट <strong>गाडी मालकाचा/ड्रायव्हरचा फोन येईल</strong> व अंतिम बोलणी निश्चित होईल.<br>
+                                • <strong>कॅन्सलेशन नियम:</strong> जर बुकिंग झाल्यानंतर तुम्हाला लोड कॅन्सल करायचा असेल, तर त्याची सर्व जबाबदारी <strong>ग्राहक आणि ट्रक मालक यांची राहील</strong>; पोर्टलची यात कोणतीही मध्यस्थी जबाबदारी राहणार नाही.
+                            </p>
+                        </div>
                     </div>
 
-                    <!-- Dispatch Order To Dispatch Admin WhatsApp -->
+                    <!-- Dispatch Order To Admin WhatsApp -->
                     <button type="button" onclick="dispatchOrderDirectToAdmin()" 
                         class="w-full py-4 px-4 bg-gradient-to-r from-emerald-600 to-green-600 hover:brightness-110 text-white font-black rounded-2xl shadow-xl text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-95 border border-emerald-300/40">
-                        <i class="fa-brands fa-whatsapp text-xl"></i> बुकिंग ऑर्डर कन्फर्म करा (WHATSAPP)
+                        <i class="fa-brands fa-whatsapp text-xl"></i> थेट ॲडमिनला बुकिंग पाठवा (ADMIN WHATSAPP)
                     </button>
                 </div>
 
@@ -298,7 +311,6 @@
     </div>
 
     <script>
-        // Central Dispatch Admin Mobile Number (Aapka WhatsApp Number)
         const DISPATCH_ADMIN_PHONE = "918779612829";
 
         let calculatedPrice = 0;
@@ -439,7 +451,6 @@
             resultCard.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Send booking directly to Central Transport Dispatch WhatsApp (Protected from Bargaining)
         function dispatchOrderDirectToAdmin() {
             const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value;
             const drop = document.getElementById('drop').options[document.getElementById('drop').selectedIndex].text;
@@ -475,7 +486,7 @@
             localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
 
             const orderDetails = 
-                `*🚩 चाहाडे ट्रान्सपोर्ट - नवीन थेट मालवाहतूक बुकिंग 🚚*%0A%0A` +
+                `*🚩 चाहाडे ट्रान्सपोर्ट - थेट ॲडमिन बुकिंग ऑर्डर 🚚*%0A%0A` +
                 `🆔 *बुकिंग ID:* ${newOrder.id}%0A` +
                 `📅 *गाडी हवी ती तारीख:* ${loadingDate}%0A` +
                 `⏰ *गाडी हवी ती वेळ:* ${encodeURIComponent(completeTimeString)}%0A` +
@@ -489,7 +500,7 @@
                 `👤 *ग्राहकाचा नंबर:* ${customerMobile}%0A` +
                 `💰 *अंदाजे भाडे:* ₹${calculatedPrice}%0A` +
                 `💵 *५०% लोडिंग ॲडव्हान्स:* ₹${Math.round(calculatedPrice * 0.5)}%0A%0A` +
-                `_स्थिती: ट्रान्सपोर्ट ऑफिसकडून गाडी व ड्रायव्हर वाटप प्रतीक्षेत._`;
+                `⚠️ *टीप:* बुकिंग कन्फर्म झाल्यावर ट्रक मालकाचा मॅन्युअल कन्फर्मेशन कॉल येईल. लोड कॅन्सल करण्याची जबाबदारी ग्राहक व मालक यांची राहील.`;
 
             window.open(`https://wa.me/${DISPATCH_ADMIN_PHONE}?text=${orderDetails}`, '_blank');
         }
