@@ -139,35 +139,31 @@
                 <!-- 1. Loading Hub -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-location-dot text-amber-400"></i> १. माल भरण्याचा जिल्हा
+                        <i class="fa-solid fa-location-dot text-amber-400"></i> १. माल भरण्याचा जिल्हा (फक्त पालघर क्षेत्र)
                     </label>
                     <input type="text" id="pickup" value="पालघर जिल्हा मुख्य हब (Palghar District Hub)" readonly
                         class="w-full px-4 py-3 bg-[#4a1507]/80 border-2 border-amber-500/60 rounded-xl font-bold text-amber-200 text-sm focus:outline-none cursor-default shadow-inner">
                 </div>
 
-                <!-- 1.1 Loading Point with Interactive Map Pin-Point Button -->
+                <!-- 1.1 Loading Point with Strict GPS Mandatory Button -->
                 <div>
                     <div class="flex justify-between items-center mb-1.5">
                         <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
                             <i class="fa-solid fa-city text-amber-400"></i> पालघरमध्ये माल कुठून भरायचा आहे?
                         </label>
-                        <button type="button" onclick="openPickupMapPicker()" 
-                            class="text-[10px] bg-emerald-950 border border-emerald-500/50 text-emerald-300 px-2.5 py-1 rounded-lg font-black hover:bg-emerald-900 transition flex items-center gap-1">
-                            <i class="fa-solid fa-map-pin"></i> मॅपवर पिन करा
+                        <button type="button" onclick="enforceGPSAndOpenPickupMap()" 
+                            class="text-[10px] bg-emerald-950 border border-emerald-500/50 text-emerald-300 px-2.5 py-1 rounded-lg font-black hover:bg-emerald-900 transition flex items-center gap-1 animate-pulse">
+                            <i class="fa-solid fa-crosshairs"></i> GPS चालू करून पिन करा
                         </button>
                     </div>
-                    <input type="text" id="palgharLoadingPoint" placeholder="उदा. चाहाडे गाव, बोईसर तारापूर MIDC..." required
-                        class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
-                    <!-- Live Address Name Box for Pickup -->
-                    <p id="pickupDetectedAddress" class="text-[11px] text-amber-300 font-bold mt-1 hidden">
-                        📍 कन्फर्म लोडिंग पत्ता: <span id="pickupAddrText" class="text-white"></span>
-                    </p>
+                    <input type="text" id="palgharLoadingPoint" placeholder="येथे GPS द्वारे किंवा मॅपवरून लोडिंग पत्ता येईल..." required readonly
+                        class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-emerald-300 placeholder-amber-200/40 text-sm focus:outline-none cursor-not-allowed">
                 </div>
 
-                <!-- Pickup Map Modal / Box -->
+                <!-- Pickup Map Modal -->
                 <div id="pickupMapContainer" class="hidden bg-[#2a0b03] border-2 border-amber-500/50 p-3 rounded-2xl space-y-2">
                     <div class="flex justify-between items-center text-xs font-bold text-amber-200">
-                        <span>🗺️ मॅपवर अचूक लोडिंग पॉईंट टच करून निवडा:</span>
+                        <span>📍 पालघर जीपीएस मॅप (लोकेशन पिन करा):</span>
                         <button type="button" onclick="closePickupMapPicker()" class="text-red-400 font-black px-2 py-0.5 bg-black/40 rounded">बंद करा ✕</button>
                     </div>
                     <div id="pickupInteractiveMap" class="map-box"></div>
@@ -176,10 +172,10 @@
                 <!-- 2. Maharashtra Districts -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-map-location-dot text-amber-400"></i> २. माल कुठे खाली करायचा? (महाराष्ट्र जिल्हा)
+                        <i class="fa-solid fa-map-location-dot text-amber-400"></i> २. माल कुठे खाली करायचा? (महाराष्ट्र जिल्हा निवडा)
                     </label>
-                    <select id="drop" required class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
-                        <option value="" disabled selected>जिल्हा निवडा</option>
+                    <select id="drop" onchange="onDistrictSelected()" required class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
+                        <option value="" disabled selected>प्रथम जिल्हा निवडा</option>
                         <option value="मुंबई शहर" data-km="100" data-lat="18.922" data-lng="72.8346">मुंबई शहर (Mumbai City)</option>
                         <option value="मुंबई उपनगर" data-km="95" data-lat="19.076" data-lng="72.8777">मुंबई उपनगर (Bandra / Andheri)</option>
                         <option value="ठाणे" data-km="85" data-lat="19.2183" data-lng="72.9781">ठाणे (Thane / Bhiwandi)</option>
@@ -219,29 +215,25 @@
                     </select>
                 </div>
 
-                <!-- 3. Unloading Address & Drop Map Pin-Point Button -->
+                <!-- 3. Unloading Address & District-Locked Drop Map Button -->
                 <div>
                     <div class="flex justify-between items-center mb-1.5">
                         <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-                            <i class="fa-solid fa-house-chimney text-amber-400"></i> ३. माल खाली करण्याचा पत्ता व पिनकोड
+                            <i class="fa-solid fa-house-chimney text-amber-400"></i> ३. माल खाली करण्याचा पत्ता (डिस्टrict मॅप)
                         </label>
-                        <button type="button" onclick="openDropMapPicker()" 
+                        <button type="button" onclick="openDistrictLockedDropMap()" 
                             class="text-[10px] bg-emerald-950 border border-emerald-500/50 text-emerald-300 px-2.5 py-1 rounded-lg font-black hover:bg-emerald-900 transition flex items-center gap-1">
-                            <i class="fa-solid fa-map-pin"></i> मॅपवर पिन करा
+                            <i class="fa-solid fa-map-pin"></i> निवदलेल्या जिल्यात पिन करा
                         </button>
                     </div>
-                    <textarea id="fullAddress" rows="2" placeholder="पत्ता, एरिया किंवा पिनकोड टाका..." required
-                        class="w-full px-4 py-2.5 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition"></textarea>
-                    <!-- Live Address Name Box for Drop -->
-                    <p id="dropDetectedAddress" class="text-[11px] text-emerald-300 font-bold mt-1 hidden">
-                        🎯 कन्फर्म ड्रॉप पत्ता: <span id="dropAddrText" class="text-white"></span>
-                    </p>
+                    <textarea id="fullAddress" rows="2" placeholder="येथे निवडलेल्या जिल्याचा पिन-पॉइंटेड पत्ता येईल..." required readonly
+                        class="w-full px-4 py-2.5 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-emerald-300 placeholder-amber-200/40 text-sm focus:outline-none cursor-not-allowed"></textarea>
                 </div>
 
-                <!-- Drop Map Modal / Box -->
+                <!-- Drop District-Locked Map Modal -->
                 <div id="dropMapContainer" class="hidden bg-[#2a0b03] border-2 border-amber-500/50 p-3 rounded-2xl space-y-2">
                     <div class="flex justify-between items-center text-xs font-bold text-amber-200">
-                        <span>🗺️ मॅपवर अचूक ड्रॉप पॉईंट टच करून निवडा:</span>
+                        <span id="dropMapModalTitle">🎯 निवडलेल्या जिल्याचा मॅप:</span>
                         <button type="button" onclick="closeDropMapPicker()" class="text-red-400 font-black px-2 py-0.5 bg-black/40 rounded">बंद करा ✕</button>
                     </div>
                     <div id="dropInteractiveMap" class="map-box"></div>
@@ -477,52 +469,82 @@
             }
         }
 
-        // --- PICKUP MAP PICKER ---
-        function openPickupMapPicker() {
-            document.getElementById('pickupMapContainer').classList.remove('hidden');
-            setTimeout(() => {
-                if (!pickupMap) {
-                    pickupMap = L.map('pickupInteractiveMap').setView([pickupLat, pickupLng], 12);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; OpenStreetMap'
-                    }).addTo(pickupMap);
+        // --- STRICT GPS ENFORCEMENT FOR PICKUP (PALGHAR AREA) ---
+        function enforceGPSAndOpenPickupMap() {
+            if (!navigator.geolocation) {
+                alert("तुमचा ब्राउझर GPS सपोर्ट करत नाही.");
+                return;
+            }
 
-                    pickupMarker = L.marker([pickupLat, pickupLng], {draggable: true}).addTo(pickupMap);
-                    
-                    pickupMarker.on('dragend', function(e) {
-                        const pos = pickupMarker.getLatLng();
-                        pickupLat = pos.lat; pickupLng = pos.lng;
-                        updatePickupAddressText(pickupLat, pickupLng);
-                    });
+            alert("📍 कृपया GPS सुरू ठेवा. तुमचे अचूक पालघर लोकेशन शोधले जात आहे...");
 
-                    pickupMap.on('click', function(e) {
-                        pickupLat = e.latlng.lat; pickupLng = e.latlng.lng;
-                        pickupMarker.setLatLng([pickupLat, pickupLng]);
-                        updatePickupAddressText(pickupLat, pickupLng);
-                    });
-                } else {
-                    pickupMap.invalidateSize();
-                }
-            }, 300);
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    // Palghar rough boundary check (Latitude ~18.5 to 20.2, Longitude ~72.5 to 73.5)
+                    if (lat >= 18.5 && lat <= 20.5 && lng >= 72.4 && lng <= 73.6) {
+                        pickupLat = lat;
+                        pickupLng = lng;
+                        document.getElementById('palgharLoadingPoint').value = `GPS Pin: पालघर क्षेत्र (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+                        
+                        // Open map centered at detected GPS
+                        document.getElementById('pickupMapContainer').classList.remove('hidden');
+                        setTimeout(() => {
+                            if (!pickupMap) {
+                                pickupMap = L.map('pickupInteractiveMap').setView([pickupLat, pickupLng], 14);
+                                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    attribution: '&copy; OpenStreetMap'
+                                }).addTo(pickupMap);
+                                pickupMarker = L.marker([pickupLat, pickupLng], {draggable: true}).addTo(pickupMap);
+                                pickupMarker.on('dragend', function(e) {
+                                    const pos = pickupMarker.getLatLng();
+                                    pickupLat = pos.lat; pickupLng = pos.lng;
+                                    document.getElementById('palgharLoadingPoint').value = `GPS Pin: पालघर क्षेत्र (${pickupLat.toFixed(4)}, ${pickupLng.toFixed(4)})`;
+                                });
+                            } else {
+                                pickupMap.setView([pickupLat, pickupLng], 14);
+                                pickupMarker.setLatLng([pickupLat, pickupLng]);
+                                pickupMap.invalidateSize();
+                            }
+                        }, 300);
+                    } else {
+                        alert("⚠️ तुम्ही पालघर क्षेत्रामध्ये नाही आहात! कृपया पालघरमधूनच लोडिंग GPS ऑन करा.");
+                    }
+                },
+                (error) => {
+                    alert("❌ GPS परवानगी नाकारली किंवा GPS बंद आहे! ॲप वापरण्यासाठी GPS चालू करणे बंधनकारक आहे.");
+                },
+                { enableHighAccuracy: true, timeout: 15000 }
+            );
         }
 
         function closePickupMapPicker() {
             document.getElementById('pickupMapContainer').classList.add('hidden');
         }
 
-        function updatePickupAddressText(lat, lng) {
-            const addr = `पालघर लोडिंग पिन (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
-            document.getElementById('palgharLoadingPoint').value = addr;
-            document.getElementById('pickupAddrText').innerText = addr;
-            document.getElementById('pickupDetectedAddress').classList.remove('hidden');
+        // --- DISTRICT-LOCKED DROP MAP ---
+        function onDistrictSelected() {
+            const dropSelect = document.getElementById('drop');
+            const selectedOpt = dropSelect.options[dropSelect.selectedIndex];
+            dropLat = Number(selectedOpt.getAttribute('data-lat')) || 19.0760;
+            dropLng = Number(selectedOpt.getAttribute('data-lng')) || 72.8777;
+            document.getElementById('dropMapModalTitle').innerText = `🎯 ${selectedOpt.text} मॅप (पिन करा):`;
         }
 
-        // --- DROP MAP PICKER ---
-        function openDropMapPicker() {
+        function openDistrictLockedDropMap() {
+            const dropSelect = document.getElementById('drop');
+            if (!dropSelect.value) {
+                alert("कृपया आधी वरील '२. माल कुठे खाली करायचा?' जिल्हा निवडा!");
+                dropSelect.focus();
+                return;
+            }
+
             document.getElementById('dropMapContainer').classList.remove('hidden');
             setTimeout(() => {
                 if (!dropMap) {
-                    dropMap = L.map('dropInteractiveMap').setView([dropLat, dropLng], 10);
+                    dropMap = L.map('dropInteractiveMap').setView([dropLat, dropLng], 12);
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; OpenStreetMap'
                     }).addTo(dropMap);
@@ -541,8 +563,11 @@
                         updateDropAddressText(dropLat, dropLng);
                     });
                 } else {
+                    dropMap.setView([dropLat, dropLng], 12);
+                    dropMarker.setLatLng([dropLat, dropLng]);
                     dropMap.invalidateSize();
                 }
+                updateDropAddressText(dropLat, dropLng);
             }, 300);
         }
 
@@ -551,22 +576,22 @@
         }
 
         function updateDropAddressText(lat, lng) {
-            const addr = `ड्रॉप लोकेशन पिन (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
+            const dropSelect = document.getElementById('drop');
+            const districtName = dropSelect.options[dropSelect.selectedIndex].text;
+            const addr = `${districtName} - पिन पॉईंट पत्ता (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
             document.getElementById('fullAddress').value = addr;
-            document.getElementById('dropAddrText').innerText = addr;
-            document.getElementById('dropDetectedAddress').classList.remove('hidden');
         }
 
-        // Calculate distance via Haversine formula between pins
+        // Calculate distance via Haversine formula
         function calculatePinDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Radius of earth in KM
+            const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                       Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
                       Math.sin(dLon/2) * Math.sin(dLon/2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return Math.round(R * c * 1.3); // 1.3x road factor adjustment
+            return Math.round(R * c * 1.3); 
         }
 
         function searchCustomerOrders() {
@@ -728,12 +753,12 @@
             const mobile = document.getElementById('mobile').value;
 
             if(!palgharLoadingPoint) {
-                alert("कृपया 'मॅपवर पिन करा' बटण दाबून लोडिंग लोकेशन सेट करा!");
+                alert("कृपया 'GPS चालू करून पिन करा' बटण दाबून पालघरचे लोडिंग लोकेशन सेट करा!");
                 return;
             }
 
             if(!fullAddress) {
-                alert("कृपया 'मॅपवर पिन करा' बटण दाबून ड्रॉप लोकेशन सेट करा!");
+                alert("कृपया जिल्हा निवडून 'निवदलेल्या जिल्यात पिन करा' वर क्लिक करून ड्रॉप लोकेशन सेट करा!");
                 return;
             }
 
@@ -748,9 +773,9 @@
                 return;
             }
 
-            // Calculate precise KM based on pinned coordinates
+            // Calculate precise KM based on pins
             routeKm = calculatePinDistance(pickupLat, pickupLng, dropLat, dropLng);
-            if(routeKm < 15) routeKm = 25; // Minimum base distance
+            if(routeKm < 15) routeKm = 25; 
 
             const selectedVehicleOpt = vehicleSelect.options[vehicleSelect.selectedIndex];
             const ratePerKm = Number(selectedVehicleOpt.getAttribute('data-rate')) || 22;
@@ -758,7 +783,7 @@
             calculatedPrice = Math.round((routeKm * ratePerKm) + baseFixedCharge);
             const advance = Math.round(calculatedPrice * 0.5);
 
-            document.getElementById('distanceDisplay').innerText = `~${routeKm} KM (पिन-पॉइंटेड रूट)`;
+            document.getElementById('distanceDisplay').innerText = `~${routeKm} KM (अचूक जीपीएस अंतर)`;
             document.getElementById('fareDisplay').innerText = "₹ " + calculatedPrice.toLocaleString('en-IN');
             document.getElementById('advanceDisplay').innerText = "₹ " + advance.toLocaleString('en-IN');
             document.getElementById('balanceDisplay').innerText = "₹ " + advance.toLocaleString('en-IN');
@@ -771,7 +796,7 @@
 
         function confirmOrderDirectlyOnApp() {
             const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value;
-            const drop = document.getElementById('drop').options[document.getElementById('drop').selectedIndex].text;
+            const drop = document.getElementById('drop').options[document.getElementById('drop'].selectedIndex].text;
             const fullAddress = document.getElementById('fullAddress').value;
             const material = document.getElementById('material').value;
             const cargoWeight = document.getElementById('cargoWeight').value;
@@ -782,7 +807,7 @@
             const timeAmPm = document.getElementById('timeAmPm').value;
             const completeTimeString = `${timeHour} ${timeAmPm}`;
 
-            const vehicle = document.getElementById('vehicle').options[document.getElementById('vehicle').selectedIndex].text;
+            const vehicle = document.getElementById('vehicle').options[document.getElementById('vehicle'].selectedIndex].text;
 
             const newOrder = {
                 id: "ORD-" + Math.floor(1000 + Math.random() * 9000),
