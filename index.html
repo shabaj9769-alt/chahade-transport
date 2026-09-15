@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chahade Transport & Logistics Maharashtra</title>
-    <!-- Working Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -16,84 +15,79 @@
 
     <div class="max-w-lg w-full bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-800">
         
-        <!-- Premium Hero Header with Modern Graphics & Glow -->
-        <div class="relative bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 p-6 md:p-8 text-center overflow-hidden border-b border-blue-500/20">
-            <!-- Background Glow Effect -->
-            <div class="absolute -top-12 -right-12 w-40 h-40 bg-blue-500/30 rounded-full blur-3xl"></div>
-            <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl"></div>
+        <!-- Header Banner -->
+        <div class="relative bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 p-6 text-center border-b border-blue-500/20">
+            <span class="inline-flex items-center gap-1.5 bg-blue-500/20 text-cyan-300 text-[11px] font-bold px-3.5 py-1 rounded-full uppercase tracking-wider border border-cyan-400/30">
+                <i class="fa-solid fa-satellite-dish text-xs animate-pulse"></i> Palghar District Fleet Network
+            </span>
 
-            <div class="relative z-10">
-                <span class="inline-flex items-center gap-1.5 bg-blue-500/20 text-cyan-300 text-[11px] font-bold px-3.5 py-1 rounded-full uppercase tracking-wider border border-cyan-400/30">
-                    <i class="fa-solid fa-satellite-dish text-xs animate-pulse"></i> Palghar District Fleet Network
-                </span>
-
-                <div class="flex items-center justify-center gap-3 mt-3">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center shadow-lg shadow-amber-500/30 text-slate-950 text-2xl font-black">
-                        🚛
-                    </div>
-                    <div class="text-left">
-                        <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight leading-none">CHAHADE</h1>
-                        <p class="text-xs font-semibold text-cyan-400 tracking-wider uppercase mt-0.5">Transport & Logistics</p>
-                    </div>
+            <div class="flex items-center justify-center gap-3 mt-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center shadow-lg text-slate-950 text-2xl font-black">
+                    🚚
                 </div>
-
-                <p class="text-xs text-slate-300 font-medium mt-3 bg-slate-800/60 py-1.5 px-4 rounded-xl inline-block border border-slate-700/60">
-                    📍 Maharashtra Commercial Loading & Delivery Hub
-                </p>
+                <div class="text-left">
+                    <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight leading-none">CHAHADE</h1>
+                    <p class="text-xs font-semibold text-cyan-400 tracking-wider uppercase mt-0.5">Transport & Logistics</p>
+                </div>
             </div>
+
+            <p class="text-xs text-slate-300 font-medium mt-3 bg-slate-800/60 py-1.5 px-4 rounded-xl inline-block border border-slate-700/60">
+                📍 Maharashtra Commercial Loading & Delivery Hub
+            </p>
         </div>
 
         <div class="p-5 md:p-6 space-y-5 bg-slate-900">
-            <!-- ⚠️ Legal Regulation Terms Box -->
-            <div class="bg-amber-950/30 border-l-4 border-amber-500 p-4 rounded-r-2xl border border-amber-500/20 text-left">
+            <!-- Operational Terms -->
+            <div class="bg-amber-950/30 border-l-4 border-amber-500 p-3.5 rounded-r-2xl border border-amber-500/20 text-left">
                 <p class="text-xs font-extrabold text-amber-400 uppercase tracking-wider flex items-center gap-2">
                     <i class="fa-solid fa-shield-halved"></i> Operational Regulation Terms:
                 </p>
-                <div class="text-[11px] text-amber-200/80 mt-2 leading-relaxed space-y-1.5 font-normal">
-                    <p>• <strong class="text-amber-300">Intermediary Platform:</strong> We connect parties. Transit risk or cargo breakdown liability belongs to the vehicle owner.</p>
-                    <p>• <strong class="text-amber-300">50-50 Cash on Loading:</strong> Zero advance online payment. Vehicle dispatches after <strong class="text-white">50% cash/UPI advance</strong> to the driver.</p>
-                    <p>• <strong class="text-amber-300">Overload & Safety:</strong> Weight misdeclaration is strictly prohibited under RTO guidelines.</p>
+                <div class="text-[11px] text-amber-200/80 mt-1.5 leading-relaxed space-y-1">
+                    <p>• <strong>Intermediary Platform:</strong> We connect parties. Transit risk belongs to the independent vehicle owner.</p>
+                    <p>• <strong>50-50 Cash on Loading:</strong> Vehicle dispatches after <strong>50% advance</strong> to the driver directly at loading site.</p>
                 </div>
             </div>
 
             <!-- Booking Form -->
-            <form id="transportForm" class="space-y-4">
+            <form id="transportForm" class="space-y-4" onsubmit="event.preventDefault();">
                 
-                <!-- 1. Loading Pickup Point -->
+                <!-- 1. Loading Pickup District -->
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-location-dot text-cyan-400"></i> 1. Loading Pickup Point
+                        <i class="fa-solid fa-location-dot text-cyan-400"></i> 1. Loading District
                     </label>
                     <div class="relative">
-                        <select id="pickup" required class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl font-semibold text-slate-200 text-sm focus:outline-none focus:border-cyan-400 appearance-none">
-                            <option value="Palghar (Local Area)">Palghar District Industrial & Agri Zone Only</option>
+                        <select id="pickup" required class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl font-semibold text-slate-200 text-sm focus:outline-none appearance-none">
+                            <option value="Palghar District">Palghar District Industrial & Agri Zone Only</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-cyan-400 text-xs">🔒 Fixed</div>
                     </div>
                 </div>
 
-                <!-- 2. Destination Drop District -->
+                <!-- 1.1 Palghar Specific Area -->
+                <div>
+                    <label class="block text-xs font-bold text-cyan-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-building text-cyan-400"></i> Palghar me kahan se load karna hai? (Area/Colony)
+                    </label>
+                    <input type="text" id="palgharLoadingPoint" placeholder="e.g. Chahade Village, Boisar MIDC, Manor Highway, Wada..." required
+                        class="w-full px-4 py-3 bg-slate-800 border-2 border-cyan-500/50 rounded-xl font-medium text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 transition">
+                </div>
+
+                <!-- 2. Drop District -->
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-map-pin text-blue-400"></i> 2. Destination Drop District
                     </label>
                     <select id="drop" required class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl font-semibold text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                         <option value="" disabled selected>Kahan delivery deni hai? (Select District)</option>
-                        <option value="Mumbai">Mumbai / Thane / Navi Mumbai</option>
-                        <option value="Pune">Pune / Pimpri-Chinchwad</option>
-                        <option value="Nashik">Nashik Region</option>
-                        <option value="Solapur">Solapur District</option>
-                        <option value="Nagpur">Nagpur Division</option>
-                        <option value="Chhatrapati Sambhajinagar">Chhatrapati Sambhajinagar</option>
-                        <option value="Kolhapur">Kolhapur</option>
-                        <option value="Satara">Satara</option>
-                        <option value="Sangli">Sangli</option>
-                        <option value="Ahmednagar">Ahilyanagar (Ahmednagar)</option>
-                        <option value="Jalgaon">Jalgaon</option>
+                        <option value="mumbai">Mumbai / Thane / Navi Mumbai</option>
+                        <option value="pune">Pune / Pimpri-Chinchwad</option>
+                        <option value="nashik">Nashik Region</option>
+                        <option value="other">Other Maharashtra Region</option>
                     </select>
                 </div>
 
-                <!-- 3. Delivery Unloading Address -->
+                <!-- 3. Full Delivery Address -->
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-house-chimney text-blue-400"></i> 3. Full Delivery Unloading Address
@@ -102,7 +96,7 @@
                         class="w-full px-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl font-medium text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"></textarea>
                 </div>
 
-                <!-- 4. Cargo Material -->
+                <!-- 4. Cargo Material Specifications -->
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-boxes-stacked text-blue-400"></i> 4. Cargo Material Specifications
@@ -111,7 +105,22 @@
                         class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl font-medium text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                 </div>
 
-                <!-- 5. Contact Number -->
+                <!-- 4.1 NEW: Approximate Weight (Lamsam Vajan) -->
+                <div>
+                    <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-weight-scale text-amber-400"></i> Maal Ka Andaazan Vajan (Approx Weight)
+                    </label>
+                    <select id="cargoWeight" required class="w-full px-4 py-3 bg-slate-800 border-2 border-amber-500/40 rounded-xl font-semibold text-amber-200 text-sm focus:outline-none focus:border-amber-400 transition">
+                        <option value="Upto 500 Kg (Halka Maal)">Upto 500 Kg (Halka Maal)</option>
+                        <option value="500 Kg - 1 Ton">500 Kg se 1 Ton (Tata Ace Capacity)</option>
+                        <option value="1 Ton - 1.7 Ton" selected>1 Ton se 1.7 Ton (Bolero / Pickup Capacity)</option>
+                        <option value="2 Ton - 4 Ton">2 Ton se 4 Ton (Small Truck / Eicher)</option>
+                        <option value="5 Ton - 8 Ton">5 Ton se 8 Ton (Heavy Eicher 17-19 Ft)</option>
+                        <option value="9 Ton - 10+ Ton">9 Ton se 10+ Ton (6-Wheeler Open/Heavy)</option>
+                    </select>
+                </div>
+
+                <!-- 5. Customer Contact Number -->
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-phone text-blue-400"></i> 5. Customer Contact Number
@@ -134,29 +143,240 @@
                     </select>
                 </div>
 
-                <!-- 7. Admin Driver Alignment -->
-                <div class="bg-blue-950/40 p-3.5 rounded-xl border border-blue-500/30">
-                    <label class="block text-xs font-bold text-cyan-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-user-check"></i> 7. Admin Assigned Driver
-                    </label>
-                    <select id="assignedDriver" required class="w-full px-4 py-2.5 bg-slate-800 border border-blue-400/50 rounded-lg font-bold text-cyan-200 text-sm focus:outline-none">
-                        <option value="Pending Admin Phone Confirmation">⚠️ Waiting for Admin Call Alignment</option>
-                        <option value="Chahade Local Fleet Group - Driver 1">Chahade Village Group - Driver 1 (Verified)</option>
-                        <option value="Chahade Local Fleet Group - Driver 2">Chahade Village Group - Driver 2 (Verified)</option>
-                        <option value="Chahade Heavy Eicher Fleet - Driver 3">Heavy Eicher Group - Driver 3 (Verified)</option>
-                    </select>
-                    <p class="text-[10px] text-cyan-400/80 font-medium mt-1.5 flex items-center gap-1">
-                        <i class="fa-solid fa-circle-info"></i> Note: Phone par confirmation ke bina loading confirm nahi hogi.
-                    </p>
+                <!-- 7. Truck Owner / Driver Selection -->
+                <div class="bg-blue-950/40 p-4 rounded-2xl border border-blue-500/30 space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-cyan-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-check"></i> 7. Admin Assigned Driver / Owner
+                        </label>
+                        <select id="assignedDriver" onchange="autoFillDriverPhone()" class="w-full px-4 py-2.5 bg-slate-800 border border-blue-400/50 rounded-lg font-bold text-cyan-200 text-sm focus:outline-none">
+                            <option value="Driver 1 (Palghar Group)" data-phone="9876543210">Driver 1 - Bolero Fleet (Verified)</option>
+                            <option value="Driver 2 (Chahade Village)" data-phone="9123456789">Driver 2 - Tata Ace Fleet (Verified)</option>
+                            <option value="Driver 3 (Heavy Eicher)" data-phone="9988776655">Driver 3 - Heavy Eicher Fleet (Verified)</option>
+                            <option value="Custom Driver" data-phone="">Other / Custom Truck Owner</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-amber-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-truck"></i> Truck Owner WhatsApp No.
+                        </label>
+                        <input type="tel" id="driverPhone" placeholder="Enter 10-Digit Driver Mobile No." value="9876543210"
+                            class="w-full px-3 py-2 bg-slate-900 border border-amber-500/40 rounded-lg font-semibold text-sm text-amber-200 focus:outline-none focus:border-amber-400">
+                    </div>
                 </div>
 
-                <!-- Price Button -->
+                <!-- Calculate Fare Button -->
                 <button type="button" onclick="calculateMaharashtraFare()" 
                     class="w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 text-white font-extrabold rounded-xl hover:brightness-110 active:scale-[0.99] transition shadow-lg shadow-blue-500/25 text-sm uppercase tracking-wider flex items-center justify-center gap-2">
                     <i class="fa-solid fa-calculator"></i> Calculate Commercial Fare
                 </button>
+
+                <!-- Order Confirmation Box -->
+                <div id="fareResultCard" class="hidden space-y-4 pt-3 border-t border-slate-800">
+                    <div class="bg-gradient-to-br from-emerald-950/50 to-slate-900 border-2 border-emerald-500/50 p-4 rounded-2xl">
+                        <div class="flex justify-between items-center text-xs font-bold text-slate-300 uppercase">
+                            <span>Estimated Total Fare:</span>
+                            <span id="fareDisplay" class="text-xl font-black text-emerald-400">₹ 0</span>
+                        </div>
+                        <div class="mt-2 text-[11px] text-slate-400 flex justify-between border-t border-emerald-500/20 pt-2">
+                            <span>50% Loading Advance: <strong id="advanceDisplay" class="text-white">₹ 0</strong></span>
+                            <span>50% On Delivery: <strong id="balanceDisplay" class="text-white">₹ 0</strong></span>
+                        </div>
+                    </div>
+
+                    <button type="button" onclick="dispatchOrderBoth()" 
+                        class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl shadow-lg shadow-emerald-600/30 text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-95">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Confirm & Send To Admin + Driver
+                    </button>
+                </div>
+
             </form>
+
+            <!-- ⚙️ DISCREET ADMIN RATE CONTROLLER (PIN Protected) -->
+            <div class="pt-4 border-t border-slate-800 text-center">
+                <button type="button" onclick="toggleAdminPanel()" class="text-[11px] text-slate-500 hover:text-cyan-400 transition underline">
+                    ⚙️ Admin Price & Rate Controller
+                </button>
+
+                <div id="adminPanel" class="hidden mt-3 p-4 bg-slate-950 border border-slate-700 rounded-2xl text-left space-y-3">
+                    <p class="text-xs font-bold text-cyan-300 uppercase flex items-center justify-between">
+                        <span>Live Fare Rate Settings</span>
+                        <span class="text-[10px] text-amber-400">(Saved in Browser)</span>
+                    </p>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                            <label class="text-[10px] text-slate-400">Base Fare - Mumbai (₹)</label>
+                            <input type="number" id="cfg_mumbai" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5 text-white font-bold">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400">Base Fare - Pune (₹)</label>
+                            <input type="number" id="cfg_pune" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5 text-white font-bold">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400">Base Fare - Nashik (₹)</label>
+                            <input type="number" id="cfg_nashik" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5 text-white font-bold">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-400">Base Fare - Other (₹)</label>
+                            <input type="number" id="cfg_other" class="w-full bg-slate-800 border border-slate-700 rounded px-2 py-1.5 text-white font-bold">
+                        </div>
+                    </div>
+                    <button type="button" onclick="saveAdminRates()" class="w-full py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold uppercase tracking-wider transition">
+                        💾 Save New Rates
+                    </button>
+                </div>
+            </div>
+
         </div>
     </div>
+
+    <script>
+        const ADMIN_PHONE = "918779612829";
+        const ADMIN_PIN = "1234"; // Default PIN for Admin Rate Controller
+        let calculatedPrice = 0;
+
+        // Default Rates Configuration
+        let ratesConfig = {
+            mumbai: 2800,
+            pune: 6500,
+            nashik: 5500,
+            other: 9500
+        };
+
+        // Load saved rates from localStorage if available
+        function loadStoredRates() {
+            const saved = localStorage.getItem('chahade_logistics_rates');
+            if(saved) {
+                ratesConfig = JSON.parse(saved);
+            }
+            document.getElementById('cfg_mumbai').value = ratesConfig.mumbai;
+            document.getElementById('cfg_pune').value = ratesConfig.pune;
+            document.getElementById('cfg_nashik').value = ratesConfig.nashik;
+            document.getElementById('cfg_other').value = ratesConfig.other;
+        }
+        loadStoredRates();
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            if(panel.classList.contains('hidden')) {
+                const pin = prompt("Admin Security PIN Dalein (Default: 1234):");
+                if(pin === ADMIN_PIN) {
+                    panel.classList.remove('hidden');
+                } else {
+                    alert("Galat PIN!");
+                }
+            } else {
+                panel.classList.add('hidden');
+            }
+        }
+
+        function saveAdminRates() {
+            ratesConfig.mumbai = Number(document.getElementById('cfg_mumbai').value) || 2800;
+            ratesConfig.pune = Number(document.getElementById('cfg_pune').value) || 6500;
+            ratesConfig.nashik = Number(document.getElementById('cfg_nashik').value) || 5500;
+            ratesConfig.other = Number(document.getElementById('cfg_other').value) || 9500;
+
+            localStorage.setItem('chahade_logistics_rates', JSON.stringify(ratesConfig));
+            alert("✅ Naye Rates Safaltapoorvak Save Ho Gaye!");
+            document.getElementById('adminPanel').classList.add('hidden');
+        }
+
+        function autoFillDriverPhone() {
+            const select = document.getElementById('assignedDriver');
+            const selectedOption = select.options[select.selectedIndex];
+            const phone = selectedOption.getAttribute('data-phone') || '';
+            document.getElementById('driverPhone').value = phone;
+        }
+
+        function calculateMaharashtraFare() {
+            const drop = document.getElementById('drop').value;
+            const vehicle = document.getElementById('vehicle').value;
+            const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value;
+            const mobile = document.getElementById('mobile').value;
+
+            if(!palgharLoadingPoint.trim()) {
+                alert("Kripya pehle Palghar me loading ka area/colony dalein!");
+                document.getElementById('palgharLoadingPoint').focus();
+                return;
+            }
+
+            if(!drop) {
+                alert("Kripya delivery ka drop district select karein!");
+                document.getElementById('drop').focus();
+                return;
+            }
+
+            if(!mobile || mobile.length < 10) {
+                alert("Kripya 10-digit customer mobile number dalein!");
+                document.getElementById('mobile').focus();
+                return;
+            }
+
+            // Dynamic base rate based on admin config
+            let baseRate = ratesConfig[drop] || ratesConfig.other;
+
+            let vehicleMultiplier = 1;
+            if(vehicle.includes("Tata Ace")) vehicleMultiplier = 0.85;
+            else if(vehicle.includes("Eicher 14Ft")) vehicleMultiplier = 1.9;
+            else if(vehicle.includes("Eicher 19Ft")) vehicleMultiplier = 2.6;
+            else if(vehicle.includes("Open 6-Wheeler")) vehicleMultiplier = 3.2;
+
+            calculatedPrice = Math.round(baseRate * vehicleMultiplier);
+            const advance = Math.round(calculatedPrice * 0.5);
+
+            document.getElementById('fareDisplay').innerText = "₹ " + calculatedPrice.toLocaleString('en-IN');
+            document.getElementById('advanceDisplay').innerText = "₹ " + advance.toLocaleString('en-IN');
+            document.getElementById('balanceDisplay').innerText = "₹ " + advance.toLocaleString('en-IN');
+
+            const resultCard = document.getElementById('fareResultCard');
+            resultCard.classList.remove('hidden');
+            resultCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function dispatchOrderBoth() {
+            const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value;
+            const drop = document.getElementById('drop').options[document.getElementById('drop').selectedIndex].text;
+            const fullAddress = document.getElementById('fullAddress').value;
+            const material = document.getElementById('material').value;
+            const cargoWeight = document.getElementById('cargoWeight').value;
+            const customerMobile = document.getElementById('mobile').value;
+            const vehicle = document.getElementById('vehicle').value;
+            const assignedDriver = document.getElementById('assignedDriver').value;
+            let driverPhone = document.getElementById('driverPhone').value.trim();
+
+            if (!driverPhone || driverPhone.length < 10) {
+                alert("Kripya Truck Owner / Driver ka valid 10-digit phone number dalein!");
+                document.getElementById('driverPhone').focus();
+                return;
+            }
+
+            if (!driverPhone.startsWith("91") && driverPhone.length === 10) {
+                driverPhone = "91" + driverPhone;
+            }
+
+            const orderDetails = 
+                `*🚚 NEW LOGISTICS TRIP BOOKING*%0A%0A` +
+                `📍 *Loading Point:* ${encodeURIComponent(palgharLoadingPoint)} (Palghar)%0A` +
+                `🎯 *Drop District:* ${encodeURIComponent(drop)}%0A` +
+                `🏠 *Unloading Address:* ${encodeURIComponent(fullAddress)}%0A` +
+                `📦 *Goods Material:* ${encodeURIComponent(material)}%0A` +
+                `⚖️ *Approx Weight (Lamsam):* ${encodeURIComponent(cargoWeight)}%0A` +
+                `🚛 *Vehicle Type:* ${encodeURIComponent(vehicle)}%0A` +
+                `👤 *Customer Contact:* ${customerMobile}%0A` +
+                `👮 *Assigned Driver:* ${encodeURIComponent(assignedDriver)}%0A` +
+                `💰 *Total Rate:* ₹${calculatedPrice}%0A` +
+                `💵 *50% Advance on Loading:* ₹${Math.round(calculatedPrice * 0.5)}%0A%0A` +
+                `_Status: Order Initiated via Chahade Logistics Portal._`;
+
+            // Step 1: Open WhatsApp for Truck Owner
+            window.open(`https://wa.me/${driverPhone}?text=${orderDetails}`, '_blank');
+
+            // Step 2: Open WhatsApp for Admin
+            setTimeout(() => {
+                window.open(`https://wa.me/${ADMIN_PHONE}?text=${orderDetails}`, '_blank');
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
