@@ -87,7 +87,7 @@
             </button>
         </div>
 
-        <!-- ================= TAB 1: DATE-WISE ACCORDION FOLDERS & ORDER ASSIGNMENT ================= -->
+        <!-- TAB 1: DATE-WISE ACCORDION FOLDERS & ORDER ASSIGNMENT -->
         <div id="ordersTab" class="space-y-4">
             <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-4">
                 
@@ -108,7 +108,7 @@
             </div>
         </div>
 
-        <!-- ================= TAB 2: SEPARATE TRUCK OWNERS & DRIVERS FOLDERS ================= -->
+        <!-- TAB 2: SEPARATE TRUCK OWNERS & DRIVERS FOLDERS -->
         <div id="trucksTab" class="hidden space-y-4">
             <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
                 <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
@@ -165,7 +165,7 @@
             </div>
         </div>
 
-        <!-- ================= TAB 3: VEHICLES & LIVE RATE CONTROLLER ================= -->
+        <!-- TAB 3: VEHICLES & LIVE RATE CONTROLLER -->
         <div id="vehiclesTab" class="hidden space-y-4">
             <div class="bg-[#381005]/95 border-2 border-amber-500/50 rounded-3xl p-4 md:p-5 shadow-xl space-y-3">
                 <h2 class="text-sm font-black text-amber-300 uppercase tracking-wider flex items-center gap-2">
@@ -433,7 +433,7 @@
             }
         }
 
-        // ================= DATE-WISE BOOKINGS & 1-CLICK ALLOCATION =================
+        // ================= DATE-WISE BOOKINGS & AUTO-DISPATCH WITH LEGAL DISCLAIMER =================
         function loadAndRenderFolders() {
             allOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
             const container = document.getElementById('dateFoldersContainer');
@@ -442,7 +442,7 @@
             document.getElementById('bookingSummaryCount').innerText = `एकूण नोंदणीकृत ऑर्डर्स: ${allOrders.length}`;
 
             if (allOrders.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-amber-200/50 text-xs italic bg-[#240802] rounded-2xl border border-amber-600/20">कोणतीही बुकिंग उपलब्ध नाही. ग्राहक ऑर्डर आल्यानंतर इथे फोल्डर तयार होईल आणि रिंग वाजेल.</div>`;
+                container.innerHTML = `<div class="text-center py-12 text-amber-200/50 text-xs italic bg-[#240802] rounded-2xl border border-amber-600/20">कोणतीही बुकिंग उपलब्ध नाही. नवीन बुकिंग येताच इथे फोल्डर तयार होईल आणि रिंग वाजेल.</div>`;
                 return;
             }
 
@@ -482,7 +482,7 @@
                     </button>
 
                     <div id="${folderId}" class="hidden p-3.5 space-y-3 bg-[#180400]/90">
-                        ${ordersInDate.map((o, oIdx) => `
+                        ${ordersInDate.map((o) => `
                             <div class="bg-[#290a03] border border-amber-600/30 rounded-xl p-3.5 space-y-2.5 shadow-inner">
                                 <div class="flex justify-between items-center">
                                     <span class="bg-amber-500/20 text-amber-300 text-[11px] font-black px-2.5 py-1 rounded-lg border border-amber-500/30">
@@ -528,7 +528,7 @@
             });
         }
 
-        // Admin 1-Click Order Forwarding to Selected Driver
+        // AUTO-ATTACHES CANCELLATION & CONFIRMATION NOTICE TO DRIVER WHATSAPP
         function forwardOrderToSpecificDriver(orderId) {
             const select = document.getElementById(`assign_select_${orderId}`);
             if(!select || !select.value) {
@@ -555,7 +555,7 @@
                 `👤 *ग्राहकाशी संपर्क करा:* ${order.customer}%0A` +
                 `💰 *भाडे (Est. Fare):* ₹${order.fare}%0A` +
                 `💵 *५०% लोडिंग ॲडव्हान्स:* ₹${Math.round(order.fare * 0.5)}%0A%0A` +
-                `_सूचना: कृपया तातडीने ग्राहकाशी फोनवर बोलून गाडी वेळेवर हजर करावी._`;
+                `⚠️ *मॅन्युअल कन्फर्मेशन व कॅन्सलेशन नियम:* कृपया त्वरित ग्राहकाशी बोलून गाडी व भाडे निश्चित करावे. बुकिंगनंतर लोड कॅन्सल झाल्यास त्याची संपूर्ण जबाबदारी ग्राहक आणि तुमची (ट्रक मालक) राहील; पोर्टलची यात कोणतीही मध्यस्थी जबाबदारी राहणार नाही.`;
 
             window.open(`https://wa.me/${driverPhone}?text=${msg}`, '_blank');
         }
