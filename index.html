@@ -32,13 +32,10 @@
         <div class="relative bg-gradient-to-b from-[#521707] via-[#3a1005] to-[#250a03] p-6 text-center border-b-2 border-amber-500/40 overflow-hidden">
             <div class="relative z-10 flex flex-col items-center">
                 <div class="relative mb-3">
+                    <!-- Professional Transport Logo / Icon Circle (No random photos) -->
                     <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-400 via-orange-500 to-red-600 p-1 shadow-2xl flex items-center justify-center border-2 border-amber-200">
-                        <div class="w-full h-full rounded-full bg-stone-950 flex items-center justify-center overflow-hidden">
-                            <!-- Direct Reliable CDN Image for Chhatrapati Shivaji Maharaj -->
-                            <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=400&q=80" 
-                                 alt="छत्रपती शिवाजी महाराज" 
-                                 onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Statue_of_Chhatrapati_Shivaji_Maharaj.jpg/480px-Statue_of_Chhatrapati_Shivaji_Maharaj.jpg';"
-                                 class="w-full h-full object-cover object-top">
+                        <div class="w-full h-full rounded-full bg-stone-950 flex items-center justify-center text-amber-300 text-4xl shadow-inner">
+                            <i class="fa-solid fa-truck-fast"></i>
                         </div>
                     </div>
                     <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-orange-500 text-stone-950 text-[10px] font-black px-3 py-0.5 rounded-full border border-amber-100 uppercase tracking-widest whitespace-nowrap shadow-md">
@@ -413,7 +410,6 @@
             syncWeightToVehicle();
         }
 
-        // TOGGLE TRACKING FOLDER
         function toggleTrackOrderFolder() {
             const content = document.getElementById('trackOrderContent');
             const icon = document.getElementById('trackOrderToggleIcon');
@@ -426,7 +422,6 @@
             }
         }
 
-        // SEARCH & RENDER WITH DELETE BUTTON
         function searchCustomerOrders() {
             const searchPhone = document.getElementById('trackMobileInput').value.trim();
             const resultsContainer = document.getElementById('trackedOrdersList');
@@ -463,9 +458,7 @@
                         <span class="text-amber-300 font-black">#${o.id}</span>
                         <div class="flex items-center gap-2">
                             <span class="text-emerald-400 font-bold">₹${o.fare}</span>
-                            
-                            <!-- CUSTOMER INDIVIDUAL ORDER REMOVE BUTTON -->
-                            <button onclick="removeCustomerOrder('${o.id}')" title="या स्क्रीनवरून ही बुकिंग काढून टाका" 
+                            <button onclick="removeCustomerOrder('${o.id}')" title="ही बुकिंग काढून टाका" 
                                 class="px-2 py-0.5 bg-red-950 border border-red-500/40 text-red-300 hover:bg-red-900 rounded text-[10px] font-bold transition flex items-center gap-1">
                                 <i class="fa-solid fa-trash-can"></i> काढा
                             </button>
@@ -504,7 +497,6 @@
             });
         }
 
-        // REMOVE SINGLE ORDER FROM DATABASE
         function removeCustomerOrder(orderId) {
             if (confirm("तुम्हाला ही बुकिंग यादीतून काढून टाकायची आहे का?")) {
                 let allOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
@@ -514,7 +506,6 @@
             }
         }
 
-        // CLEAR ALL SEARCHED ORDERS FOR THIS NUMBER
         function clearCustomerSearchedHistory() {
             const searchPhone = document.getElementById('trackMobileInput').value.trim();
             if (confirm("या नंबरच्या सर्व जुन्या बुकिंग्स काढून टाकायच्या आहेत का?")) {
