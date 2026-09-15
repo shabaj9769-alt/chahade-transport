@@ -44,7 +44,6 @@
                 <div class="relative mb-3">
                     <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-400 via-orange-500 to-red-600 p-1 shadow-2xl flex items-center justify-center border-2 border-amber-200">
                         <div class="w-full h-full rounded-full bg-stone-950 flex items-center justify-center overflow-hidden">
-                            <!-- Chhatrapati Shivaji Maharaj Statue Official Image -->
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Statue_of_Chhatrapati_Shivaji_Maharaj.jpg/480px-Statue_of_Chhatrapati_Shivaji_Maharaj.jpg" 
                                  alt="छत्रपती शिवाजी महाराज" class="w-full h-full object-cover object-top">
                         </div>
@@ -90,7 +89,6 @@
                         </button>
                     </div>
 
-                    <!-- Clear Search History Header -->
                     <div id="historyActionHeader" class="hidden flex justify-between items-center px-1 pt-1">
                         <span id="historyMatchCount" class="text-[11px] font-bold text-amber-300"></span>
                         <button type="button" onclick="clearCustomerSearchedHistory()" 
@@ -138,7 +136,7 @@
             <!-- Booking Form -->
             <form id="transportForm" class="space-y-4" onsubmit="event.preventDefault();">
                 
-                <!-- 1. Loading District -->
+                <!-- 1. Loading District Hub -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-location-dot text-amber-400"></i> १. माल भरण्याचा जिल्हा
@@ -147,58 +145,58 @@
                         class="w-full px-4 py-3 bg-[#4a1507]/80 border-2 border-amber-500/60 rounded-xl font-bold text-amber-200 text-sm focus:outline-none cursor-default shadow-inner">
                 </div>
 
-                <!-- 1.1 Palghar Area -->
+                <!-- 1.1 Loading Location (Auto Detect Start Point) -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-city text-amber-400"></i> पालघरमध्ये माल कुठून भरायचा आहे? (गाव/MIDC)
+                        <i class="fa-solid fa-city text-amber-400"></i> पालघरमध्ये माल कुठून भरायचा आहे? (गाव/MIDC/पत्ता)
                     </label>
                     <input type="text" id="palgharLoadingPoint" placeholder="उदा. चाहाडे गाव, बोईसर तारापूर MIDC, मनोर नाका..." required
                         class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
                 </div>
 
-                <!-- 2. Maharashtra Districts -->
+                <!-- 2. Maharashtra Districts (Cleaned up, no fixed KM text) -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-map-location-dot text-amber-400"></i> २. माल कुठे खाली करायचा? (महाराष्ट्र जिल्हा)
                     </label>
                     <select id="drop" required class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
                         <option value="" disabled selected>जिल्हा निवडा</option>
-                        <option value="मुंबई शहर" data-km="100" data-lat="18.922" data-lng="72.8346">मुंबई शहर (Mumbai City) ~100 KM</option>
-                        <option value="मुंबई उपनगर" data-km="95" data-lat="19.076" data-lng="72.8777">मुंबई उपनगर (Bandra/Andheri) ~95 KM</option>
-                        <option value="ठाणे" data-km="85" data-lat="19.2183" data-lng="72.9781">ठाणे (Thane / Bhiwandi) ~85 KM</option>
-                        <option value="नवी मुंबई" data-km="115" data-lat="19.033" data-lng="73.0297">नवी मुंबई (Navi Mumbai / Panvel) ~115 KM</option>
-                        <option value="रायगड" data-km="160" data-lat="18.5158" data-lng="73.1822">रायगड (Raigad) ~160 KM</option>
-                        <option value="नाशिक" data-km="170" data-lat="19.9975" data-lng="73.7898">नाशिक (Nashik) ~170 KM</option>
-                        <option value="पुणे" data-km="220" data-lat="18.5204" data-lng="73.8567">पुणे (Pune / Pimpri Chinchwad) ~220 KM</option>
-                        <option value="धुळे" data-km="290" data-lat="20.9042" data-lng="74.7749">धुळे (Dhule) ~290 KM</option>
-                        <option value="नंदुरबार" data-km="330" data-lat="21.3704" data-lng="74.2403">नंदुरबार (Nandurbar) ~330 KM</option>
-                        <option value="जळगाव" data-km="380" data-lat="21.0077" data-lng="75.5626">जळगाव (Jalgaon) ~380 KM</option>
-                        <option value="अहिल्यानगर" data-km="260" data-lat="19.0952" data-lng="74.7496">अहिल्यानगर (अहमदनगर) ~260 KM</option>
-                        <option value="छत्रपती संभाजीनगर" data-km="350" data-lat="19.8762" data-lng="75.3433">छत्रपती संभाजीनगर (औरंगाबाद) ~350 KM</option>
-                        <option value="जालना" data-km="410" data-lat="19.8347" data-lng="75.8816">जालना (Jalna) ~410 KM</option>
-                        <option value="सातारा" data-km="330" data-lat="17.6805" data-lng="74.0183">सातारा (Satara) ~330 KM</option>
-                        <option value="सांगली" data-km="440" data-lat="16.8524" data-lng="74.5815">सांगली (Sangli) ~440 KM</option>
-                        <option value="कोल्हापूर" data-km="450" data-lat="16.705" data-lng="74.2433">कोल्हापूर (Kolhapur) ~450 KM</option>
-                        <option value="सोलापूर" data-km="480" data-lat="17.6599" data-lng="75.9064">सोलापूर (Solapur) ~480 KM</option>
-                        <option value="रत्नागिरी" data-km="390" data-lat="16.9902" data-lng="73.312" >रत्नागिरी (Ratnagiri) ~390 KM</option>
-                        <option value="सिंधुदुर्ग" data-km="530" data-lat="16.1493" data-lng="73.6845">सिंधुदुर्ग (Sindhudurg) ~530 KM</option>
-                        <option value="बीड" data-km="440" data-lat="18.9891" data-lng="75.7556">बीड (Beed) ~440 KM</option>
-                        <option value="धाराशिव" data-km="510" data-lat="18.1763" data-lng="76.0355">धाराशिव (उस्मानाबाद) ~510 KM</option>
-                        <option value="लातूर" data-km="560" data-lat="18.4088" data-lng="76.5604">लातूर (Latur) ~560 KM</option>
-                        <option value="नांदेड" data-km="610" data-lat="19.1383" data-lng="77.321" >नांदेड (Nanded) ~610 KM</option>
-                        <option value="परभणी" data-km="520" data-lat="19.2611" data-lng="76.7774">परभणी (Parbhani) ~520 KM</option>
-                        <option value="हिंगोली" data-km="560" data-lat="19.7172" data-lng="77.1478">हिंगोली (Hingoli) ~560 KM</option>
-                        <option value="बुलढाणा" data-km="460" data-lat="20.5345" data-lng="76.1849">बुलढाणा (Buldhana) ~460 KM</option>
-                        <option value="अकोला" data-km="530" data-lat="20.7059" data-lng="77.0013">अकोला (Akola) ~530 KM</option>
-                        <option value="वाशिम" data-km="560" data-lat="20.1112" data-lng="77.1353">वाशिम (Washim) ~560 KM</option>
-                        <option value="अमरावती" data-km="610" data-lat="20.932" data-lng="77.7523">अमरावती (Amravati) ~610 KM</option>
-                        <option value="यवतमाळ" data-km="650" data-lat="20.3888" data-lng="78.1204">यवतमाळ (Yavatmal) ~650 KM</option>
-                        <option value="वर्धा" data-km="720" data-lat="20.7453" data-lng="78.6022">वर्धा (Wardha) ~720 KM</option>
-                        <option value="नागपूर" data-km="790" data-lat="21.1458" data-lng="79.0882">नागपूर (Nagpur) ~790 KM</option>
-                        <option value="भंडारा" data-km="850" data-lat="21.1685" data-lng="79.6521">भंडारा (Bhandara) ~850 KM</option>
-                        <option value="गोंदिया" data-km="920" data-lat="21.4589" data-lng="80.1916">गोंदिया (Gondia) ~920 KM</option>
-                        <option value="चंद्रपूर" data-km="790" data-lat="19.9615" data-lng="79.2961">चंद्रपूर (Chandrapur) ~790 KM</option>
-                        <option value="गडचिरोली" data-km="870" data-lat="20.1873" data-lng="79.9932">गडचिरोली (Gadchiroli) ~870 KM</option>
+                        <option value="मुंबई शहर" data-km="100" data-lat="18.922" data-lng="72.8346">मुंबई शहर (Mumbai City)</option>
+                        <option value="मुंबई उपनगर" data-km="95" data-lat="19.076" data-lng="72.8777">मुंबई उपनगर (Bandra / Andheri)</option>
+                        <option value="ठाणे" data-km="85" data-lat="19.2183" data-lng="72.9781">ठाणे (Thane / Bhiwandi)</option>
+                        <option value="नवी मुंबई" data-km="115" data-lat="19.033" data-lng="73.0297">नवी मुंबई (Navi Mumbai / Panvel)</option>
+                        <option value="रायगड" data-km="160" data-lat="18.5158" data-lng="73.1822">रायगड (Raigad)</option>
+                        <option value="नाशिक" data-km="170" data-lat="19.9975" data-lng="73.7898">नाशिक (Nashik)</option>
+                        <option value="पुणे" data-km="220" data-lat="18.5204" data-lng="73.8567">पुणे (Pune / Pimpri Chinchwad)</option>
+                        <option value="धुळे" data-km="290" data-lat="20.9042" data-lng="74.7749">धुळे (Dhule)</option>
+                        <option value="नंदुरबार" data-km="330" data-lat="21.3704" data-lng="74.2403">नंदुरबार (Nandurbar)</option>
+                        <option value="जळगाव" data-km="380" data-lat="21.0077" data-lng="75.5626">जळगाव (Jalgaon)</option>
+                        <option value="अहिल्यानगर" data-km="260" data-lat="19.0952" data-lng="74.7496">अहिल्यानगर (अहमदनगर)</option>
+                        <option value="छत्रपती संभाजीनगर" data-km="350" data-lat="19.8762" data-lng="75.3433">छत्रपती संभाजीनगर (औरंगाबाद)</option>
+                        <option value="जालना" data-km="410" data-lat="19.8347" data-lng="75.8816">जालना (Jalna)</option>
+                        <option value="सातारा" data-km="330" data-lat="17.6805" data-lng="74.0183">सातारा (Satara)</option>
+                        <option value="सांगली" data-km="440" data-lat="16.8524" data-lng="74.5815">सांगली (Sangli)</option>
+                        <option value="कोल्हापूर" data-km="450" data-lat="16.705" data-lng="74.2433">कोल्हापूर (Kolhapur)</option>
+                        <option value="सोलापूर" data-km="480" data-lat="17.6599" data-lng="75.9064">सोलापूर (Solapur)</option>
+                        <option value="रत्नागिरी" data-km="390" data-lat="16.9902" data-lng="73.312" >रत्नागिरी (Ratnagiri)</option>
+                        <option value="सिंधुदुर्ग" data-km="530" data-lat="16.1493" data-lng="73.6845">सिंधुदुर्ग (Sindhudurg)</option>
+                        <option value="बीड" data-km="440" data-lat="18.9891" data-lng="75.7556">बीड (Beed)</option>
+                        <option value="धाराशिव" data-km="510" data-lat="18.1763" data-lng="76.0355">धाराशिव (उस्मानाबाद)</option>
+                        <option value="लातूर" data-km="560" data-lat="18.4088" data-lng="76.5604">लातूर (Latur)</option>
+                        <option value="नांदेड" data-km="610" data-lat="19.1383" data-lng="77.321" >नांदेड (Nanded)</option>
+                        <option value="परभणी" data-km="520" data-lat="19.2611" data-lng="76.7774">परभणी (Parbhani)</option>
+                        <option value="हिंगोली" data-km="560" data-lat="19.7172" data-lng="77.1478">हिंगोली (Hingoli)</option>
+                        <option value="बुलढाणा" data-km="460" data-lat="20.5345" data-lng="76.1849">बुलढाणा (Buldhana)</option>
+                        <option value="अकोला" data-km="530" data-lat="20.7059" data-lng="77.0013">अकोला (Akola)</option>
+                        <option value="वाशिम" data-km="560" data-lat="20.1112" data-lng="77.1353">वाशिम (Washim)</option>
+                        <option value="अमरावती" data-km="610" data-lat="20.932" data-lng="77.7523">अमरावती (Amravati)</option>
+                        <option value="यवतमाळ" data-km="650" data-lat="20.3888" data-lng="78.1204">यवतमाळ (Yavatmal)</option>
+                        <option value="वर्धा" data-km="720" data-lat="20.7453" data-lng="78.6022">वर्धा (Wardha)</option>
+                        <option value="नागपूर" data-km="790" data-lat="21.1458" data-lng="79.0882">नागपूर (Nagpur)</option>
+                        <option value="भंडारा" data-km="850" data-lat="21.1685" data-lng="79.6521">भंडारा (Bhandara)</option>
+                        <option value="गोंदिया" data-km="920" data-lat="21.4589" data-lng="80.1916">गोंदिया (Gondia)</option>
+                        <option value="चंद्रपूर" data-km="790" data-lat="19.9615" data-lng="79.2961">चंद्रपूर (Chandrapur)</option>
+                        <option value="गडचिरोली" data-km="870" data-lat="20.1873" data-lng="79.9932">गडचिरोली (Gadchiroli)</option>
                     </select>
                 </div>
 
@@ -328,17 +326,17 @@
                     <i class="fa-solid fa-calculator text-base"></i> <span id="calcBtnText">अंदाजे भाडे तपासा (Show Fare)</span>
                 </button>
 
-                <!-- 📊 FARE & MAP RESULT CARD -->
+                <!-- 📊 FARE & AUTO-DETECT MAP RESULT CARD -->
                 <div id="fareResultCard" class="hidden space-y-4 pt-3 border-t-2 border-amber-500/40">
                     
-                    <!-- Ola/Uber Style Live Map Preview -->
+                    <!-- Ola/Uber Style Dynamic Live Route Map -->
                     <div class="bg-[#2a0b03] border-2 border-amber-500/50 p-2.5 rounded-2xl space-y-2 shadow-inner">
                         <div class="flex justify-between items-center px-1">
                             <span class="text-xs font-black text-amber-300 flex items-center gap-1.5">
                                 <i class="fa-solid fa-map-location-dot text-amber-400"></i> लाईव्ह रूट मॅप (Live Route Map)
                             </span>
-                            <span class="text-[10px] bg-amber-950 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-bold">
-                                🗺️ फ्री इंटरएक्टिव्ह
+                            <span id="mapRouteTitle" class="text-[10px] bg-amber-950 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-bold">
+                                🗺️ ऑटोडेटेक्टेड रूट
                             </span>
                         </div>
                         <div id="routeMap"></div>
@@ -592,6 +590,30 @@
             }
         }
 
+        // Smart Coordinate Offset Generator based on Loading Point Text (Ola/Uber style auto-detection simulation)
+        function getDynamicCoordinates(loadingText, defaultLat, defaultLng) {
+            let latOffset = 0;
+            let lngOffset = 0;
+            const text = loadingText.toLowerCase();
+
+            if (text.includes('मनोर') || text.includes('manor')) {
+                latOffset = 0.07; lngOffset = -0.05;
+            } else if (text.includes('बोईसर') || text.includes('boisar') || text.includes('midc')) {
+                latOffset = 0.12; lngOffset = -0.08;
+            } else if (text.includes('वाडा') || text.includes('wada')) {
+                latOffset = 0.05; lngOffset = 0.15;
+            } else if (text.includes('डहाणू') || text.includes('dahanu')) {
+                latOffset = 0.25; lngOffset = -0.12;
+            } else if (text.includes('वसई') || text.includes('विरार') || text.includes('vasai') || text.includes('virar')) {
+                latOffset = -0.15; lngOffset = 0.05;
+            }
+
+            return {
+                lat: defaultLat + latOffset,
+                lng: defaultLng + lngOffset
+            };
+        }
+
         function toggleCalculateFare() {
             const resultCard = document.getElementById('fareResultCard');
             const btnText = document.getElementById('calcBtnText');
@@ -603,13 +625,13 @@
                 return;
             }
 
+            const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value.trim();
             const dropSelect = document.getElementById('drop');
             const vehicleSelect = document.getElementById('vehicle');
-            const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value;
             const mobile = document.getElementById('mobile').value;
 
-            if(!palgharLoadingPoint.trim()) {
-                alert("कृपया पालघरमध्ये माल कुठून भरायचा आहे ते टाका!");
+            if(!palgharLoadingPoint) {
+                alert("कृपया पालघरमध्ये माल कुठून भरायचा आहे (गाव/MIDC) ते टाका!");
                 document.getElementById('palgharLoadingPoint').focus();
                 return;
             }
@@ -642,7 +664,7 @@
             calculatedPrice = Math.round((routeKm * ratePerKm) + baseFixedCharge);
             const advance = Math.round(calculatedPrice * 0.5);
 
-            document.getElementById('distanceDisplay').innerText = `~${routeKm} KM (पालघर ते ${dropSelect.value})`;
+            document.getElementById('distanceDisplay').innerText = `~${routeKm} KM (${palgharLoadingPoint} ➔ ${dropSelect.value})`;
             document.getElementById('fareDisplay').innerText = "₹ " + calculatedPrice.toLocaleString('en-IN');
             document.getElementById('advanceDisplay').innerText = "₹ " + advance.toLocaleString('en-IN');
             document.getElementById('balanceDisplay').innerText = "₹ " + advance.toLocaleString('en-IN');
@@ -652,13 +674,15 @@
             isFareCardOpen = true;
             resultCard.scrollIntoView({ behavior: 'smooth' });
 
-            // Initialize or update Leaflet Map
+            // Initialize or update Leaflet Map with Auto-Detected Pickup point
             setTimeout(() => {
-                const palgharLat = 19.6967;
-                const palgharLng = 72.7654;
+                const basePalgharLat = 19.6967;
+                const basePalgharLng = 72.7654;
+
+                const dynamicPickup = getDynamicCoordinates(palgharLoadingPoint, basePalgharLat, basePalgharLng);
 
                 if (!mapInstance) {
-                    mapInstance = L.map('routeMap').setView([palgharLat, palgharLng], 8);
+                    mapInstance = L.map('routeMap').setView([dynamicPickup.lat, dynamicPickup.lng], 8);
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; OpenStreetMap contributors'
                     }).addTo(mapInstance);
@@ -670,13 +694,13 @@
                     mapInstance.removeLayer(routeLayer);
                 }
 
-                const pickupMarker = L.marker([palgharLat, palgharLng]).bindPopup("<b>पालघर लोडिंग हब</b>");
+                const pickupMarker = L.marker([dynamicPickup.lat, dynamicPickup.lng]).bindPopup(`<b>${palgharLoadingPoint} (लोडिंग पॉईंट)</b>`);
                 const dropMarker = L.marker([dropLat, dropLng]).bindPopup(`<b>${dropSelect.value} (ड्रॉप पॉईंट)</b>`);
                 
                 routeLayer = L.layerGroup([
                     pickupMarker,
                     dropMarker,
-                    L.polyline([[palgharLat, palgharLng], [dropLat, dropLng]], {color: '#f59e0b', weight: 4, dashArray: '6, 6'})
+                    L.polyline([[dynamicPickup.lat, dynamicPickup.lng], [dropLat, dropLng]], {color: '#f59e0b', weight: 4, dashArray: '6, 6'})
                 ]).addTo(mapInstance);
 
                 mapInstance.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
