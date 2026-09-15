@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chahade Transport - Admin Control Panel</title>
+    <!-- Tailwind CSS Mobile Friendly UI -->
+    <script src="https://jsdelivr.net"></script>
+    <!-- Firebase SDK Scripts -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+    <style>
+        body { background-color: #f1f5f9; }
+    </style>
+</head>
+<body class="p-3 md:p-6 font-sans text-slate-800">
+
+    <div class="max-w-xl mx-auto">
+        <!-- Dashboard Header -->
+        <div class="bg-slate-900 text-white rounded-2xl p-5 shadow-lg mb-6 text-center">
+            <h1 class="text-2xl font-black tracking-tight">👑 CHAHADE TRANSPORT</h1>
+            <p class="text-xs text-blue-400 font-bold uppercase tracking-widest mt-1">Live Booking Control Panel</p>
+        </div>
+
+        <!-- Refresh Button -->
+        <div class="flex justify-between items-center mb-4 px-1">
+            <h2 class="text-lg font-bold text-slate-700">Active Load Requests</h2>
+            <button onclick="loadBookings()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow">
+                🔄 Refresh List
+            </button>
+        </div>
+
+        <!-- Live Bookings Render List Area -->
+        <div id="bookingsList" class="space-y-4">
+            <div class="text-center py-8 text-sm text-slate-500 font-medium bg-white rounded-xl shadow-sm">
+                Loading live data from Firestore...
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase Admin Logic -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBLAldxhyE5F1fdHze1hr6KVW0jiiR3mIY",
+            authDomain: "://firebaseapp.com",
+            projectId: "chahade-transport",
+            storageBucket: "chahade-transport.firebasestorage.app",
+            messagingSenderId: "947334069115",
+            appId: "1:947334069115:web:3c0b3c71d19950d66e5bde"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        function loadBookings() {
+            const listDiv = document.getElementById("bookingsList");
+            
+            db.collection("bookings").orderBy("bookingTimestamp", "desc").get()
+            .then((querySnapshot) => {
+                listDiv.innerHTML = ""; 
+                
+                if (querySnapshot.empty) {
+                    listDiv.innerHTML = `<div class="text-center py-8 text-slate-500 bg-white rounded-xl shadow-sm font-medium">Abhi tak koi booking nahi aayi hai.</div>`;
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const docId = doc.id;
+                    
+                    let statusColor = "bg-amber-100 text-amber-800";
+                    if(data.status === "Driver Dispatched") statusColor = "bg-blue-100 text-blue-800";
+                    if(data.status === "Delivered Successfully") statusColor = "bg-emerald-100 text-emerald-800";
+
+                    const cardHTML = `
+                        <div class="bg-white rounded-2xl shadow-md p-4 border border-slate-100 relative overflow-hidden">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="${statusColor} text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                                    ${data.status || 'Pending'}
+                                </span>
+                                <span class="text-[10px] text-slate-400 font-medium">ID: ${docId.substring(0,6)}...</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 mb-2 bg-slate-50 p-2.5 rounded-xl border border-slate-100 text-xs">
+                                <div><p class="text-[10px] text-slate-400 font-bold uppercase">From:</p><p class="font-bold text-slate-800">${data.pickupLocation}</p></div>
+                                <div><p class="text-[10px] text-slate-400 font-bold uppercase">To:</p><p class="font-bold text-blue-600">${data.dropLocation}</p></div>
+                            </div>
+
+                            <div class="text-xs space-y-1 mb-3 text-slate-600">
+                                <p><strong>Gaadi:</strong> ${data.fleetType}</p>
+                                <p><strong>Saaman:</strong> ${data.materialDetails}</p>
+                                <p class="text-emerald-700"><strong>Fare:</strong> ${data.estimatedFare} (${data.advanceCashDue} Loading Advance)</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
+                                <a href="tel:${data.customerMobile}" class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 rounded-xl text-center text-xs tracking-wide shadow flex items-center justify-center space-x-1">
+                                    📞 <span>CALL CUSTOMER</span>
+                                </a>
+                                
+                                <select onchange="updateStatus('${docId}', this.value)" class="w-full text-xs font-bold border border-slate-300 rounded-xl px-2 py-2 bg-white text-slate-700 focus:outline-none focus:border-blue-500">
+                                    <option value="" disabled selected>Update Job</option>
+                                    <option value="Driver Dispatched">🚚 Driver Sent</option>
+                                    <option value="Delivered Successfully">✅ Job Done</option>
+                                </select>
+                            </div>
+                        </div>
+                    `;
+                    listDiv.innerHTML += cardHTML;
+                });
+            })
+            .catch((error) => {
+                console.error("Data pull error: ", error);
+                listDiv.innerHTML = `<div class="bg-red-50 text-red-700 text-xs p-3 rounded-xl text-center">Error reading database.</div>`;
+            });
+        }
+
+        function updateStatus(id, newStatus) {
+            db.collection("bookings").doc(id).update({
+                status: newStatus
+            })
+            .then(() => {
+                alert(`Status successfully updated to: ${newStatus}`);
+                loadBookings(); 
+            })
+            .catch((error) => {
+                alert("Operation failure.");
+                console.error(error);
+            });
+        }
+
+        window.onload = loadBookings;
+    </script>
+</body>
+</html>
