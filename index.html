@@ -9,7 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Yatra+One&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #1a0800; color: #fffaf0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #140500; color: #fffaf0; }
         .shahi-font { font-family: 'Yatra One', cursive; }
     </style>
 </head>
@@ -28,15 +28,12 @@
 
         <!-- 👑 SHIVAJI MAHARAJ ROYAL BANNER & TRANSPORT HEADER -->
         <div class="relative bg-gradient-to-b from-orange-950 via-stone-900 to-stone-950 p-6 text-center border-b-2 border-orange-600/40 overflow-hidden">
-            <!-- Background Glow -->
             <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-48 bg-orange-600/20 rounded-full blur-3xl pointer-events-none"></div>
 
             <div class="relative z-10 flex flex-col items-center">
-                <!-- Chhatrapati Shivaji Maharaj Murti / Royal Icon Emblem -->
                 <div class="relative mb-3 group">
                     <div class="w-24 h-24 rounded-full bg-gradient-to-tr from-amber-500 via-orange-600 to-red-600 p-1 shadow-xl shadow-orange-600/40 flex items-center justify-center border-2 border-amber-300">
                         <div class="w-full h-full rounded-full bg-stone-950 flex items-center justify-center overflow-hidden relative">
-                            <!-- Chhatrapati Shivaji Maharaj Statue / Gold Silhouette Graphic -->
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Statue_of_Chhatrapati_Shivaji_Maharaj.jpg/480px-Statue_of_Chhatrapati_Shivaji_Maharaj.jpg" 
                                  alt="छत्रपती शिवाजी महाराज" 
                                  class="w-full h-full object-cover object-top hover:scale-110 transition duration-500">
@@ -47,7 +44,6 @@
                     </span>
                 </div>
 
-                <!-- Brand Title -->
                 <h1 class="text-3xl font-black tracking-tight text-amber-300 drop-shadow-md mt-2">
                     चाहाडे ट्रान्सपोर्ट
                 </h1>
@@ -77,17 +73,13 @@
             <!-- Booking Form -->
             <form id="transportForm" class="space-y-4" onsubmit="event.preventDefault();">
                 
-                <!-- 1. Loading District (Palghar Fixed) -->
+                <!-- 1. Loading District (Clean UI - Lock Removed) -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-location-dot text-orange-400"></i> १. माल भरण्याचा जिल्हा (Loading District)
                     </label>
-                    <div class="relative">
-                        <select id="pickup" required class="w-full px-4 py-3 bg-stone-800 border-2 border-stone-700 rounded-xl font-bold text-white text-sm focus:outline-none appearance-none">
-                            <option value="पालघर जिल्हा हब">पालघर जिल्हा मुख्य हब (Palghar District Hub - 0 KM)</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-amber-400 text-xs font-bold">🔒 फिक्स</div>
-                    </div>
+                    <input type="text" id="pickup" value="पालघर जिल्हा मुख्य हब (Palghar District Hub)" readonly
+                        class="w-full px-4 py-3 bg-stone-800/90 border-2 border-amber-600/40 rounded-xl font-bold text-amber-200 text-sm focus:outline-none cursor-default shadow-inner">
                 </div>
 
                 <!-- 1.1 Specific Area in Palghar -->
@@ -96,7 +88,7 @@
                         <i class="fa-solid fa-city text-orange-400"></i> पालघरमध्ये माल कुठून भरायचा आहे? (गाव/MIDC)
                     </label>
                     <input type="text" id="palgharLoadingPoint" placeholder="उदा. चाहाडे गाव, बोईसर तारापूर MIDC, मनोर नाका, वाडा..." required
-                        class="w-full px-4 py-3 bg-stone-800 border-2 border-amber-600/40 rounded-xl font-medium text-white placeholder-stone-500 text-sm focus:outline-none focus:border-amber-400 transition">
+                        class="w-full px-4 py-3 bg-stone-800 border-2 border-stone-700 rounded-xl font-medium text-white placeholder-stone-500 text-sm focus:outline-none focus:border-amber-400 transition">
                 </div>
 
                 <!-- 2. Maharashtra Districts -->
@@ -104,7 +96,7 @@
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-map-location-dot text-orange-400"></i> २. माल कुठे खाली करायचा? (महाराष्ट्र जिल्हा निवडा)
                     </label>
-                    <select id="drop" required class="w-full px-4 py-3 bg-stone-800 border-2 border-amber-600/40 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
+                    <select id="drop" required class="w-full px-4 py-3 bg-stone-800 border-2 border-stone-700 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
                         <option value="" disabled selected>जिल्हा निवडा (Select District)</option>
                         <option value="मुंबई शहर" data-km="100">मुंबई शहर (Mumbai City) ~100 KM</option>
                         <option value="मुंबई उपनगर" data-km="95">मुंबई उपनगर (Bandra/Andheri) ~95 KM</option>
@@ -163,32 +155,40 @@
                         class="w-full px-4 py-3 bg-stone-800 border-2 border-stone-700 rounded-xl font-medium text-white placeholder-stone-500 text-sm focus:outline-none focus:border-amber-400 transition">
                 </div>
 
-                <!-- 5. Cargo Weight & Loading Date (Side by Side) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                            <i class="fa-solid fa-weight-scale text-orange-400"></i> ५. मालाचे अंदाजे वजन
-                        </label>
-                        <select id="cargoWeight" required class="w-full px-3 py-3 bg-stone-800 border-2 border-amber-600/40 rounded-xl font-bold text-amber-200 text-xs focus:outline-none focus:border-amber-400 transition">
-                            <option value="५०० किलो पर्यंत">५०० किलो पर्यंत (हलका माल)</option>
-                            <option value="५०० किलो ते १ टन">५०० किलो ते १ टन (छोटा हत्ती)</option>
-                            <option value="१ टन ते १.७ टन" selected>१ टन ते १.७ टन (बोलेरो पिकअप)</option>
-                            <option value="२ टन ते ४.५ टन">२ टन ते ४.५ टन (आयशर १४ फूट)</option>
-                            <option value="५ टन ते ९ टन">५ टन ते ९ टन (आयशर १९ फूट)</option>
-                            <option value="१० टन किंवा जास्त">१० टन किंवा जास्त (६ चाकी)</option>
-                        </select>
-                    </div>
+                <!-- 5. Cargo Weight -->
+                <div>
+                    <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-weight-scale text-orange-400"></i> ५. मालाचे अंदाजे वजन (Cargo Weight)
+                    </label>
+                    <select id="cargoWeight" required class="w-full px-3 py-3 bg-stone-800 border-2 border-stone-700 rounded-xl font-bold text-amber-200 text-xs focus:outline-none focus:border-amber-400 transition">
+                        <option value="५०० किलो पर्यंत">५०० किलो पर्यंत (हलका माल)</option>
+                        <option value="५०० किलो ते १ टन">५०० किलो ते १ टन (छोटा हत्ती)</option>
+                        <option value="१ टन ते १.७ टन" selected>१ टन ते १.७ टन (बोलेरो पिकअप)</option>
+                        <option value="२ टन ते ४.५ टन">२ टन ते ४.५ टन (आयशर १४ फूट)</option>
+                        <option value="५ टन ते ९ टन">५ टन ते ९ टन (आयशर १९ फूट)</option>
+                        <option value="१० टन किंवा जास्त">१० टन किंवा जास्त (६ चाकी)</option>
+                    </select>
+                </div>
 
+                <!-- 6. NEW: Booking Calendar (Date & Time Select) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-stone-800/60 p-3 rounded-2xl border border-amber-600/30">
                     <div>
-                        <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                            <i class="fa-solid fa-calendar-day text-orange-400"></i> ६. माल भरण्याची तारीख
+                        <label class="block text-[11px] font-bold text-amber-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-calendar-days text-orange-400"></i> ६. गाडी भरण्याची तारीख (Date)
                         </label>
                         <input type="date" id="loadingDate" required
-                            class="w-full px-3 py-2.5 bg-stone-800 border-2 border-amber-600/40 rounded-xl font-bold text-white text-xs focus:outline-none focus:border-amber-400 transition">
+                            class="w-full px-3 py-2.5 bg-stone-900 border border-stone-700 rounded-xl font-bold text-amber-200 text-xs focus:outline-none focus:border-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-amber-300 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-clock text-orange-400"></i> गाडी हवी ती वेळ (Time)
+                        </label>
+                        <input type="time" id="loadingTime" required value="10:00"
+                            class="w-full px-3 py-2.5 bg-stone-900 border border-stone-700 rounded-xl font-bold text-amber-200 text-xs focus:outline-none focus:border-amber-400">
                     </div>
                 </div>
 
-                <!-- 7. Customer Contact Number -->
+                <!-- 7. Customer Contact -->
                 <div>
                     <label class="block text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-phone text-emerald-400"></i> ७. ग्राहकाचा संपर्क नंबर (Customer Mobile)
@@ -211,7 +211,7 @@
                     </select>
                 </div>
 
-                <!-- 9. Assigned Truck Owner (Dynamic List from Admin) -->
+                <!-- 9. Assigned Truck Owner -->
                 <div class="bg-gradient-to-r from-orange-950/50 to-stone-900 p-4 rounded-2xl border-2 border-amber-600/30 space-y-2">
                     <label class="block text-xs font-black text-amber-300 uppercase tracking-wider flex items-center justify-between">
                         <span><i class="fa-solid fa-truck"></i> ९. उपलब्ध ट्रक मालक निवडा</span>
@@ -220,16 +220,16 @@
                     <select id="truckOwnerSelect" class="w-full px-3 py-2.5 bg-stone-900 border-2 border-amber-500/40 rounded-xl font-bold text-sm text-amber-200 focus:outline-none">
                         <!-- Populated dynamically -->
                     </select>
-                    <p class="text-[10px] text-stone-400">*ऑर्डर कन्फर्म केल्यानंतर फक्त या निवडलेल्या ट्रक मालकाच्या WhatsApp वर संपूर्ण माहिती जाईल.</p>
+                    <p class="text-[10px] text-stone-400">*ऑर्डर कन्फर्म केल्यानंतर फक्त या निवडलेल्या ट्रक मालकाच्या WhatsApp वर बुकिंग जाईल.</p>
                 </div>
 
-                <!-- Calculate Fare Button -->
-                <button type="button" onclick="calculateDistanceFare()" 
+                <!-- Calculate Fare Button (Tap to Open / Tap to Close Toggle) -->
+                <button type="button" id="calcBtn" onclick="toggleCalculateFare()" 
                     class="w-full py-4 px-4 bg-gradient-to-r from-orange-600 via-amber-600 to-red-600 hover:brightness-110 text-white font-black rounded-2xl shadow-xl shadow-orange-900/50 text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-[0.98]">
-                    <i class="fa-solid fa-calculator text-base"></i> अंदाजे भाडे आणि अंतर तपासा (Calculate Fare)
+                    <i class="fa-solid fa-calculator text-base"></i> <span id="calcBtnText">अंदाजे भाडे तपासा (Show Fare)</span>
                 </button>
 
-                <!-- 📊 FARE & CONFIRMATION CARD -->
+                <!-- 📊 FARE & CONFIRMATION CARD (Toggle Controlled) -->
                 <div id="fareResultCard" class="hidden space-y-4 pt-3 border-t-2 border-orange-600/30">
                     <div class="bg-gradient-to-br from-orange-950/60 via-stone-900 to-stone-950 border-2 border-amber-500/50 p-4 rounded-2xl space-y-3">
                         
@@ -248,11 +248,11 @@
                             <span>५०% पोहोचल्यावर: <strong id="balanceDisplay" class="text-emerald-300">₹ 0</strong></span>
                         </div>
 
-                        <!-- ⚠️ REQUIRED CNF DISCLAIMER BOX -->
+                        <!-- ⚠️ CNF DISCLAIMER BOX -->
                         <div class="bg-red-950/60 border border-red-500/40 p-3 rounded-xl mt-3 text-left">
                             <p class="text-[11px] text-red-200 leading-relaxed font-semibold">
                                 <i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i>
-                                <strong>महत्त्वाची सूचना:</strong> हे दाखवलेले भाडे फक्त एक प्राथमिक अंदाज (Estimated Fare) आहे, हे फायनल बिल नाही. अंतिम बिल (CNF Bill) आणि गाडीची उपलब्धता मालक/चालकाशी (Truck Owner) फोनवर बोलून निश्चित (Confirm) करून घ्यावी.
+                                <strong>महत्त्वाची सूचना:</strong> हे दाखवलेले भाडे फक्त प्राथमिक अंदाज (Estimated Fare) आहे, हे फायनल बिल नाही. अंतिम बिल (CNF Bill) गाडी मालकाशी बोलून निश्चित करावे.
                             </p>
                         </div>
                     </div>
@@ -268,10 +268,11 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC (SYNCED WITH ADMIN) -->
+    <!-- JAVASCRIPT LOGIC -->
     <script>
         let calculatedPrice = 0;
         let routeKm = 0;
+        let isFareCardOpen = false;
 
         let perKmRates = {
             ace: 16,
@@ -288,16 +289,14 @@
         ];
 
         function loadData() {
-            // Set Today's date as minimum
+            // Set Today's date as min
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('loadingDate').value = today;
             document.getElementById('loadingDate').min = today;
 
-            // Load Rates
             const savedRates = localStorage.getItem('chahade_perkm_rates');
             if(savedRates) perKmRates = JSON.parse(savedRates);
 
-            // Load Trucks
             const savedTrucks = localStorage.getItem('chahade_truck_owners');
             if(savedTrucks) registeredTrucks = JSON.parse(savedTrucks);
             
@@ -311,7 +310,20 @@
             });
         }
 
-        function calculateDistanceFare() {
+        // Toggle Feature: Ek Baar Tap Par Open, Dobara Tap Par Close
+        function toggleCalculateFare() {
+            const resultCard = document.getElementById('fareResultCard');
+            const btnText = document.getElementById('calcBtnText');
+
+            if (isFareCardOpen) {
+                // Agar pehle se khula hai toh band karo
+                resultCard.classList.add('hidden');
+                btnText.innerText = "अंदाजे भाडे तपासा (Show Fare)";
+                isFareCardOpen = false;
+                return;
+            }
+
+            // Calculations validate & run
             const dropSelect = document.getElementById('drop');
             const vehicleSelect = document.getElementById('vehicle');
             const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value;
@@ -324,7 +336,7 @@
             }
 
             if(!dropSelect.value) {
-                alert("कृपया जिल्हा निवडा!");
+                alert("कृपया माल कुठे खाली करायचा तो जिल्हा निवडा!");
                 document.getElementById('drop').focus();
                 return;
             }
@@ -350,8 +362,10 @@
             document.getElementById('advanceDisplay').innerText = "₹ " + advance.toLocaleString('en-IN');
             document.getElementById('balanceDisplay').innerText = "₹ " + advance.toLocaleString('en-IN');
 
-            const resultCard = document.getElementById('fareResultCard');
+            // Open the card
             resultCard.classList.remove('hidden');
+            btnText.innerText = "भाडे तपशील लपवा (Hide Fare)";
+            isFareCardOpen = true;
             resultCard.scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -363,6 +377,7 @@
             const cargoWeight = document.getElementById('cargoWeight').value;
             const customerMobile = document.getElementById('mobile').value;
             const loadingDate = document.getElementById('loadingDate').value;
+            const loadingTime = document.getElementById('loadingTime').value;
             const vehicle = document.getElementById('vehicle').options[document.getElementById('vehicle').selectedIndex].text;
             
             const truckOwnerSelect = document.getElementById('truckOwnerSelect');
@@ -375,11 +390,12 @@
             }
             if(!driverPhone.startsWith("91") && driverPhone.length === 10) driverPhone = "91" + driverPhone;
 
-            // 1. Save Date-wise order for Admin Panel
+            // Save Date & Time in Admin Panel
             const newOrder = {
                 id: "ORD-" + Math.floor(1000 + Math.random() * 9000),
                 bookedOn: new Date().toLocaleDateString('en-IN'),
                 loadingDate: loadingDate,
+                loadingTime: loadingTime,
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 from: palgharLoadingPoint,
                 to: drop,
@@ -394,10 +410,11 @@
             orders.unshift(newOrder);
             localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
 
-            // 2. WhatsApp Message for Truck Owner ONLY
+            // WhatsApp Dispatch to Truck Owner
             const orderDetails = 
                 `*🚩 चाहाडे ट्रान्सपोर्ट - नवीन मालवाहतूक भाडे बुकिंग 🚚*%0A%0A` +
-                `📅 *माल भरण्याची तारीख:* ${loadingDate}%0A` +
+                `📅 *गाडी हवी ती तारीख:* ${loadingDate}%0A` +
+                `⏰ *गाडी हवी ती वेळ:* ${loadingTime}%0A` +
                 `📍 *माल भरणे (Loading):* ${encodeURIComponent(palgharLoadingPoint)} (पालघर)%0A` +
                 `🎯 *खाली करण्याचे ठिकाण:* ${encodeURIComponent(drop)}%0A` +
                 `🛣️ *अंदाजे अंतर:* ~${routeKm} KM%0A` +
