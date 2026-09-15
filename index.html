@@ -9,19 +9,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Yatra+One&display=swap" rel="stylesheet">
-    <!-- Leaflet Free Map CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background: radial-gradient(circle at top, #7c2d12 0%, #431407 50%, #270a03 100%);
             color: #fffaf0; 
-        }
-        #routeMap {
-            height: 180px;
-            width: 100%;
-            border-radius: 0.75rem;
-            z-index: 1;
         }
     </style>
 </head>
@@ -107,8 +99,8 @@
                     <i class="fa-solid fa-shield-halved text-amber-400"></i> वाहतूक नियम व अटी:
                 </p>
                 <div class="text-[11px] text-amber-100/90 mt-1.5 leading-relaxed space-y-1">
-                    <p>• <strong>मध्यस्थ पोर्टल:</strong> मालवाहतुकीची व सुरक्षेची जबाबदारी संबंधित स्वतंत्र वाहन मालकाची राहील.</p>
-                    <p>• <strong>५०% ॲडव्हान्स:</strong> लोडिंग पॉईंटवर ५०% ॲडव्हान्स रोख किंवा UPI द्वारे चालकाकडे देणे बंधनकारक आहे.</p>
+                    <p>• <strong>मध्यस्थ पोर्टल:</strong> मालवाहतुकीची व सुरक्षेची जबाबदारी संबंधित स्वतंत्र वाहन मालकाची राहील[span_1](start_span)[span_1](end_span).</p>
+                    <p>• <strong>५०% ॲडव्हान्स:</strong> लोडिंग पॉईंटवर ५०% ॲडव्हान्स रोख किंवा UPI द्वारे चालकाकडे देणे बंधनकारक आहे[span_2](start_span)[span_2](end_span).</p>
                 </div>
             </div>
 
@@ -117,14 +109,14 @@
                 <div class="w-14 h-14 mx-auto rounded-full bg-emerald-500 text-stone-950 flex items-center justify-center text-2xl font-black shadow-lg">✓</div>
                 <div>
                     <h3 class="text-lg font-black text-emerald-200">बुकिंग यशस्वीरीत्या नोंदवली गेली!</h3>
-                    <p class="text-xs text-stone-200 mt-1">आपली ऑर्डर अधिकृतपणे सिस्टीममध्ये कन्फर्म झाली आहे.</p>
+                    <p class="text-xs text-stone-200 mt-1">आपली ऑर्डर अधिकृतपणे सिस्टीममध्ये कन्फर्म झाली आहे[span_3](start_span)[span_3](end_span).</p>
                 </div>
                 <div class="bg-black/40 p-3 rounded-xl border border-emerald-500/40 text-left text-xs space-y-1.5 text-emerald-100">
                     <p>🆔 <strong>बुकिंग ID:</strong> <span id="successOrderId" class="text-amber-300 font-black"></span></p>
                     <p>📅 <strong>तारीख व वेळ:</strong> <span id="successDateTime" class="text-white"></span></p>
                     <p>💰 <strong>अंदाजे भाडे:</strong> <span id="successFare" class="text-amber-300 font-bold"></span></p>
                     <p class="text-[11px] text-stone-300 pt-1 border-t border-emerald-500/30">
-                        📞 <em>गाडी निश्चित होताच आपण वरील "माझी जुनी बुकिंग तपासा" पर्यायातून चालकाचा नंबर पाहू शकता.</em>
+                        📞 <em>गाडी निश्चित होताच आपण वरील "माझी जुनी बुकिंग तपासा" पर्यायातून चालकाचा नंबर पाहू शकता[span_4](start_span)[span_4](end_span).</em>
                     </p>
                 </div>
                 <button type="button" onclick="resetFormForNextBooking()" 
@@ -136,7 +128,7 @@
             <!-- Booking Form -->
             <form id="transportForm" class="space-y-4" onsubmit="event.preventDefault();">
                 
-                <!-- 1. Loading District Hub -->
+                <!-- 1. Loading Hub -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-location-dot text-amber-400"></i> १. माल भरण्याचा जिल्हा
@@ -145,65 +137,71 @@
                         class="w-full px-4 py-3 bg-[#4a1507]/80 border-2 border-amber-500/60 rounded-xl font-bold text-amber-200 text-sm focus:outline-none cursor-default shadow-inner">
                 </div>
 
-                <!-- 1.1 Loading Location (Auto Detect Start Point) -->
+                <!-- 1.1 Loading Point with GPS Auto-Detect Button -->
                 <div>
-                    <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-city text-amber-400"></i> पालघरमध्ये माल कुठून भरायचा आहे? (गाव/MIDC/पत्ता)
-                    </label>
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-city text-amber-400"></i> पालघरमध्ये माल कुठून भरायचा आहे?
+                        </label>
+                        <button type="button" onclick="detectCurrentGPSLocation()" 
+                            class="text-[10px] bg-emerald-950 border border-emerald-500/50 text-emerald-300 px-2.5 py-1 rounded-lg font-black hover:bg-emerald-900 transition flex items-center gap-1">
+                            <i class="fa-solid fa-crosshairs"></i> GPS लोकेशन घ्या
+                        </button>
+                    </div>
                     <input type="text" id="palgharLoadingPoint" placeholder="उदा. चाहाडे गाव, बोईसर तारापूर MIDC, मनोर नाका..." required
                         class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
                 </div>
 
-                <!-- 2. Maharashtra Districts (Cleaned up, no fixed KM text) -->
+                <!-- 2. Maharashtra Districts -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-map-location-dot text-amber-400"></i> २. माल कुठे खाली करायचा? (महाराष्ट्र जिल्हा)
                     </label>
                     <select id="drop" required class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
                         <option value="" disabled selected>जिल्हा निवडा</option>
-                        <option value="मुंबई शहर" data-km="100" data-lat="18.922" data-lng="72.8346">मुंबई शहर (Mumbai City)</option>
-                        <option value="मुंबई उपनगर" data-km="95" data-lat="19.076" data-lng="72.8777">मुंबई उपनगर (Bandra / Andheri)</option>
-                        <option value="ठाणे" data-km="85" data-lat="19.2183" data-lng="72.9781">ठाणे (Thane / Bhiwandi)</option>
-                        <option value="नवी मुंबई" data-km="115" data-lat="19.033" data-lng="73.0297">नवी मुंबई (Navi Mumbai / Panvel)</option>
-                        <option value="रायगड" data-km="160" data-lat="18.5158" data-lng="73.1822">रायगड (Raigad)</option>
-                        <option value="नाशिक" data-km="170" data-lat="19.9975" data-lng="73.7898">नाशिक (Nashik)</option>
-                        <option value="पुणे" data-km="220" data-lat="18.5204" data-lng="73.8567">पुणे (Pune / Pimpri Chinchwad)</option>
-                        <option value="धुळे" data-km="290" data-lat="20.9042" data-lng="74.7749">धुळे (Dhule)</option>
-                        <option value="नंदुरबार" data-km="330" data-lat="21.3704" data-lng="74.2403">नंदुरबार (Nandurbar)</option>
-                        <option value="जळगाव" data-km="380" data-lat="21.0077" data-lng="75.5626">जळगाव (Jalgaon)</option>
-                        <option value="अहिल्यानगर" data-km="260" data-lat="19.0952" data-lng="74.7496">अहिल्यानगर (अहमदनगर)</option>
-                        <option value="छत्रपती संभाजीनगर" data-km="350" data-lat="19.8762" data-lng="75.3433">छत्रपती संभाजीनगर (औरंगाबाद)</option>
-                        <option value="जालना" data-km="410" data-lat="19.8347" data-lng="75.8816">जालना (Jalna)</option>
-                        <option value="सातारा" data-km="330" data-lat="17.6805" data-lng="74.0183">सातारा (Satara)</option>
-                        <option value="सांगली" data-km="440" data-lat="16.8524" data-lng="74.5815">सांगली (Sangli)</option>
-                        <option value="कोल्हापूर" data-km="450" data-lat="16.705" data-lng="74.2433">कोल्हापूर (Kolhapur)</option>
-                        <option value="सोलापूर" data-km="480" data-lat="17.6599" data-lng="75.9064">सोलापूर (Solapur)</option>
-                        <option value="रत्नागिरी" data-km="390" data-lat="16.9902" data-lng="73.312" >रत्नागिरी (Ratnagiri)</option>
-                        <option value="सिंधुदुर्ग" data-km="530" data-lat="16.1493" data-lng="73.6845">सिंधुदुर्ग (Sindhudurg)</option>
-                        <option value="बीड" data-km="440" data-lat="18.9891" data-lng="75.7556">बीड (Beed)</option>
-                        <option value="धाराशिव" data-km="510" data-lat="18.1763" data-lng="76.0355">धाराशिव (उस्मानाबाद)</option>
-                        <option value="लातूर" data-km="560" data-lat="18.4088" data-lng="76.5604">लातूर (Latur)</option>
-                        <option value="नांदेड" data-km="610" data-lat="19.1383" data-lng="77.321" >नांदेड (Nanded)</option>
-                        <option value="परभणी" data-km="520" data-lat="19.2611" data-lng="76.7774">परभणी (Parbhani)</option>
-                        <option value="हिंगोली" data-km="560" data-lat="19.7172" data-lng="77.1478">हिंगोली (Hingoli)</option>
-                        <option value="बुलढाणा" data-km="460" data-lat="20.5345" data-lng="76.1849">बुलढाणा (Buldhana)</option>
-                        <option value="अकोला" data-km="530" data-lat="20.7059" data-lng="77.0013">अकोला (Akola)</option>
-                        <option value="वाशिम" data-km="560" data-lat="20.1112" data-lng="77.1353">वाशिम (Washim)</option>
-                        <option value="अमरावती" data-km="610" data-lat="20.932" data-lng="77.7523">अमरावती (Amravati)</option>
-                        <option value="यवतमाळ" data-km="650" data-lat="20.3888" data-lng="78.1204">यवतमाळ (Yavatmal)</option>
-                        <option value="वर्धा" data-km="720" data-lat="20.7453" data-lng="78.6022">वर्धा (Wardha)</option>
-                        <option value="नागपूर" data-km="790" data-lat="21.1458" data-lng="79.0882">नागपूर (Nagpur)</option>
-                        <option value="भंडारा" data-km="850" data-lat="21.1685" data-lng="79.6521">भंडारा (Bhandara)</option>
-                        <option value="गोंदिया" data-km="920" data-lat="21.4589" data-lng="80.1916">गोंदिया (Gondia)</option>
-                        <option value="चंद्रपूर" data-km="790" data-lat="19.9615" data-lng="79.2961">चंद्रपूर (Chandrapur)</option>
-                        <option value="गडचिरोली" data-km="870" data-lat="20.1873" data-lng="79.9932">गडचिरोली (Gadchiroli)</option>
+                        <option value="मुंबई शहर" data-km="100">मुंबई शहर (Mumbai City)</option>
+                        <option value="मुंबई उपनगर" data-km="95">मुंबई उपनगर (Bandra / Andheri)</option>
+                        <option value="ठाणे" data-km="85">ठाणे (Thane / Bhiwandi)</option>
+                        <option value="नवी मुंबई" data-km="115">नवी मुंबई (Navi Mumbai / Panvel)</option>
+                        <option value="रायगड" data-km="160">रायगड (Raigad)</option>
+                        <option value="नाशिक" data-km="170">नाशिक (Nashik)</option>
+                        <option value="पुणे" data-km="220">पुणे (Pune / Pimpri Chinchwad)</option>
+                        <option value="धुळे" data-km="290">धुळे (Dhule)</option>
+                        <option value="नंदुरबार" data-km="330">नंदुरबार (Nandurbar)</option>
+                        <option value="जळगाव" data-km="380">जळगाव (Jalgaon)</option>
+                        <option value="अहिल्यानगर" data-km="260">अहिल्यानगर (अहमदनगर)</option>
+                        <option value="छत्रपती संभाजीनगर" data-km="350">छत्रपती संभाजीनगर (औरंगाबाद)</option>
+                        <option value="जालना" data-km="410">जालना (Jalna)</option>
+                        <option value="सातारा" data-km="330">सातारा (Satara)</option>
+                        <option value="सांगली" data-km="440">सांगली (Sangli)</option>
+                        <option value="कोल्हापूर" data-km="450">कोल्हापूर (Kolhapur)</option>
+                        <option value="सोलापूर" data-km="480">सोलापूर (Solapur)</option>
+                        <option value="रत्नागिरी" data-km="390">रत्नागिरी (Ratnagiri)</option>
+                        <option value="सिंधुदुर्ग" data-km="530">सिंधुदुर्ग (Sindhudurg)</option>
+                        <option value="बीड" data-km="440">बीड (Beed)</option>
+                        <option value="धाराशिव" data-km="510">धाराशिव (उस्मानाबाद)</option>
+                        <option value="लातूर" data-km="560">लातूर (Latur)</option>
+                        <option value="नांदेड" data-km="610">नांदेड (Nanded)</option>
+                        <option value="परभणी" data-km="520">परभणी (Parbhani)</option>
+                        <option value="हिंगोली" data-km="560">हिंगोली (Hingoli)</option>
+                        <option value="बुलढाणा" data-km="460">बुलढाणा (Buldhana)</option>
+                        <option value="अकोला" data-km="530">अकोला (Akola)</option>
+                        <option value="वाशिम" data-km="560">वाशिम (Washim)</option>
+                        <option value="अमरावती" data-km="610">अमरावती (Amravati)</option>
+                        <option value="यवतमाळ" data-km="650">यवतमाळ (Yavatmal)</option>
+                        <option value="वर्धा" data-km="720">वर्धा (Wardha)</option>
+                        <option value="नागपूर" data-km="790">नागपूर (Nagpur)</option>
+                        <option value="भंडारा" data-km="850">भंडारा (Bhandara)</option>
+                        <option value="गोंदिया" data-km="920">गोंदिया (Gondia)</option>
+                        <option value="चंद्रपूर" data-km="790">चंद्रपूर (Chandrapur)</option>
+                        <option value="गडचिरोली" data-km="870">गडचिरोली (Gadchiroli)</option>
                     </select>
                 </div>
 
-                <!-- 3. Unloading Address -->
+                <!-- 3. Unloading Address & Pincode -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-house-chimney text-amber-400"></i> ३. माल खाली करण्याचा पत्ता
+                        <i class="fa-solid fa-house-chimney text-amber-400"></i> ३. माल खाली करण्याचा पत्ता व पिनकोड (Pincode)
                     </label>
                     <textarea id="fullAddress" rows="2" placeholder="दुकान/कंपनी नाव, गल्ली, लँडमार्क, एरिया पिनकोड..." required
                         class="w-full px-4 py-2.5 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition"></textarea>
@@ -222,7 +220,7 @@
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                         <span class="flex items-center gap-1.5"><i class="fa-solid fa-weight-scale text-amber-400"></i> ५. मालाचे अंदाजे वजन</span>
-                        <span class="text-[10px] text-emerald-400 font-bold">● गाडी आपोआप निवडली जाईल</span>
+                        <span class="text-[10px] text-emerald-400 font-bold">● गाडी आपोआप निवडली जाईल[span_5](start_span)[span_5](end_span)</span>
                     </label>
                     <select id="cargoWeight" onchange="syncWeightToVehicle()" required class="w-full px-3 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-amber-200 text-xs focus:outline-none focus:border-amber-400 transition">
                         <option value="५०० किलो पर्यंत" data-vindex="1">५०० किलो पर्यंत (हलका माल - टाटा एस)</option>
@@ -293,7 +291,7 @@
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                         <span><i class="fa-solid fa-truck-moving text-amber-400"></i> ८. लागणारी मालवाहतूक गाडी (Vehicle Category)</span>
-                        <span class="text-[10px] text-emerald-400 font-bold">● Live Status</span>
+                        <span class="text-[10px] text-emerald-400 font-bold">● Live Status[span_6](start_span)[span_6](end_span)</span>
                     </label>
                     <select id="vehicle" onchange="syncVehicleToWeight()" class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
                     </select>
@@ -306,7 +304,7 @@
                             <i class="fa-solid fa-shield-halved text-emerald-400"></i> ९. वाहन व चालक वाटप (Fleet Allocation)
                         </span>
                         <span class="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-md font-bold">
-                            ● अधिकृत नेटवर्क
+                            ● अधिकृत नेटवर्क[span_7](start_span)[span_7](end_span)
                         </span>
                     </div>
 
@@ -326,26 +324,12 @@
                     <i class="fa-solid fa-calculator text-base"></i> <span id="calcBtnText">अंदाजे भाडे तपासा (Show Fare)</span>
                 </button>
 
-                <!-- 📊 FARE & AUTO-DETECT MAP RESULT CARD -->
+                <!-- 📊 CLEAN FARE RESULT CARD -->
                 <div id="fareResultCard" class="hidden space-y-4 pt-3 border-t-2 border-amber-500/40">
-                    
-                    <!-- Ola/Uber Style Dynamic Live Route Map -->
-                    <div class="bg-[#2a0b03] border-2 border-amber-500/50 p-2.5 rounded-2xl space-y-2 shadow-inner">
-                        <div class="flex justify-between items-center px-1">
-                            <span class="text-xs font-black text-amber-300 flex items-center gap-1.5">
-                                <i class="fa-solid fa-map-location-dot text-amber-400"></i> लाईव्ह रूट मॅप (Live Route Map)
-                            </span>
-                            <span id="mapRouteTitle" class="text-[10px] bg-amber-950 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-bold">
-                                🗺️ ऑटोडेटेक्टेड रूट
-                            </span>
-                        </div>
-                        <div id="routeMap"></div>
-                    </div>
-
                     <div class="bg-[#4a1507]/90 border-2 border-amber-400/70 p-4 rounded-2xl space-y-3 shadow-xl">
                         
                         <div class="flex justify-between items-center bg-[#300c03] px-3 py-2 rounded-xl border border-amber-500/30 text-xs">
-                            <span class="text-amber-200 font-bold">🛣️ एकूण रस्ता अंतर:</span>
+                            <span class="text-amber-200 font-bold">🛣️ एकूण स्वयंचलित अंतर (Auto Distance):</span>
                             <span id="distanceDisplay" class="font-black text-amber-300">0 KM</span>
                         </div>
 
@@ -362,17 +346,17 @@
                         <div class="bg-[#6b1c06]/80 border border-amber-400/40 p-3 rounded-xl text-left">
                             <p class="text-[11px] text-amber-100 leading-relaxed font-semibold">
                                 <i class="fa-solid fa-triangle-exclamation text-amber-300 mr-1"></i>
-                                <strong>महत्त्वाची सूचना:</strong> हे दाखवलेले भाडे फक्त प्राथमिक अंदाज (Estimated Fare) आहे, हे फायनल बिल नाही. अंतिम बिल ट्रान्सपोर्ट कार्यालयाशी बोलून निश्चित करावे.
+                                <strong>महत्त्वाची सूचना:</strong> हे दाखवलेले भाडे फक्त प्राथमिक अंदाज (Estimated Fare) आहे, हे फायनल बिल नाही. अंतिम बिल ट्रान्सपोर्ट कार्यालयाशी बोलून निश्चित करावे[span_8](start_span)[span_8](end_span).
                             </p>
                         </div>
 
                         <div class="bg-[#280500] border-2 border-red-500/50 p-3.5 rounded-xl text-left space-y-1.5 shadow-inner">
                             <p class="text-xs font-black text-red-400 uppercase tracking-wider flex items-center gap-1.5">
-                                <i class="fa-solid fa-phone-volume text-amber-400"></i> मॅन्युअल कन्फर्मेशन व कॅन्सलेशन नियम:
+                                <i class="fa-solid fa-phone-volume text-amber-400"></i> मॅन्युअल कन्फर्मेशन व कॅन्सलेशन नियम[span_9](start_span)[span_9](end_span):
                             </p>
                             <p class="text-[11px] text-stone-300 leading-relaxed font-medium">
-                                • ऑर्डर कन्फर्म केल्यानंतर थेट <strong>गाडी मालकाचा/ड्रायव्हरचा फोन येईल</strong> व अंतिम बोलणी निश्चित होईल.<br>
-                                • <strong>कॅन्सलेशन नियम:</strong> जर बुकिंग झाल्यानंतर तुम्हाला लोड कॅन्सल करायचा असेल, तर त्याची सर्व जबाबदारी <strong>ग्राहक आणि ट्रक मालक यांची राहील</strong>; पोर्टलची यात कोणतीही मध्यस्थी जबाबदारी राहणार नाही.
+                                • ऑर्डर कन्फर्म केल्यानंतर थेट <strong>गाडी मालकाचा/ड्रायव्हरचा फोन येईल</strong> व अंतिम बोलणी निश्चित होईल[span_10](start_span)[span_10](end_span).<br>
+                                • <strong>कॅन्सलेशन नियम:</strong> जर बुकिंग झाल्यानंतर तुम्हाला लोड कॅन्सल करायचा असेल, तर त्याची सर्व जबाबदारी <strong>ग्राहक आणि ट्रक मालक यांची राहील</strong>; पोर्टलची यात कोणतीही मध्यस्थी जबाबदारी राहणार नाही[span_11](start_span)[span_11](end_span).
                             </p>
                         </div>
                     </div>
@@ -387,14 +371,10 @@
         </div>
     </div>
 
-    <!-- Leaflet Free Map JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         let calculatedPrice = 0;
         let routeKm = 0;
         let isFareCardOpen = false;
-        let mapInstance = null;
-        let routeLayer = null;
 
         let availableVehicleCategories = [
             { id: "v_pickup", name: "महिंद्रा बोलेरो / पिकअप (कमाल १.५ टन)", rate: 22, available: true },
@@ -446,6 +426,25 @@
             } else {
                 content.classList.add('hidden');
                 icon.innerText = "उघडा ⬇️";
+            }
+        }
+
+        // GPS Auto-Detect Location Function for Pickup
+        function detectCurrentGPSLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude.toFixed(4);
+                        const lng = position.coords.longitude.toFixed(4);
+                        document.getElementById('palgharLoadingPoint').value = `GPS Pin: (${lat}, ${lng}) - पालघर क्षेत्र`;
+                        alert("✅ जीपीएस (GPS) लोकेशन यशस्वीरीत्या डिटेक्ट झाली!");
+                    },
+                    (error) => {
+                        alert("⚠️ GPS लोकेशन मिळवण्यात अपयश. कृपया आपले जीपीएस (GPS) सुरू तपासा किंवा हाताने नाव टाका.");
+                    }
+                );
+            } else {
+                alert("तुमचा ब्राउझर जीपीएस सपोर्ट करत नाही.");
             }
         }
 
@@ -515,7 +514,7 @@
                             </div>
                         ` : `
                             <p class="text-[10px] text-stone-300 italic pt-1 border-t border-emerald-500/30">
-                                चाहाडे ट्रान्सपोर्ट कार्यालयाकडून ड्रायव्हर नियुक्त होताच येथे थेट कॉल करण्याचा पर्याय सुरू होईल.
+                                चाहाडे ट्रान्सपोर्ट कार्यालयाकडून ड्रायव्हर नियुक्त होताच येथे थेट कॉल करण्याचा पर्याय सुरू होईल[span_12](start_span)[span_12](end_span).
                             </p>
                         `}
                     </div>
@@ -590,30 +589,6 @@
             }
         }
 
-        // Smart Coordinate Offset Generator based on Loading Point Text (Ola/Uber style auto-detection simulation)
-        function getDynamicCoordinates(loadingText, defaultLat, defaultLng) {
-            let latOffset = 0;
-            let lngOffset = 0;
-            const text = loadingText.toLowerCase();
-
-            if (text.includes('मनोर') || text.includes('manor')) {
-                latOffset = 0.07; lngOffset = -0.05;
-            } else if (text.includes('बोईसर') || text.includes('boisar') || text.includes('midc')) {
-                latOffset = 0.12; lngOffset = -0.08;
-            } else if (text.includes('वाडा') || text.includes('wada')) {
-                latOffset = 0.05; lngOffset = 0.15;
-            } else if (text.includes('डहाणू') || text.includes('dahanu')) {
-                latOffset = 0.25; lngOffset = -0.12;
-            } else if (text.includes('वसई') || text.includes('विरार') || text.includes('vasai') || text.includes('virar')) {
-                latOffset = -0.15; lngOffset = 0.05;
-            }
-
-            return {
-                lat: defaultLat + latOffset,
-                lng: defaultLng + lngOffset
-            };
-        }
-
         function toggleCalculateFare() {
             const resultCard = document.getElementById('fareResultCard');
             const btnText = document.getElementById('calcBtnText');
@@ -631,7 +606,7 @@
             const mobile = document.getElementById('mobile').value;
 
             if(!palgharLoadingPoint) {
-                alert("कृपया पालघरमध्ये माल कुठून भरायचा आहे (गाव/MIDC) ते टाका!");
+                alert("कृपया पालघरमध्ये माल कुठून भरायचा आहे ते टाका किंवा GPS बटन दाबा!");
                 document.getElementById('palgharLoadingPoint').focus();
                 return;
             }
@@ -655,8 +630,6 @@
 
             const selectedDropOption = dropSelect.options[dropSelect.selectedIndex];
             routeKm = Number(selectedDropOption.getAttribute('data-km')) || 100;
-            const dropLat = Number(selectedDropOption.getAttribute('data-lat')) || 19.076;
-            const dropLng = Number(selectedDropOption.getAttribute('data-lng')) || 72.8777;
 
             const selectedVehicleOpt = vehicleSelect.options[vehicleSelect.selectedIndex];
             const ratePerKm = Number(selectedVehicleOpt.getAttribute('data-rate')) || 22;
@@ -673,38 +646,6 @@
             btnText.innerText = "भाडे तपशील लपवा (Hide Fare)";
             isFareCardOpen = true;
             resultCard.scrollIntoView({ behavior: 'smooth' });
-
-            // Initialize or update Leaflet Map with Auto-Detected Pickup point
-            setTimeout(() => {
-                const basePalgharLat = 19.6967;
-                const basePalgharLng = 72.7654;
-
-                const dynamicPickup = getDynamicCoordinates(palgharLoadingPoint, basePalgharLat, basePalgharLng);
-
-                if (!mapInstance) {
-                    mapInstance = L.map('routeMap').setView([dynamicPickup.lat, dynamicPickup.lng], 8);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; OpenStreetMap contributors'
-                    }).addTo(mapInstance);
-                } else {
-                    mapInstance.invalidateSize();
-                }
-
-                if (routeLayer) {
-                    mapInstance.removeLayer(routeLayer);
-                }
-
-                const pickupMarker = L.marker([dynamicPickup.lat, dynamicPickup.lng]).bindPopup(`<b>${palgharLoadingPoint} (लोडिंग पॉईंट)</b>`);
-                const dropMarker = L.marker([dropLat, dropLng]).bindPopup(`<b>${dropSelect.value} (ड्रॉप पॉईंट)</b>`);
-                
-                routeLayer = L.layerGroup([
-                    pickupMarker,
-                    dropMarker,
-                    L.polyline([[dynamicPickup.lat, dynamicPickup.lng], [dropLat, dropLng]], {color: '#f59e0b', weight: 4, dashArray: '6, 6'})
-                ]).addTo(mapInstance);
-
-                mapInstance.fitBounds(routeLayer.getBounds(), { padding: [30, 30] });
-            }, 300);
         }
 
         function confirmOrderDirectlyOnApp() {
