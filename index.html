@@ -48,7 +48,7 @@
                 <h1 class="text-3xl font-black tracking-tight text-amber-200 drop-shadow mt-2">चाहाडे ट्रान्सपोर्ट</h1>
                 <p class="text-xs font-bold text-amber-400 tracking-widest uppercase mt-0.5">लॉजिस्टिक आणि मालवाहतूक सेवा</p>
                 <span class="inline-flex items-center gap-1.5 bg-[#6c200a]/70 text-amber-200 text-[11px] font-bold px-3.5 py-1 rounded-full uppercase tracking-wider border border-amber-400/50 mt-2.5">
-                    📍 पालघर जिल्हा अधिकृत कमर्शियल लोडिंग हब[span_2](start_span)[span_2](end_span)
+                    📍 पालघर जिल्हा अधिकृत कमर्शियल लोडिंग हब
                 </span>
             </div>
         </div>
@@ -99,8 +99,8 @@
                     <i class="fa-solid fa-shield-halved text-amber-400"></i> वाहतूक नियम व अटी:
                 </p>
                 <div class="text-[11px] text-amber-100/90 mt-1.5 leading-relaxed space-y-1">
-                    <p>• <strong>मध्यस्थ पोर्टल:</strong> मालवाहतुकीची व सुरक्षेची जबाबदारी संबंधित स्वतंत्र वाहन मालकाची राहील[span_3](start_span)[span_3](end_span).</p>
-                    <p>• <strong>५०% ॲडव्हान्स:</strong> लोडिंग पॉईंटवर ५०% ॲडव्हान्स रोख किंवा UPI द्वारे चालकाकडे देणे बंधनकारक आहे[span_4](start_span)[span_4](end_span).</p>
+                    <p>• <strong>मध्यस्थ पोर्टल:</strong> मालवाहतुकीची व सुरक्षेची जबाबदारी संबंधित स्वतंत्र वाहन मालकाची राहील.</p>
+                    <p>• <strong>५०% ॲडव्हान्स:</strong> लोडिंग पॉईंटवर ५०% ॲडव्हान्स रोख किंवा UPI द्वारे चालकाकडे देणे बंधनकारक आहे.</p>
                 </div>
             </div>
 
@@ -109,14 +109,14 @@
                 <div class="w-14 h-14 mx-auto rounded-full bg-emerald-500 text-stone-950 flex items-center justify-center text-2xl font-black shadow-lg">✓</div>
                 <div>
                     <h3 class="text-lg font-black text-emerald-200">बुकिंग यशस्वीरीत्या नोंदवली गेली!</h3>
-                    <p class="text-xs text-stone-200 mt-1">आपली ऑर्डर अधिकृतपणे सिस्टीममध्ये कन्फर्म झाली आहे[span_5](start_span)[span_5](end_span).</p>
+                    <p class="text-xs text-stone-200 mt-1">आपली ऑर्डर अधिकृतपणे सिस्टीममध्ये कन्फर्म झाली आहे.</p>
                 </div>
                 <div class="bg-black/40 p-3 rounded-xl border border-emerald-500/40 text-left text-xs space-y-1.5 text-emerald-100">
                     <p>🆔 <strong>बुकिंग ID:</strong> <span id="successOrderId" class="text-amber-300 font-black"></span></p>
                     <p>📅 <strong>तारीख व वेळ:</strong> <span id="successDateTime" class="text-white"></span></p>
                     <p>💰 <strong>अंदाजे भाडे:</strong> <span id="successFare" class="text-amber-300 font-bold"></span></p>
                     <p class="text-[11px] text-stone-300 pt-1 border-t border-emerald-500/30">
-                        📞 <em>गाडी निश्चित होताच आपण वरील "माझी जुनी बुकिंग तपासा" पर्यायातून चालकाचा नंबर पाहू शकता[span_6](start_span)[span_6](end_span).</em>
+                        📞 <em>गाडी निश्चित होताच आपण वरील "माझी जुनी बुकिंग तपासा" पर्यायातून चालकाचा नंबर पाहू शकता.</em>
                     </p>
                 </div>
                 <button type="button" onclick="resetFormForNextBooking()" 
@@ -137,7 +137,7 @@
                         class="w-full px-4 py-3 bg-[#4a1507]/80 border-2 border-amber-500/60 rounded-xl font-bold text-amber-200 text-sm focus:outline-none cursor-default shadow-inner">
                 </div>
 
-                <!-- 1.1 Palghar Loading Area (Manual Input) -->
+                <!-- 1.1 Palghar Loading Area -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-city text-amber-400"></i> पालघरमध्ये माल कुठून भरायचा आहे? (गाव/MIDC/पत्ता)
@@ -146,53 +146,53 @@
                         class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
                 </div>
 
-                <!-- 2. Maharashtra Districts with approximate KM preview -->
+                <!-- 2. Maharashtra Districts -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-map-location-dot text-amber-400"></i> २. माल कुठे खाली करायचा? (महाराष्ट्र जिल्हा)
                     </label>
                     <select id="drop" required class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
                         <option value="" disabled selected>जिल्हा निवडा</option>
-                        <option value="मुंबई शहर" data-km="100">मुंबई शहर (Mumbai City) ~100 KM[span_7](start_span)[span_7](end_span)</option>
-                        <option value="मुंबई उपनगर" data-km="95">मुंबई उपनगर (Bandra/Andheri) ~95 KM[span_8](start_span)[span_8](end_span)</option>
-                        <option value="ठाणे" data-km="85">ठाणे (Thane / Bhiwandi) ~85 KM[span_9](start_span)[span_9](end_span)</option>
-                        <option value="नवी मुंबई" data-km="115">नवी मुंबई (Navi Mumbai / Panvel) ~115 KM[span_10](start_span)[span_10](end_span)</option>
-                        <option value="रायगड" data-km="160">रायगड (Raigad) ~160 KM[span_11](start_span)[span_11](end_span)</option>
-                        <option value="नाशिक" data-km="170">नाशिक (Nashik) ~170 KM[span_12](start_span)[span_12](end_span)</option>
-                        <option value="पुणे" data-km="220">पुणे (Pune / Pimpri Chinchwad) ~220 KM[span_13](start_span)[span_13](end_span)</option>
-                        <option value="धुळे" data-km="290">धुळे (Dhule) ~290 KM[span_14](start_span)[span_14](end_span)</option>
-                        <option value="नंदुरबार" data-km="330">नंदुरबार (Nandurbar) ~330 KM[span_15](start_span)[span_15](end_span)</option>
-                        <option value="जळगाव" data-km="380">जळगाव (Jalgaon) ~380 KM[span_16](start_span)[span_16](end_span)</option>
-                        <option value="अहिल्यानगर" data-km="260">अहिल्यानगर (अहमदनगर) ~260 KM[span_17](start_span)[span_17](end_span)</option>
-                        <option value="छत्रपती संभाजीनगर" data-km="350">छत्रपती संभाजीनगर (औरंगाबाद) ~350 KM[span_18](start_span)[span_18](end_span)</option>
-                        <option value="जालना" data-km="410">जालना (Jalna) ~410 KM[span_19](start_span)[span_19](end_span)</option>
-                        <option value="सातारा" data-km="330">सातारा (Satara) ~330 KM[span_20](start_span)[span_20](end_span)</option>
-                        <option value="सांगली" data-km="440">सांगली (Sangli) ~440 KM[span_21](start_span)[span_21](end_span)</option>
-                        <option value="कोल्हापूर" data-km="450">कोल्हापूर (Kolhapur) ~450 KM[span_22](start_span)[span_22](end_span)</option>
-                        <option value="सोलापूर" data-km="480">सोलापूर (Solapur) ~480 KM[span_23](start_span)[span_23](end_span)</option>
-                        <option value="रत्नागिरी" data-km="390">रत्नागिरी (Ratnagiri) ~390 KM[span_24](start_span)[span_24](end_span)</option>
-                        <option value="सिंधुदुर्ग" data-km="530">सिंधुदुर्ग (Sindhudurg) ~530 KM[span_25](start_span)[span_25](end_span)</option>
-                        <option value="बीड" data-km="440">बीड (Beed) ~440 KM[span_26](start_span)[span_26](end_span)</option>
-                        <option value="धाराशिव" data-km="510">धाराशिव (उस्मानाबाद) ~510 KM[span_27](start_span)[span_27](end_span)</option>
-                        <option value="लातूर" data-km="560">लातूर (Latur) ~560 KM[span_28](start_span)[span_28](end_span)</option>
-                        <option value="नांदेड" data-km="610">नांदेड (Nanded) ~610 KM[span_29](start_span)[span_29](end_span)</option>
-                        <option value="परभणी" data-km="520">परभणी (Parbhani) ~520 KM[span_30](start_span)[span_30](end_span)</option>
-                        <option value="हिंगोली" data-km="560">हिंगोली (Hingoli) ~560 KM[span_31](start_span)[span_31](end_span)</option>
-                        <option value="बुलढाणा" data-km="460">बुलढाणा (Buldhana) ~460 KM[span_32](start_span)[span_32](end_span)</option>
-                        <option value="अकोला" data-km="530">अकोला (Akola) ~530 KM[span_33](start_span)[span_33](end_span)</option>
-                        <option value="वाशिम" data-km="560">वाशिम (Washim) ~560 KM[span_34](start_span)[span_34](end_span)</option>
-                        <option value="अमरावती" data-km="610">अमरावती (Amravati) ~610 KM[span_35](start_span)[span_35](end_span)</option>
-                        <option value="यवतमाळ" data-km="650">यवतमाळ (Yavatmal) ~650 KM[span_36](start_span)[span_36](end_span)</option>
-                        <option value="वर्धा" data-km="720">वर्धा (Wardha) ~720 KM[span_37](start_span)[span_37](end_span)</option>
-                        <option value="नागपूर" data-km="790">नागपूर (Nagpur) ~790 KM[span_38](start_span)[span_38](end_span)</option>
-                        <option value="भंडारा" data-km="850">भंडारा (Bhandara) ~850 KM[span_39](start_span)[span_39](end_span)</option>
-                        <option value="गोंदिया" data-km="920">गोंदिया (Gondia) ~920 KM[span_40](start_span)[span_40](end_span)</option>
-                        <option value="चंद्रपूर" data-km="790">चंद्रपूर (Chandrapur) ~790 KM[span_41](start_span)[span_41](end_span)</option>
-                        <option value="गडचिरोली" data-km="870">गडचिरोली (Gadchiroli) ~870 KM[span_42](start_span)[span_42](end_span)</option>
+                        <option value="मुंबई शहर" data-km="100">मुंबई शहर (Mumbai City) ~100 KM</option>
+                        <option value="मुंबई उपनगर" data-km="95">मुंबई उपनगर (Bandra/Andheri) ~95 KM</option>
+                        <option value="ठाणे" data-km="85">ठाणे (Thane / Bhiwandi) ~85 KM</option>
+                        <option value="नवी मुंबई" data-km="115">नवी मुंबई (Navi Mumbai / Panvel) ~115 KM</option>
+                        <option value="रायगड" data-km="160">रायगड (Raigad) ~160 KM</option>
+                        <option value="नाशिक" data-km="170">नाशिक (Nashik) ~170 KM</option>
+                        <option value="पुणे" data-km="220">पुणे (Pune / Pimpri Chinchwad) ~220 KM</option>
+                        <option value="धुळे" data-km="290">धुळे (Dhule) ~290 KM</option>
+                        <option value="नंदुरबार" data-km="330">नंदुरबार (Nandurbar) ~330 KM</option>
+                        <option value="जळगाव" data-km="380">जळगाव (Jalgaon) ~380 KM</option>
+                        <option value="अहिल्यानगर" data-km="260">अहिल्यानगर (अहमदनगर) ~260 KM</option>
+                        <option value="छत्रपती संभाजीनगर" data-km="350">छत्रपती संभाजीनगर (औरंगाबाद) ~350 KM</option>
+                        <option value="जालना" data-km="410">जालना (Jalna) ~410 KM</option>
+                        <option value="सातारा" data-km="330">सातारा (Satara) ~330 KM</option>
+                        <option value="सांगली" data-km="440">सांगली (Sangli) ~440 KM</option>
+                        <option value="कोल्हापूर" data-km="450">कोल्हापूर (Kolhapur) ~450 KM</option>
+                        <option value="सोलापूर" data-km="480">सोलापूर (Solapur) ~480 KM</option>
+                        <option value="रत्नागिरी" data-km="390">रत्नागिरी (Ratnagiri) ~390 KM</option>
+                        <option value="सिंधुदुर्ग" data-km="530">सिंधुदुर्ग (Sindhudurg) ~530 KM</option>
+                        <option value="बीड" data-km="440">बीड (Beed) ~440 KM</option>
+                        <option value="धाराशिव" data-km="510">धाराशिव (उस्मानाबाद) ~510 KM</option>
+                        <option value="लातूर" data-km="560">लातूर (Latur) ~560 KM</option>
+                        <option value="नांदेड" data-km="610">नांदेड (Nanded) ~610 KM</option>
+                        <option value="परभणी" data-km="520">परभणी (Parbhani) ~520 KM</option>
+                        <option value="हिंगोली" data-km="560">हिंगोली (Hingoli) ~560 KM</option>
+                        <option value="बुलढाणा" data-km="460">बुलढाणा (Buldhana) ~460 KM</option>
+                        <option value="अकोला" data-km="530">अकोला (Akola) ~530 KM</option>
+                        <option value="वाशिम" data-km="560">वाशिम (Washim) ~560 KM</option>
+                        <option value="अमरावती" data-km="610">अमरावती (Amravati) ~610 KM</option>
+                        <option value="यवतमाळ" data-km="650">यवतमाळ (Yavatmal) ~650 KM</option>
+                        <option value="वर्धा" data-km="720">वर्धा (Wardha) ~720 KM</option>
+                        <option value="नागपूर" data-km="790">नागपूर (Nagpur) ~790 KM</option>
+                        <option value="भंडारा" data-km="850">भंडारा (Bhandara) ~850 KM</option>
+                        <option value="गोंदिया" data-km="920">गोंदिया (Gondia) ~920 KM</option>
+                        <option value="चंद्रपूर" data-km="790">चंद्रपूर (Chandrapur) ~790 KM</option>
+                        <option value="गडचिरोली" data-km="870">गडचिरोली (Gadchiroli) ~870 KM</option>
                     </select>
                 </div>
 
-                <!-- 3. Unloading Address (Manual Input) -->
+                <!-- 3. Unloading Address -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-house-chimney text-amber-400"></i> ३. माल खाली करण्याचा सविस्तर पत्ता (पिनकोडसह)
@@ -214,7 +214,7 @@
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                         <span class="flex items-center gap-1.5"><i class="fa-solid fa-weight-scale text-amber-400"></i> ५. मालाचे अंदाजे वजन</span>
-                        <span class="text-[10px] text-emerald-400 font-bold">● गाडी आपोआप निवडली जाईल[span_43](start_span)[span_43](end_span)</span>
+                        <span class="text-[10px] text-emerald-400 font-bold">● गाडी आपोआप निवडली जाईल</span>
                     </label>
                     <select id="cargoWeight" onchange="syncWeightToVehicle()" required class="w-full px-3 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-amber-200 text-xs focus:outline-none focus:border-amber-400 transition">
                         <option value="५०० किलो पर्यंत" data-vindex="1">५०० किलो पर्यंत (हलका माल - टाटा एस)</option>
@@ -285,7 +285,7 @@
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                         <span><i class="fa-solid fa-truck-moving text-amber-400"></i> ८. लागणारी मालवाहतूक गाडी (Vehicle Category)</span>
-                        <span class="text-[10px] text-emerald-400 font-bold">● Live Status[span_44](start_span)[span_44](end_span)</span>
+                        <span class="text-[10px] text-emerald-400 font-bold">● Live Status</span>
                     </label>
                     <select id="vehicle" onchange="syncVehicleToWeight()" class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
                     </select>
@@ -298,7 +298,7 @@
                             <i class="fa-solid fa-shield-halved text-emerald-400"></i> ९. वाहन व चालक वाटप (Fleet Allocation)
                         </span>
                         <span class="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-md font-bold">
-                            ● अधिकृत नेटवर्क[span_45](start_span)[span_45](end_span)
+                            ● अधिकृत नेटवर्क
                         </span>
                     </div>
 
@@ -340,17 +340,17 @@
                         <div class="bg-[#6b1c06]/80 border border-amber-400/40 p-3 rounded-xl text-left">
                             <p class="text-[11px] text-amber-100 leading-relaxed font-semibold">
                                 <i class="fa-solid fa-triangle-exclamation text-amber-300 mr-1"></i>
-                                <strong>महत्त्वाची सूचना:</strong> हे दाखवलेले भाडे फक्त प्राथमिक अंदाज (Estimated Fare) आहे, हे फायनल बिल नाही. अंतिम बिल ट्रान्सपोर्ट कार्यालयाशी बोलून निश्चित करावे[span_46](start_span)[span_46](end_span).
+                                <strong>महत्त्वाची सूचना:</strong> हे दाखवलेले भाडे फक्त प्राथमिक अंदाज (Estimated Fare) आहे, हे फायनल बिल नाही. अंतिम बिल ट्रान्सपोर्ट कार्यालयाशी बोलून निश्चित करावे.
                             </p>
                         </div>
 
                         <div class="bg-[#280500] border-2 border-red-500/50 p-3.5 rounded-xl text-left space-y-1.5 shadow-inner">
                             <p class="text-xs font-black text-red-400 uppercase tracking-wider flex items-center gap-1.5">
-                                <i class="fa-solid fa-phone-volume text-amber-400"></i> मॅन्युअल कन्फर्मेशन व कॅन्सलेशन नियम[span_47](start_span)[span_47](end_span):
+                                <i class="fa-solid fa-phone-volume text-amber-400"></i> मॅन्युअल कन्फर्मेशन व कॅन्सलेशन नियम:
                             </p>
                             <p class="text-[11px] text-stone-300 leading-relaxed font-medium">
-                                • ऑर्डर कन्फर्म केल्यानंतर थेट <strong>गाडी मालकाचा/ड्रायव्हरचा फोन येईल</strong> व अंतिम बोलणी निश्चित होईल[span_48](start_span)[span_48](end_span).<br>
-                                • <strong>कॅन्सलेशन नियम:</strong> जर बुकिंग झाल्यानंतर तुम्हाला लोड कॅन्सल करायचा असेल, तर त्याची सर्व जबाबदारी <strong>ग्राहक आणि ट्रक मालक यांची राहील</strong>; पोर्टलची यात कोणतीही मध्यस्थी जबाबदारी राहणार नाही[span_49](start_span)[span_49](end_span).
+                                • ऑर्डर कन्फर्म केल्यानंतर थेट <strong>गाडी मालकाचा/ड्रायव्हरचा फोन येईल</strong> व अंतिम बोलणी निश्चित होईल.<br>
+                                • <strong>कॅन्सलेशन नियम:</strong> जर बुकिंग झाल्यानंतर तुम्हाला लोड कॅन्सल करायचा असेल, तर त्याची सर्व जबाबदारी <strong>ग्राहक आणि ट्रक मालक यांची राहील</strong>; पोर्टलची यात कोणतीही मध्यस्थी जबाबदारी राहणार नाही.
                             </p>
                         </div>
                     </div>
@@ -489,7 +489,7 @@
                             </div>
                         ` : `
                             <p class="text-[10px] text-stone-300 italic pt-1 border-t border-emerald-500/30">
-                                चाहाडे ट्रान्सपोर्ट कार्यालयाकडून ड्रायव्हर नियुक्त होताच येथे थेट कॉल करण्याचा पर्याय सुरू होईल[span_50](start_span)[span_50](end_span).
+                                चाहाडे ट्रान्सपोर्ट कार्यालयाकडून ड्रायव्हर नियुक्त होताच येथे थेट कॉल करण्याचा पर्याय सुरू होईल.
                             </p>
                         `}
                     </div>
