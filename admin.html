@@ -33,7 +33,7 @@
                 class="w-full py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-black rounded-xl text-sm uppercase tracking-wider shadow-lg">
                 अनलॉक करा (Login)
             </button>
-            <p id="pinErrorMsg" class="hidden text-xs text-red-400 font-bold">चुकाचा पिन! पुन्हा प्रयत्न करा.</p>
+            <p id="pinErrorMsg" class="hidden text-xs text-red-400 font-bold">चुकीचा पिन! पुन्हा प्रयत्न करा.</p>
         </div>
     </div>
 
@@ -127,6 +127,8 @@
     </div>
 
     <script>
+        const dbUrl = "https://manorbiryani-default-rtdb.firebaseio.com/chahade_transport/";
+
         let vehicleCategories = [
             { id: "v_pickup", name: "महिंद्रा बोलेरो / पिकअप (कमाल १.५ टन)", rate: 22, available: true },
             { id: "v_ace", name: "टाटा एस - छोटा हत्ती (कमाल १ टन)", rate: 16, available: true },
@@ -136,15 +138,21 @@
         ];
 
         let lastKnownOrderCount = 0;
+        let cachedOrders = [];
+        let cachedOwners = [];
+        let currentAdminPin = "1234";
 
-        function getStoredPin() {
-            return localStorage.getItem('chahade_admin_pin') || "1234";
-        }
-
-        function verifyAdminPin() {
+        async function verifyAdminPin() {
             const entered = document.getElementById('adminPinInput').value;
             const errorMsg = document.getElementById('pinErrorMsg');
-            if (entered === getStoredPin()) {
+            
+            try {
+                const res = await fetch(dbUrl + "admin_pin.json");
+                const pin = await res.json();
+                if (pin) currentAdminPin = pin.toString();
+            } catch(e) {}
+
+            if (entered === currentAdminPin) {
                 document.getElementById('pinLockModal').classList.add('hidden');
                 document.getElementById('adminDashboardContent').classList.remove('hidden');
                 initAdminDashboard();
@@ -161,52 +169,68 @@
 
         function openChangePinModal() { document.getElementById('changePinModal').classList.remove('hidden'); }
         function closeChangePinModal() { document.getElementById('changePinModal').classList.add('hidden'); }
-        
-        function updateAdminPin() {
+
+        async function updateAdminPin() {
             const oldPin = document.getElementById('oldPinInput').value;
             const newPin = document.getElementById('newPinInput').value;
-            if(oldPin !== getStoredPin()) { alert("जुना पिन चुकाचा आहे!"); return; }
+            if(oldPin !== currentAdminPin) { alert("जुना पिन चुकीचा आहे!"); return; }
             if(!newPin || newPin.length !== 4) { alert("नवीन पिन अचूक ४ अंकी असावा!"); return; }
-            localStorage.setItem('chahade_admin_pin', newPin);
-            alert("ॲडमिन पिन यशस्वीरीत्या बदलला गेला!");
+
+            await fetch(dbUrl + "admin_pin.json", {
+                method: "PUT",
+                body: JSON.stringify(newPin)
+            });
+
+            currentAdminPin = newPin;
+            alert("ॲडमिन पिन क्लाउडवर सुरक्षितपणे बदलला गेला!");
             document.getElementById('oldPinInput').value = "";
             document.getElementById('newPinInput').value = "";
             closeChangePinModal();
         }
 
-        function initAdminDashboard() {
-            const savedVehicles = localStorage.getItem('chahade_vehicle_categories');
-            if (savedVehicles) vehicleCategories = JSON.parse(savedVehicles);
-
-            const orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-            lastKnownOrderCount = orders.length;
-
-            renderVehicleToggles();
-            renderOwners();
-            renderOrdersAccordion();
-
-            setInterval(backgroundOrderPolling, 4000);
+        async function initAdminDashboard() {
+            await syncCloudData();
+            setInterval(syncCloudData, 4000);
         }
 
-        function backgroundOrderPolling() {
-            const orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-            if(orders.length > lastKnownOrderCount) {
-                playTruckHorn();
-                lastKnownOrderCount = orders.length;
+        async function syncCloudData() {
+            try {
+                const res = await fetch(dbUrl + ".json");
+                const data = await res.json();
+                if (!data) return;
+
+                if (data.vehicles) {
+                    vehicleCategories = data.vehicles;
+                }
+                renderVehicleToggles();
+
+                if (data.owners) {
+                    cachedOwners = Object.keys(data.owners).map(k => ({ id: k, ...data.owners[k] }));
+                } else {
+                    cachedOwners = [];
+                }
+                renderOwners();
+
+                if (data.orders) {
+                    const ordersList = Object.keys(data.orders).map(k => ({ id: k, ...data.orders[k] }));
+                    if (ordersList.length > lastKnownOrderCount && lastKnownOrderCount !== 0) {
+                        playTruckHorn();
+                    }
+                    lastKnownOrderCount = ordersList.length;
+                    cachedOrders = ordersList;
+                } else {
+                    cachedOrders = [];
+                    lastKnownOrderCount = 0;
+                }
                 renderOrdersAccordion();
-            } else if(orders.length < lastKnownOrderCount) {
-                lastKnownOrderCount = orders.length;
-                renderOrdersAccordion();
-            }
+            } catch(e) {}
         }
 
         function playTruckHorn() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 if(ctx.state === 'suspended') { ctx.resume(); }
-                
                 const now = ctx.currentTime;
-                
                 const osc1 = ctx.createOscillator();
                 const gain1 = ctx.createGain();
                 osc1.type = 'sawtooth';
@@ -217,18 +241,7 @@
                 gain1.connect(ctx.destination);
                 osc1.start(now);
                 osc1.stop(now + 0.6);
-
-                const osc2 = ctx.createOscillator();
-                const gain2 = ctx.createGain();
-                osc2.type = 'sawtooth';
-                osc2.frequency.setValueAtTime(280, now);
-                gain2.gain.setValueAtTime(0.3, now);
-                gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
-                osc2.connect(gain2);
-                gain2.connect(ctx.destination);
-                osc2.start(now);
-                osc2.stop(now + 0.6);
-            } catch(e) { console.log(e); }
+            } catch(e) {}
         }
 
         function renderVehicleToggles() {
@@ -247,53 +260,61 @@
             });
         }
 
-        function toggleVehicleStatus(index) {
+        async function toggleVehicleStatus(index) {
             vehicleCategories[index].available = !vehicleCategories[index].available;
-            localStorage.setItem('chahade_vehicle_categories', JSON.stringify(vehicleCategories));
             renderVehicleToggles();
+            await fetch(dbUrl + "vehicles.json", {
+                method: "PUT",
+                body: JSON.stringify(vehicleCategories)
+            });
         }
 
         function renderOwners() {
             const list = document.getElementById('ownersList');
-            const owners = JSON.parse(localStorage.getItem('chahade_owners') || '[]');
-            list.innerHTML = owners.length === 0 ? '<p class="text-[11px] text-amber-300/50 italic">कोणताही ट्रक मालक जोडलेला नाही.</p>' : '';
-            owners.forEach((o, idx) => {
+            list.innerHTML = cachedOwners.length === 0 ? '<p class="text-[11px] text-amber-300/50 italic">कोणताही ट्रक मालक जोडलेला नाही.</p>' : '';
+            cachedOwners.forEach((o) => {
                 list.innerHTML += `
                     <div class="flex justify-between items-center bg-[#200701] p-2 rounded-xl border border-amber-500/20 text-xs">
                         <div><p class="font-bold text-white">${o.name}</p><p class="text-[10px] text-amber-300">📞 ${o.phone}</p></div>
-                        <button onclick="deleteOwner(${idx})" class="text-red-400 hover:text-red-300 p-1"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="deleteOwner('${o.id}')" class="text-red-400 hover:text-red-300 p-1"><i class="fa-solid fa-trash"></i></button>
                     </div>`;
             });
         }
 
         function openOwnerModal() { document.getElementById('ownerModal').classList.remove('hidden'); }
         function closeOwnerModal() { document.getElementById('ownerModal').classList.add('hidden'); }
-        function saveOwner() {
+
+        async function saveOwner() {
             const name = document.getElementById('ownerName').value.trim();
             const phone = document.getElementById('ownerPhone').value.trim();
             if(!name || phone.length !== 10) { alert("कृपया योग्य नाव व १० अंकी नंबर टाका!"); return; }
-            let owners = JSON.parse(localStorage.getItem('chahade_owners') || '[]');
-            owners.push({ name, phone });
-            localStorage.setItem('chahade_owners', JSON.stringify(owners));
-            document.getElementById('ownerName').value = ""; document.getElementById('ownerPhone').value = "";
-            closeOwnerModal(); renderOwners();
+            
+            const ownerKey = 'own_' + Date.now();
+            await fetch(dbUrl + `owners/${ownerKey}.json`, {
+                method: "PUT",
+                body: JSON.stringify({ name, phone })
+            });
+
+            document.getElementById('ownerName').value = ""; 
+            document.getElementById('ownerPhone').value = "";
+            closeOwnerModal();
+            syncCloudData();
         }
-        function deleteOwner(idx) {
-            let owners = JSON.parse(localStorage.getItem('chahade_owners') || '[]');
-            owners.splice(idx, 1);
-            localStorage.setItem('chahade_owners', JSON.stringify(owners));
-            renderOwners();
+
+        async function deleteOwner(ownerId) {
+            if(confirm("या ट्रक मालकाची माहिती कायमची डिलीट करायची का?")) {
+                await fetch(dbUrl + `owners/${ownerId}.json`, { method: "DELETE" });
+                syncCloudData();
+            }
         }
 
         function renderOrdersAccordion() {
             const accordion = document.getElementById('adminOrdersAccordion');
-            const orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-            document.getElementById('orderCountBadge').innerText = orders.length;
-
-            accordion.innerHTML = orders.length === 0 ? '<p class="text-xs text-amber-300/50 text-center py-6 italic">सध्या कोणतीही नवीन ऑर्डर नाही.</p>' : '';
+            document.getElementById('orderCountBadge').innerText = cachedOrders.length;
+            accordion.innerHTML = cachedOrders.length === 0 ? '<p class="text-xs text-amber-300/50 text-center py-6 italic">सध्या कोणतीही नवीन ऑर्डर नाही.</p>' : '';
 
             let grouped = {};
-            orders.forEach(o => {
+            cachedOrders.forEach(o => {
                 let d = o.loadingDate || 'इतर तारीख';
                 if(!grouped[d]) grouped[d] = [];
                 grouped[d].push(o);
@@ -330,26 +351,23 @@
                 dateOrders.forEach(o => {
                     let card = document.createElement('div');
                     card.className = "bg-[#330e04] border border-amber-500/30 p-3 rounded-xl space-y-2 text-xs relative";
-                    
-                    let owners = JSON.parse(localStorage.getItem('chahade_owners') || '[]');
-                    let ownerOptions = owners.map(o => `<option value="${o.name}|${o.phone}">${o.name} (${o.phone})</option>`).join('');
+                    let ownerOptions = cachedOwners.map(ow => `<option value="${ow.name}|${ow.phone}" ${o.assignedDriverPhone === ow.phone ? 'selected' : ''}>${ow.name} (${ow.phone})</option>`).join('');
 
                     card.innerHTML = `
                         <div class="flex justify-between items-center border-b border-amber-600/30 pb-1.5">
-                            <span class="text-amber-300 font-black">#${o.id} (${o.bookedOn})</span>
+                            <span class="text-amber-300 font-black">#${o.id.toString().slice(-6)} (${o.bookedOn || ''})</span>
                             <div class="flex items-center gap-2">
-                                <span class="text-emerald-400 font-bold">₹${o.fare}</span>
+                                <span class="text-emerald-400 font-bold">₹${o.fare || 0}</span>
                                 <button onclick="deleteSingleOrder('${o.id}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </div>
-                        <p class="text-white">📅 वेळ: <strong>${o.loadingDate} (${o.loadingTime})</strong></p>
-                        <p class="text-stone-300">📍 भरणे: <strong>${o.from}</strong> ➔ 🎯 खाली करणे: <strong>${o.to}</strong></p>
-                        <p class="text-stone-300">🏠 सविस्तर पत्ता: ${o.fullAddress}</p>
-                        <p class="text-amber-200">📦 माल: ${o.material} | वजन: ${o.weight}</p>
-                        <p class="text-amber-300">🚛 गाडी: ${o.vehicle}</p>
-                        <p class="text-emerald-400 font-bold">📞 ग्राहक नंबर: ${o.customer}</p>
+                        <p class="text-white">📅 वेळ: <strong>${o.loadingDate || ''} (${o.loadingTime || ''})</strong></p>
+                        <p class="text-stone-300">📍 भरणे: <strong>${o.from || ''}</strong> ➔ 🎯 खाली करणे: <strong>${o.to || ''}</strong></p>
+                        <p class="text-stone-300">🏠 सविस्तर पत्ता: ${o.fullAddress || ''}</p>
+                        <p class="text-amber-200">📦 माल: ${o.material || ''} | वजन: ${o.weight || ''}</p>
+                        <p class="text-amber-300">🚛 गाडी: ${o.vehicle || ''}</p>
+                        <p class="text-emerald-400 font-bold">📞 ग्राहक नंबर: ${o.customer || ''}</p>
 
-                        <!-- Truck Owner Assignment Section -->
                         <div class="bg-[#200701] p-2.5 rounded-xl border border-amber-500/40 space-y-2 mt-2">
                             <p class="text-[11px] font-bold text-amber-200">ट्रक मालक नियुक्त करा (Assign Truck Owner):</p>
                             <div class="flex gap-2">
@@ -376,69 +394,59 @@
                 });
 
                 headerBtn.onclick = () => { contentDiv.classList.toggle('hidden'); };
-
                 folderDiv.appendChild(headerBtn);
                 folderDiv.appendChild(contentDiv);
                 accordion.appendChild(folderDiv);
             });
         }
 
-        function assignOwnerToOrder(orderId) {
+        async function assignOwnerToOrder(orderId) {
             const select = document.getElementById(`sel_${orderId}`);
             if(!select.value) { alert("कृपया आधी ट्रक मालक निवडा!"); return; }
             let [oName, oPhone] = select.value.split('|');
 
-            let orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-            orders = orders.map(o => {
-                if(o.id === orderId) {
-                    o.assignedDriverName = oName;  // keeping variable name same for backend compatibility
-                    o.assignedDriverPhone = oPhone;
-                }
-                return o;
+            await fetch(dbUrl + `orders/${orderId}.json`, {
+                method: "PATCH",
+                body: JSON.stringify({
+                    assignedDriverName: oName,
+                    assignedDriverPhone: oPhone
+                })
             });
-            localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
-            renderOrdersAccordion();
+            syncCloudData();
             alert("ट्रक मालक यशस्वीरीत्या नियुक्त केला गेला!");
         }
 
         function getWhatsAppText(o) {
-            return `🚚 चाहाडे ट्रान्सपोर्ट - नवीन ट्रिप वाटप (New Job Assigned)%0a%0a` +
+            return `🚚 चाहाडे ट्रान्सपोर्ट - नवीन ट्रिप वाटप%0a` +
             `🆔 बुकिंग ID: ${o.id}%0a` +
             `📅 लोडिंग तारीख: ${o.loadingDate}%0a` +
-            `⏰ लोडिंग वेळ: ${o.loadingTime}%0a` +
-            `📍 भरणे (Loading): ${o.from} (पालघर)%0a` +
-            `🎯 खाली करणे (Drop): ${o.to}%0a` +
-            `📦 माल: ${o.material}%0a` +
-            `⚖️ वजन: ${o.weight}%0a` +
-            `🚛 गाडी: ${o.vehicle}%0a` +
-            `👤 ग्राहकाशी संपर्क करा: ${o.customer}%0a` +
-            `💰 भाडे (Est. Fare): ₹${o.fare}%0a` +
-            `💵 ५०% लोडिंग ॲडव्हान्स (लोडिंगपूर्वी ग्राहकाकडून रोख/UPI घ्यावा): ₹${Math.round(o.fare * 0.5)}%0a%0a` +
-            `⚠️ मॅन्युअल कन्फर्मेशन व कॅन्सलेशन नियम: कृपया त्वरित ग्राहकाशी बोलून गाडी व भाडे निश्चित करावे. बुकिंगनंतर लोड कॅन्सल झाल्यास त्याची संपूर्ण जबाबदारी ग्राहक आणि तुमची (ट्रक मालक) राहील; पोर्टलची यात कोणतीही मध्यस्थी जबाबदारी राहणार नाही.`;
+            `📍 भरणे: ${o.from}%0a` +
+            `🎯 खाली करणे: ${o.to}%0a` +
+            `👤 ग्राहक नंबर: ${o.customer}%0a` +
+            `💰 भाडे: ₹${o.fare}`;
         }
 
-        function deleteSingleOrder(id) {
+        async function deleteSingleOrder(id) {
             if(confirm("ही ऑर्डर काढून टाकायची आहे का?")) {
-                let orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-                orders = orders.filter(o => o.id !== id);
-                localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
-                renderOrdersAccordion();
+                await fetch(dbUrl + `orders/${id}.json`, { method: "DELETE" });
+                syncCloudData();
             }
         }
 
-        function deleteDateFolder(dateKey) {
+        async function deleteDateFolder(dateKey) {
             if(confirm(`तारीख ${dateKey} च्या सर्व ऑर्डर्स पुसायच्या आहेत का?`)) {
-                let orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-                orders = orders.filter(o => o.loadingDate !== dateKey);
-                localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
-                renderOrdersAccordion();
+                const toDelete = cachedOrders.filter(o => o.loadingDate === dateKey);
+                for(let o of toDelete) {
+                    await fetch(dbUrl + `orders/${o.id}.json`, { method: "DELETE" });
+                }
+                syncCloudData();
             }
         }
 
-        function clearAllOrders() {
+        async function clearAllOrders() {
             if(confirm("सर्व ऑर्डर्स पुसायच्या आहेत का?")) {
-                localStorage.removeItem('chahade_admin_orders');
-                renderOrdersAccordion();
+                await fetch(dbUrl + `orders.json`, { method: "DELETE" });
+                syncCloudData();
             }
         }
     </script>
