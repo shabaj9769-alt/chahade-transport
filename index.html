@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Search Console Verification Tag -->
     <meta name="google-site-verification" content="n0GvGuGd841lJEsHqJGZluyO9VgHStZL9eUutwN5uCk" />
     <title>चाहाडे ट्रान्सपोर्ट आणि लॉजिस्टिक सर्व्हिस महाराष्ट्र</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -366,6 +365,8 @@
     </div>
 
     <script>
+        const dbUrl = "https://manorbiryani-default-rtdb.firebaseio.com/chahade_transport/";
+
         let calculatedPrice = 0;
         let routeKm = 0;
         let isFareCardOpen = false;
@@ -380,16 +381,18 @@
 
         let baseFixedCharge = 800;
 
-        function loadData() {
+        async function loadData() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('loadingDate').value = today;
             document.getElementById('loadingDate').min = today;
 
-            const savedVehicles = localStorage.getItem('chahade_vehicle_categories');
-            if(savedVehicles) availableVehicleCategories = JSON.parse(savedVehicles);
-
-            const savedBase = localStorage.getItem('chahade_base_charge');
-            if(savedBase) baseFixedCharge = Number(savedBase);
+            try {
+                const res = await fetch(dbUrl + "vehicles.json");
+                const cloudVehicles = await res.json();
+                if (cloudVehicles && Array.isArray(cloudVehicles)) {
+                    availableVehicleCategories = cloudVehicles;
+                }
+            } catch(e) {}
 
             const vehicleSelect = document.getElementById('vehicle');
             vehicleSelect.innerHTML = '';
@@ -423,96 +426,115 @@
             }
         }
 
-        function searchCustomerOrders() {
+        async function searchCustomerOrders() {
             const searchPhone = document.getElementById('trackMobileInput').value.trim();
             const resultsContainer = document.getElementById('trackedOrdersList');
             const actionHeader = document.getElementById('historyActionHeader');
             const matchCount = document.getElementById('historyMatchCount');
             
-            resultsContainer.innerHTML = "";
+            resultsContainer.innerHTML = "<p class='text-xs text-amber-300 py-2'>शोधत आहे...</p>";
 
             if (!searchPhone || searchPhone.length < 10) {
                 alert("कृपया आपला १० अंकी मोबाईल नंबर टाका!");
+                resultsContainer.innerHTML = "";
                 return;
             }
 
-            const allOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-            const matchedOrders = allOrders.filter(o => o.customer === searchPhone);
+            try {
+                const res = await fetch(dbUrl + "orders.json");
+                const ordersObj = await res.json();
+                resultsContainer.innerHTML = "";
 
-            if (matchedOrders.length === 0) {
-                actionHeader.classList.add('hidden');
-                resultsContainer.innerHTML = `<p class="text-xs text-amber-300/60 italic py-2">या नंबरवर कोणतीही बुकिंग सापडली नाही.</p>`;
-                return;
-            }
+                if (!ordersObj) {
+                    actionHeader.classList.add('hidden');
+                    resultsContainer.innerHTML = `<p class="text-xs text-amber-300/60 italic py-2">या नंबरवर कोणतीही बुकिंग सापडली नाही.</p>`;
+                    return;
+                }
 
-            actionHeader.classList.remove('hidden');
-            matchCount.innerText = `एकूण ${matchedOrders.length} बुकिंग्स सापडल्या:`;
+                const allOrders = Object.keys(ordersObj).map(k => ({ id: k, ...ordersObj[k] }));
+                const matchedOrders = allOrders.filter(o => o.customer === searchPhone);
 
-            matchedOrders.forEach(o => {
-                const card = document.createElement('div');
-                card.className = "bg-[#280902] border border-amber-500/30 p-3 rounded-xl space-y-2 text-xs relative";
-                
-                const isAssigned = o.assignedDriverPhone && o.assignedDriverName;
+                if (matchedOrders.length === 0) {
+                    actionHeader.classList.add('hidden');
+                    resultsContainer.innerHTML = `<p class="text-xs text-amber-300/60 italic py-2">या नंबरवर कोणतीही बुकिंग सापडली नाही.</p>`;
+                    return;
+                }
 
-                card.innerHTML = `
-                    <div class="flex justify-between items-center border-b border-amber-600/30 pb-1.5">
-                        <span class="text-amber-300 font-black">#${o.id}</span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-emerald-400 font-bold">₹${o.fare}</span>
-                            <button onclick="removeCustomerOrder('${o.id}')" title="ही बुकिंग काढून टाका" 
-                                class="px-2 py-0.5 bg-red-950 border border-red-500/40 text-red-300 hover:bg-red-900 rounded text-[10px] font-bold transition flex items-center gap-1">
-                                <i class="fa-solid fa-trash-can"></i> काढा
-                            </button>
-                        </div>
-                    </div>
+                actionHeader.classList.remove('hidden');
+                matchCount.innerText = `एकूण ${matchedOrders.length} बुकिंग्स सापडल्या:`;
+
+                matchedOrders.reverse().forEach(o => {
+                    const card = document.createElement('div');
+                    card.className = "bg-[#280902] border border-amber-500/30 p-3 rounded-xl space-y-2 text-xs relative";
                     
-                    <p class="text-stone-300">📅 ${o.loadingDate} (${o.loadingTime})</p>
-                    <p class="text-stone-300">📍 ${o.from} ➔ 🎯 ${o.to}</p>
-                    <p class="text-amber-200">🚛 गाडी: <strong>${o.vehicle}</strong></p>
-                    
-                    <div class="p-2.5 rounded-lg border bg-emerald-950/60 border-emerald-500/50 space-y-1.5">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-black text-emerald-300 flex items-center gap-1">
-                                ✓ बुकिंग यशस्वी (Confirmed)
-                            </span>
-                            <span class="text-[10px] text-amber-300">चाहाडे नेटवर्क</span>
-                        </div>
+                    const isAssigned = o.assignedDriverPhone && o.assignedDriverName;
 
-                        ${isAssigned ? `
-                            <div class="pt-1 border-t border-emerald-500/30 text-xs">
-                                <p class="text-stone-300">वाटप झालेले चालक / मालक:</p>
-                                <p class="text-white font-bold text-sm mt-0.5">👤 ${o.assignedDriverName}</p>
-                                <p class="text-emerald-300 font-black">📞 ${o.assignedDriverPhone}</p>
-                                <a href="tel:${o.assignedDriverPhone}" class="mt-2 inline-flex items-center justify-center gap-1.5 w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-lg text-xs transition shadow-md">
-                                    <i class="fa-solid fa-phone"></i> थेट ड्रायव्हरला कॉल करा
-                                </a>
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center border-b border-amber-600/30 pb-1.5">
+                            <span class="text-amber-300 font-black">#${o.id.toString().slice(-6)}</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-emerald-400 font-bold">₹${o.fare}</span>
+                                <button onclick="removeCustomerOrder('${o.id}')" title="ही बुकिंग काढून टाका" 
+                                    class="px-2 py-0.5 bg-red-950 border border-red-500/40 text-red-300 hover:bg-red-900 rounded text-[10px] font-bold transition flex items-center gap-1">
+                                    <i class="fa-solid fa-trash-can"></i> काढा
+                                </button>
                             </div>
-                        ` : `
-                            <p class="text-[10px] text-stone-300 italic pt-1 border-t border-emerald-500/30">
-                                चाहाडे ट्रान्सपोर्ट कार्यालयाकडून ड्रायव्हर नियुक्त होताच येथे थेट कॉल करण्याचा पर्याय सुरू होईल.
-                            </p>
-                        `}
-                    </div>
-                `;
-                resultsContainer.appendChild(card);
-            });
+                        </div>
+                        
+                        <p class="text-stone-300">📅 ${o.loadingDate} (${o.loadingTime})</p>
+                        <p class="text-stone-300">📍 ${o.from} ➔ 🎯 ${o.to}</p>
+                        <p class="text-amber-200">🚛 गाडी: <strong>${o.vehicle}</strong></p>
+                        
+                        <div class="p-2.5 rounded-lg border bg-emerald-950/60 border-emerald-500/50 space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-black text-emerald-300 flex items-center gap-1">
+                                    ✓ बुकिंग यशस्वी (Confirmed)
+                                </span>
+                                <span class="text-[10px] text-amber-300">चाहाडे नेटवर्क</span>
+                            </div>
+
+                            ${isAssigned ? `
+                                <div class="pt-1 border-t border-emerald-500/30 text-xs">
+                                    <p class="text-stone-300">वाटप झालेले चालक / मालक:</p>
+                                    <p class="text-white font-bold text-sm mt-0.5">👤 ${o.assignedDriverName}</p>
+                                    <p class="text-emerald-300 font-black">📞 ${o.assignedDriverPhone}</p>
+                                    <a href="tel:${o.assignedDriverPhone}" class="mt-2 inline-flex items-center justify-center gap-1.5 w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-lg text-xs transition shadow-md">
+                                        <i class="fa-solid fa-phone"></i> थेट ड्रायव्हरला कॉल करा
+                                    </a>
+                                </div>
+                            ` : `
+                                <p class="text-[10px] text-stone-300 italic pt-1 border-t border-emerald-500/30">
+                                    चाहाडे ट्रान्सपोर्ट कार्यालयाकडून ड्रायव्हर नियुक्त होताच येथे थेट कॉल करण्याचा पर्याय सुरू होईल.
+                                </p>
+                            `}
+                        </div>
+                    `;
+                    resultsContainer.appendChild(card);
+                });
+            } catch(e) {
+                resultsContainer.innerHTML = `<p class="text-xs text-red-400 italic py-2">नेटवर्क एरर, पुन्हा प्रयत्न करा.</p>`;
+            }
         }
 
-        function removeCustomerOrder(orderId) {
+        async function removeCustomerOrder(orderId) {
             if (confirm("तुम्हाला ही बुकिंग यादीतून काढून टाकायची आहे का?")) {
-                let allOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-                allOrders = allOrders.filter(o => o.id !== orderId);
-                localStorage.setItem('chahade_admin_orders', JSON.stringify(allOrders));
+                await fetch(dbUrl + `orders/${orderId}.json`, { method: "DELETE" });
                 searchCustomerOrders();
             }
         }
 
-        function clearCustomerSearchedHistory() {
+        async function clearCustomerSearchedHistory() {
             const searchPhone = document.getElementById('trackMobileInput').value.trim();
             if (confirm("या नंबरच्या सर्व जुन्या बुकिंग्स काढून टाकायच्या आहेत का?")) {
-                let allOrders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-                allOrders = allOrders.filter(o => o.customer !== searchPhone);
-                localStorage.setItem('chahade_admin_orders', JSON.stringify(allOrders));
+                const res = await fetch(dbUrl + "orders.json");
+                const ordersObj = await res.json();
+                if (ordersObj) {
+                    for (let id in ordersObj) {
+                        if (ordersObj[id].customer === searchPhone) {
+                            await fetch(dbUrl + `orders/${id}.json`, { method: "DELETE" });
+                        }
+                    }
+                }
                 searchCustomerOrders();
             }
         }
@@ -630,7 +652,7 @@
             resultCard.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function confirmOrderDirectlyOnApp() {
+        async function confirmOrderDirectlyOnApp() {
             const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value;
             const drop = document.getElementById('drop').options[document.getElementById('drop').selectedIndex].text;
             const fullAddress = document.getElementById('fullAddress').value;
@@ -644,9 +666,10 @@
             const completeTimeString = `${timeHour} ${timeAmPm}`;
 
             const vehicle = document.getElementById('vehicle').options[document.getElementById('vehicle').selectedIndex].text;
+            const orderId = "ORD-" + Math.floor(1000 + Math.random() * 9000);
 
             const newOrder = {
-                id: "ORD-" + Math.floor(1000 + Math.random() * 9000),
+                id: orderId,
                 bookedOn: new Date().toLocaleDateString('en-IN'),
                 loadingDate: loadingDate,
                 loadingTime: completeTimeString,
@@ -660,12 +683,14 @@
                 fare: calculatedPrice,
                 status: "Confirmed",
                 assignedDriverName: null,
-                assignedDriverPhone: null
+                assignedDriverPhone: null,
+                timestamp: Date.now()
             };
 
-            let orders = JSON.parse(localStorage.getItem('chahade_admin_orders') || '[]');
-            orders.unshift(newOrder);
-            localStorage.setItem('chahade_admin_orders', JSON.stringify(orders));
+            await fetch(dbUrl + `orders/${orderId}.json`, {
+                method: "PUT",
+                body: JSON.stringify(newOrder)
+            });
 
             document.getElementById('transportForm').classList.add('hidden');
             
