@@ -47,11 +47,11 @@
         <!-- Header -->
         <div class="bg-gradient-to-r from-orange-800 via-amber-600 to-red-800 p-5 text-center border-b border-amber-400/40 relative">
             <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">🛠️ चाहाडे ट्रान्सपोर्ट ॲडमिन पॅनेल</h1>
-            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">सुरक्षित खाजगी डॅशबोर्ड - shabaj9769@gmail.com[span_0](start_span)[span_0](end_span)</p>
+            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">सुरक्षित डॅशबोर्ड - <span id="displayAdminEmail" class="underline font-black">shabaj9769@gmail.com</span></p>
             
             <div class="absolute top-4 right-4 flex gap-2">
-                <button onclick="openChangePasswordModal()" class="bg-black/40 hover:bg-black/60 text-amber-300 text-xs px-3 py-1.5 rounded-lg border border-amber-400/30 font-bold transition">
-                    🔑 पासवर्ड बदला[span_1](start_span)[span_1](end_span)
+                <button onclick="openChangeSettingsModal()" class="bg-black/40 hover:bg-black/60 text-amber-300 text-xs px-3 py-1.5 rounded-lg border border-amber-400/30 font-bold transition">
+                    🔑 पासवर्ड व ईमेल बदला
                 </button>
                 <button onclick="lockAdminPanel()" class="bg-black/40 hover:bg-black/60 text-red-300 text-xs px-3 py-1.5 rounded-lg border border-red-400/30 font-bold transition">
                     🔒 लॉक आऊट
@@ -138,15 +138,16 @@
         </div>
     </div>
 
-    <!-- 🔑 MODAL: CHANGE ADMIN PASSWORD -->
-    <div id="changePasswordModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+    <!-- 🔑 MODAL: CHANGE EMAIL & PASSWORD -->
+    <div id="changeSettingsModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
         <div class="bg-[#3a1005] border border-amber-500 p-5 rounded-2xl max-w-sm w-full space-y-3">
-            <h3 class="text-xs font-black text-amber-300 uppercase">ॲडमिन पासवर्ड बदला (Change Password)[span_2](start_span)[span_2](end_span)</h3>
+            <h3 class="text-xs font-black text-amber-300 uppercase">ॲडमिन सेटिंग्ज (Email & Password)</h3>
+            <input type="email" id="newEmailInput" placeholder="नवीन ईमेल आयडी टाका" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white text-center">
             <input type="password" id="oldPassInput" placeholder="जुना पासवर्ड टाका" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white text-center">
             <input type="password" id="newPassInput" placeholder="नवीन पासवर्ड टाका" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white text-center">
             <div class="flex gap-2 pt-2">
-                <button type="button" onclick="updateAdminPassword()" class="w-full py-2 bg-emerald-600 text-white font-black rounded-xl text-xs">बदला</button>
-                <button type="button" onclick="closeChangePasswordModal()" class="w-full py-2 bg-stone-700 text-white font-black rounded-xl text-xs">रद्द करा</button>
+                <button type="button" onclick="updateAdminSettings()" class="w-full py-2 bg-emerald-600 text-white font-black rounded-xl text-xs">बदला</button>
+                <button type="button" onclick="closeChangeSettingsModal()" class="w-full py-2 bg-stone-700 text-white font-black rounded-xl text-xs">रद्द करा</button>
             </div>
         </div>
     </div>
@@ -187,25 +188,34 @@
         let cachedInquiries = [];
         let isFirstLoad = true;
 
-        async function getSavedPassword() {
-            let pass = localStorage.getItem("chahade_admin_password");
+        async function getSavedCredentials() {
+            let email = localStorage.getItem("chahade_admin_email") || "shabaj9769@gmail.com";
+            let pass = localStorage.getItem("chahade_admin_password") || "Shabaj@9769";
             try {
-                const res = await fetch(dbUrl + "admin_password.json");
-                const cloudPass = await res.json();
-                if (cloudPass) {
-                    pass = cloudPass.toString();
+                const res = await fetch(dbUrl + "admin_auth.json");
+                const cloudAuth = await res.json();
+                if (cloudAuth) {
+                    if (cloudAuth.email) email = cloudAuth.email;
+                    if (cloudAuth.password) pass = cloudAuth.password;
+                    localStorage.setItem("chahade_admin_email", email);
                     localStorage.setItem("chahade_admin_password", pass);
                 }
             } catch(e) {}
-            return pass || "Shabaj@9769";[span_3](start_span)[span_3](end_span)
+            return { email, pass };
+        }
+
+        async function initAuthDisplay() {
+            const cred = await getSavedCredentials();
+            document.getElementById('adminEmailInput').value = cred.email;
+            document.getElementById('displayAdminEmail').innerText = cred.email;
         }
 
         async function verifyAdminCredentials() {
             const enteredPass = document.getElementById('adminPassInput').value.trim();
             const errorMsg = document.getElementById('pinErrorMsg');
-            const correctPass = await getSavedPassword();
+            const cred = await getSavedCredentials();
 
-            if (enteredPass === correctPass) {
+            if (enteredPass === cred.pass) {
                 errorMsg.classList.add('hidden');
                 document.getElementById('pinLockModal').classList.add('hidden');
                 document.getElementById('adminDashboardContent').classList.remove('hidden');
@@ -216,35 +226,51 @@
             }
         }
 
-        function openChangePasswordModal() { document.getElementById('changePasswordModal').classList.remove('hidden'); }
-        function closeChangePasswordModal() { document.getElementById('changePasswordModal').classList.add('hidden'); }
+        function openChangeSettingsModal() { 
+            getSavedCredentials().then(c => {
+                document.getElementById('newEmailInput').value = c.email;
+            });
+            document.getElementById('changeSettingsModal').classList.remove('hidden'); 
+        }
+        function closeChangeSettingsModal() { document.getElementById('changeSettingsModal').classList.add('hidden'); }
 
-        async function updateAdminPassword() {
+        async function updateAdminSettings() {
+            const newEmail = document.getElementById('newEmailInput').value.trim();
             const oldPassInput = document.getElementById('oldPassInput').value.trim();
             const newPassInput = document.getElementById('newPassInput').value.trim();
-            const currentPass = await getSavedPassword();
+            const cred = await getSavedCredentials();
 
-            if (oldPassInput !== currentPass) {
+            if (oldPassInput !== cred.pass) {
                 alert("जुना पासवर्ड चुकीचा आहे!");
                 return;
             }
-            if (!newPassInput || newPassInput.length < 4) {
+            if (!newEmail) {
+                alert("ईमेल आयडी रिक्त असू शकत नाही!");
+                return;
+            }
+            
+            let finalPass = newPassInput ? newPassInput : cred.pass;
+            if (newPassInput && newPassInput.length < 4) {
                 alert("नवीन पासवर्ड किमान ४ अक्षरांचा असावा!");
                 return;
             }
 
             try {
-                await fetch(dbUrl + "admin_password.json", {
+                const updatedAuth = { email: newEmail, password: finalPass };
+                await fetch(dbUrl + "admin_auth.json", {
                     method: "PUT",
-                    body: JSON.stringify(newPassInput)
+                    body: JSON.stringify(updatedAuth)
                 });
-                localStorage.setItem("chahade_admin_password", newPassInput);
-                alert("ॲडमिन पासवर्ड यशस्वीरीत्या बदलला गेला!");
+                localStorage.setItem("chahade_admin_email", newEmail);
+                localStorage.setItem("chahade_admin_password", finalPass);
+                
+                alert("ॲडमिन ईमेल आणि पासवर्ड यशस्वीरीत्या बदलले गेले!");
                 document.getElementById('oldPassInput').value = "";
                 document.getElementById('newPassInput').value = "";
-                closeChangePasswordModal();
+                closeChangeSettingsModal();
+                initAuthDisplay();
             } catch(e) {
-                alert("नेटवर्क एरर! पासवर्ड क्लाउडवर सेव्ह होऊ शकला नाही.");
+                alert("नेटवर्क एरर! क्लाउडवर सेव्ह होऊ शकले नाही.");
             }
         }
 
@@ -546,7 +572,7 @@
         }
 
         async function assignOwner(orderId) {
-            const sel = document.getElementById(`sel_${orderId}`).value;
+            const sel = document.getElementById(`sel_${ord.id}`).value;
             if(!sel) { alert("कृपया आधी ट्रक मालक निवडा!"); return; }
             const [name, phone, vehicleNo] = sel.split('|');
 
@@ -582,6 +608,8 @@
                 fetchAllCloudData();
             }
         }
+
+        window.onload = initAuthDisplay;
     </script>
 </body>
 </html>
