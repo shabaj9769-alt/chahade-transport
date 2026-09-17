@@ -47,7 +47,7 @@
         <!-- Developer Strip -->
         <div class="bg-black/70 py-1.5 px-4 border-b border-amber-500/30 flex justify-between items-center text-[10px] text-amber-200">
             <span>चाहाडे ट्रान्सपोर्ट ॲडमिन कंट्रोल</span>
-            <span>वेबसाइट बनवण्यासाठी संपर्क: <a href="mailto:shabaj9769@gmail.com" class="font-bold text-amber-400 underline">shabaj9769@gmail.com</a>[span_4](start_span)[span_4](end_span)</span>
+            <span>वेबसाइट बनवण्यासाठी संपर्क: <a href="mailto:shabaj9769@gmail.com" class="font-bold text-amber-400 underline">shabaj9769@gmail.com</a></span>
         </div>
 
         <!-- Header -->
@@ -77,7 +77,7 @@
             <div class="bg-[#3a1005] border-2 border-amber-500/40 p-4 rounded-2xl space-y-3">
                 <div class="flex justify-between items-center border-b border-amber-600/30 pb-2">
                     <h3 class="text-xs font-black text-amber-300 uppercase tracking-wider">
-                        <i class="fa-solid fa-truck text-amber-400 mr-1"></i> सर्व ५ गाड्यांची यादी, दर (Rate/KM), चालू/बंद व नवीन गाडी
+                        <i class="fa-solid fa-truck text-amber-400 mr-1"></i> गाड्यांची यादी, दर (Rate/KM), चालू/बंद स्थिती व नवीन गाडी
                     </h3>
                     <button type="button" onclick="openAddVehicleModal()" class="text-[10px] bg-amber-600 hover:bg-amber-500 text-stone-950 font-black px-2.5 py-1 rounded-lg">+ नवीन गाडी जोडा</button>
                 </div>
@@ -188,7 +188,6 @@
     <script>
         const dbUrl = "https://manorbiryani-default-rtdb.firebaseio.com/chahade_transport/";
 
-        // 5 DEFAULT VEHICLES FULLY SYNCED
         const defaultVehicles = [
             { id: "v_pickup", name: "महिंद्रा बोलेरो / पिकअप (कमाल १.५ टन)", rate: 22, available: true },
             { id: "v_ace", name: "टाटा एस - छोटा हत्ती (कमाल १ टन)", rate: 16, available: true },
@@ -339,7 +338,6 @@
                 const res = await fetch(dbUrl + ".json");
                 const data = await res.json() || {};
 
-                // Load all 5 vehicles
                 if (data.vehicles && Array.isArray(data.vehicles) && data.vehicles.length >= 5) {
                     vehicleCategories = data.vehicles;
                 } else {
@@ -403,21 +401,19 @@
                             <span class="font-bold ${isAvailable ? 'text-white' : 'text-stone-500 line-through'}">${v.name}</span>
                         </div>
                         
-                        <div class="flex items-center gap-2">
-                            <!-- Rate Input -->
+                        <div class="flex items-center gap-2 flex-wrap">
                             <div class="flex items-center gap-1">
                                 <span>₹</span>
-                                <input type="number" id="rate_${idx}" value="${v.rate}" class="w-16 px-2 py-1 bg-black text-amber-300 font-black rounded border border-amber-500/40 text-center">
+                                <input type="number" id="rate_${idx}" value="${v.rate}" class="w-16 px-2 py-1 bg-black text-amber-300 font-black rounded border border-amber-500/40 text-center text-xs">
                                 <span class="text-[10px]">/KM</span>
                             </div>
-                            <button onclick="updateVehicleRate(${idx})" class="px-2 py-1 bg-amber-600 font-black text-stone-950 rounded hover:brightness-110">अपडेट</button>
+                            <button onclick="updateVehicleRate(${idx})" class="px-2 py-1 bg-amber-600 font-black text-stone-950 rounded hover:brightness-110 text-xs">अपडेट</button>
                             
-                            <!-- ON / OFF Toggle Button -->
-                            <button onclick="toggleVehicleStatus(${idx})" class="px-2.5 py-1 font-black rounded text-[11px] ${isAvailable ? 'bg-emerald-600 text-white' : 'bg-stone-700 text-stone-300'}">
+                            <!-- ON / OFF TOGGLE SWITCH BUTTON -->
+                            <button onclick="toggleVehicleAvailability(${idx})" class="px-2.5 py-1 font-black rounded text-xs transition shadow ${isAvailable ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-red-950 border border-red-500/50 text-red-300 hover:bg-red-900'}">
                                 ${isAvailable ? '🟢 चालू' : '🔴 बंद'}
                             </button>
 
-                            <!-- Delete Button -->
                             <button onclick="deleteVehicle(${idx})" class="text-red-400 hover:text-red-300 p-1 ml-1"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
@@ -425,7 +421,7 @@
             });
         }
 
-        async function toggleVehicleStatus(idx) {
+        async function toggleVehicleAvailability(idx) {
             vehicleCategories[idx].available = (vehicleCategories[idx].available === false) ? true : false;
             await fetch(dbUrl + "vehicles.json", { method: "PUT", body: JSON.stringify(vehicleCategories) });
             renderRateEditor();
