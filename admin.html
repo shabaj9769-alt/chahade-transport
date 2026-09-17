@@ -73,11 +73,11 @@
                 <button id="notifBtn" onclick="requestNotificationPermission()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-lg shadow">चालू करा</button>
             </div>
 
-            <!-- VEHICLE RATE MANAGEMENT WITH ON/OFF TOGGLE -->
+            <!-- VEHICLE RATE MANAGEMENT WITH WORKING ON/OFF SWITCH -->
             <div class="bg-[#3a1005] border-2 border-amber-500/40 p-4 rounded-2xl space-y-3">
                 <div class="flex justify-between items-center border-b border-amber-600/30 pb-2">
                     <h3 class="text-xs font-black text-amber-300 uppercase tracking-wider">
-                        <i class="fa-solid fa-truck text-amber-400 mr-1"></i> गाड्यांची यादी, दर (Rate/KM), चालू/बंद स्थिती व नवीन गाडी
+                        <i class="fa-solid fa-truck text-amber-400 mr-1"></i> सर्व ५ गाड्यांची यादी, दर (Rate/KM), चालू/बंद स्थिती व नवीन गाडी
                     </h3>
                     <button type="button" onclick="openAddVehicleModal()" class="text-[10px] bg-amber-600 hover:bg-amber-500 text-stone-950 font-black px-2.5 py-1 rounded-lg">+ नवीन गाडी जोडा</button>
                 </div>
@@ -93,7 +93,7 @@
                 <div id="ownersList" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
             </div>
 
-            <!-- INQUIRIES FOLDER (Collapsible) -->
+            <!-- INQUIRIES FOLDER -->
             <div class="bg-[#3a1005] border-2 border-orange-500/50 rounded-2xl overflow-hidden shadow-md">
                 <button type="button" onclick="toggleFolder('inquiriesContent', 'inqArrow')" 
                     class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-orange-950/80 to-[#2b0802] text-left">
@@ -109,7 +109,7 @@
                 <div id="inquiriesContent" class="hidden p-3 space-y-2 bg-[#200701] border-t border-orange-500/30"></div>
             </div>
 
-            <!-- PENDING BOOKINGS FOLDER (Collapsible) -->
+            <!-- PENDING BOOKINGS FOLDER -->
             <div class="bg-[#3a1005] border-2 border-amber-500/50 rounded-2xl overflow-hidden shadow-md">
                 <button type="button" onclick="toggleFolder('bookingsContent', 'bookArrow')" 
                     class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-amber-950/80 to-[#2b0802] text-left">
@@ -125,7 +125,7 @@
                 <div id="bookingsContent" class="hidden p-3 space-y-2 bg-[#200701] border-t border-amber-500/30"></div>
             </div>
 
-            <!-- ASSIGNED TRIPS FOLDER (Collapsible) -->
+            <!-- ASSIGNED TRIPS FOLDER -->
             <div class="bg-[#3a1005] border-2 border-emerald-500/50 rounded-2xl overflow-hidden shadow-md">
                 <button type="button" onclick="toggleFolder('assignedContent', 'assignedArrow')" 
                     class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-emerald-950/80 to-[#2b0802] text-left">
@@ -394,7 +394,7 @@
             const container = document.getElementById('rateEditorContainer');
             container.innerHTML = "";
             vehicleCategories.forEach((v, idx) => {
-                const isAvailable = v.available !== false;
+                const isAvailable = (v.available !== false);
                 container.innerHTML += `
                     <div class="bg-[#200701] p-3 rounded-xl border border-amber-500/20 flex flex-wrap items-center justify-between gap-2 text-xs">
                         <div class="w-full md:w-5/12 flex items-center gap-2">
@@ -407,10 +407,10 @@
                                 <input type="number" id="rate_${idx}" value="${v.rate}" class="w-16 px-2 py-1 bg-black text-amber-300 font-black rounded border border-amber-500/40 text-center text-xs">
                                 <span class="text-[10px]">/KM</span>
                             </div>
-                            <button onclick="updateVehicleRate(${idx})" class="px-2 py-1 bg-amber-600 font-black text-stone-950 rounded hover:brightness-110 text-xs">अपडेट</button>
+                            <button onclick="updateVehicleRate(${idx})" class="px-2.5 py-1 bg-amber-600 font-black text-stone-950 rounded hover:brightness-110 text-xs shadow">अपडेट</button>
                             
-                            <!-- ON / OFF TOGGLE SWITCH BUTTON -->
-                            <button onclick="toggleVehicleAvailability(${idx})" class="px-2.5 py-1 font-black rounded text-xs transition shadow ${isAvailable ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-red-950 border border-red-500/50 text-red-300 hover:bg-red-900'}">
+                            <!-- WORKING ON / OFF TOGGLE SWITCH -->
+                            <button onclick="toggleVehicleStatus(${idx})" class="px-3 py-1 font-black rounded text-xs transition shadow-md ${isAvailable ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-red-950 border border-red-500/60 text-red-300 hover:bg-red-900'}">
                                 ${isAvailable ? '🟢 चालू' : '🔴 बंद'}
                             </button>
 
@@ -421,7 +421,7 @@
             });
         }
 
-        async function toggleVehicleAvailability(idx) {
+        async function toggleVehicleStatus(idx) {
             vehicleCategories[idx].available = (vehicleCategories[idx].available === false) ? true : false;
             await fetch(dbUrl + "vehicles.json", { method: "PUT", body: JSON.stringify(vehicleCategories) });
             renderRateEditor();
