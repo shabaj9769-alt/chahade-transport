@@ -47,11 +47,11 @@
         <!-- Header -->
         <div class="bg-gradient-to-r from-orange-800 via-amber-600 to-red-800 p-5 text-center border-b border-amber-400/40 relative">
             <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">🛠️ चाहाडे ट्रान्सपोर्ट ॲडमिन पॅनेल</h1>
-            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">सुरक्षित खाजगी डॅशबोर्ड - shabaj9769@gmail.com[span_3](start_span)[span_3](end_span)</p>
+            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">सुरक्षित खाजगी डॅशबोर्ड - shabaj9769@gmail.com[span_0](start_span)[span_0](end_span)</p>
             
             <div class="absolute top-4 right-4 flex gap-2">
                 <button onclick="openChangePasswordModal()" class="bg-black/40 hover:bg-black/60 text-amber-300 text-xs px-3 py-1.5 rounded-lg border border-amber-400/30 font-bold transition">
-                    🔑 पासवर्ड बदला[span_4](start_span)[span_4](end_span)
+                    🔑 पासवर्ड बदला[span_1](start_span)[span_1](end_span)
                 </button>
                 <button onclick="lockAdminPanel()" class="bg-black/40 hover:bg-black/60 text-red-300 text-xs px-3 py-1.5 rounded-lg border border-red-400/30 font-bold transition">
                     🔒 लॉक आऊट
@@ -62,9 +62,9 @@
         <div class="p-4 md:p-6 space-y-5">
 
             <!-- Notification Permission Banner -->
-            <div id="notifBanner" class="hidden bg-amber-900/60 border border-amber-500/50 p-3 rounded-xl flex justify-between items-center text-xs">
-                <span class="text-amber-200">🔔 नवीन ऑर्डर व नोटिफिकेशन मिळवण्यासाठी परवानगी द्या:</span>
-                <button onclick="requestNotificationPermission()" class="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-lg">परवानगी द्या</button>
+            <div id="notifBanner" class="hidden bg-amber-900/80 border border-amber-400 p-3 rounded-xl flex justify-between items-center text-xs">
+                <span class="text-amber-200 font-bold">🔔 नवीन ऑर्डर व नोटिफिकेशन मिळवण्यासाठी परवानगी द्या:</span>
+                <button onclick="requestNotificationPermission()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-lg shadow">परवानगी द्या</button>
             </div>
 
             <!-- 🚛 VEHICLE RATE & ADD VEHICLE MANAGEMENT -->
@@ -141,7 +141,7 @@
     <!-- 🔑 MODAL: CHANGE ADMIN PASSWORD -->
     <div id="changePasswordModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
         <div class="bg-[#3a1005] border border-amber-500 p-5 rounded-2xl max-w-sm w-full space-y-3">
-            <h3 class="text-xs font-black text-amber-300 uppercase">ॲडमिन पासवर्ड बदला (Change Password)[span_5](start_span)[span_5](end_span)</h3>
+            <h3 class="text-xs font-black text-amber-300 uppercase">ॲडमिन पासवर्ड बदला (Change Password)[span_2](start_span)[span_2](end_span)</h3>
             <input type="password" id="oldPassInput" placeholder="जुना पासवर्ड टाका" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white text-center">
             <input type="password" id="newPassInput" placeholder="नवीन पासवर्ड टाका" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white text-center">
             <div class="flex gap-2 pt-2">
@@ -197,7 +197,7 @@
                     localStorage.setItem("chahade_admin_password", pass);
                 }
             } catch(e) {}
-            return pass || "Shabaj@9769";[span_6](start_span)[span_6](end_span)
+            return pass || "Shabaj@9769";[span_3](start_span)[span_3](end_span)
         }
 
         async function verifyAdminCredentials() {
