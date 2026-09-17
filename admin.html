@@ -17,7 +17,7 @@
 </head>
 <body class="p-3 md:p-6 min-h-screen flex items-center justify-center">
 
-    <!-- 🔒 SECURE LOGIN MODAL (Blank & Hidden Credentials) -->
+    <!-- SECURE LOGIN MODAL -->
     <div id="pinLockModal" class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
         <div class="max-w-sm w-full bg-[#3a1005] border-2 border-amber-500 p-6 rounded-3xl text-center space-y-4 shadow-2xl">
             <div class="w-16 h-16 mx-auto rounded-full bg-amber-500/20 border border-amber-400 flex items-center justify-center text-3xl">
@@ -41,33 +41,39 @@
         </div>
     </div>
 
-    <!-- 📊 MAIN ADMIN DASHBOARD -->
+    <!-- MAIN ADMIN DASHBOARD -->
     <div id="adminDashboardContent" class="max-w-3xl w-full bg-[#2a0b03] border-2 border-amber-500/60 rounded-3xl shadow-2xl overflow-hidden hidden">
         
+        <!-- Developer Strip -->
+        <div class="bg-black/70 py-1.5 px-4 border-b border-amber-500/30 flex justify-between items-center text-[10px] text-amber-200">
+            <span>चाहाडे ट्रान्सपोर्ट ॲडमिन कंट्रोल</span>
+            <span>वेबसाइट बनवण्यासाठी संपर्क: <a href="mailto:shabaj9769@gmail.com" class="font-bold text-amber-400 underline">shabaj9769@gmail.com</a></span>
+        </div>
+
         <!-- Header -->
         <div class="bg-gradient-to-r from-orange-800 via-amber-600 to-red-800 p-5 text-center border-b border-amber-400/40 relative">
-            <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">🛠️ चाहाडे ट्रान्सपोर्ट ॲडमिन पॅनेल</h1>
+            <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">चाहाडे ट्रान्सपोर्ट ॲडमिन पॅनेल</h1>
             <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">सुरक्षित क्लाउड डॅशबोर्ड</p>
             
             <div class="absolute top-4 right-4 flex gap-2">
                 <button onclick="openChangeSettingsModal()" class="bg-black/40 hover:bg-black/60 text-amber-300 text-xs px-3 py-1.5 rounded-lg border border-amber-400/30 font-bold transition">
-                    🔑 पासवर्ड व ईमेल बदला
+                    पासवर्ड व ईमेल बदला
                 </button>
                 <button onclick="lockAdminPanel()" class="bg-black/40 hover:bg-black/60 text-red-300 text-xs px-3 py-1.5 rounded-lg border border-red-400/30 font-bold transition">
-                    🔒 लॉक आऊट
+                    लॉक आऊट
                 </button>
             </div>
         </div>
 
         <div class="p-4 md:p-6 space-y-5">
 
-            <!-- Notification Permission Banner -->
+            <!-- Notification Banner -->
             <div id="notifBanner" class="bg-amber-950 border border-amber-400/80 p-3 rounded-xl flex justify-between items-center text-xs shadow-lg">
-                <span id="notifStatusText" class="text-amber-200 font-bold">🔔 नवीन ऑर्डरच्या सूचना मिळवण्यासाठी येथे क्लिक करा:</span>
+                <span id="notifStatusText" class="text-amber-200 font-bold">नवीन ऑर्डरच्या सूचना मिळवण्यासाठी येथे क्लिक करा:</span>
                 <button id="notifBtn" onclick="requestNotificationPermission()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-lg shadow">चालू करा</button>
             </div>
 
-            <!-- 🚛 VEHICLE RATE & ADD VEHICLE MANAGEMENT -->
+            <!-- VEHICLE RATE MANAGEMENT -->
             <div class="bg-[#3a1005] border-2 border-amber-500/40 p-4 rounded-2xl space-y-3">
                 <div class="flex justify-between items-center border-b border-amber-600/30 pb-2">
                     <h3 class="text-xs font-black text-amber-300 uppercase tracking-wider">
@@ -78,16 +84,16 @@
                 <div id="rateEditorContainer" class="space-y-2 pt-1"></div>
             </div>
 
-            <!-- 🏢 TRUCK OWNERS REGISTRY -->
+            <!-- TRUCK OWNERS REGISTRY -->
             <div class="bg-[#3a1005] border border-amber-500/40 p-4 rounded-2xl space-y-3">
                 <div class="flex justify-between items-center border-b border-amber-600/30 pb-2">
-                    <span class="text-xs font-black text-amber-300 uppercase">🏢 ट्रक मालक नोंदणी (Owner Details)</span>
+                    <span class="text-xs font-black text-amber-300 uppercase">ट्रक मालक नोंदणी (Owner Details)</span>
                     <button type="button" onclick="openOwnerModal()" class="text-[10px] bg-amber-600 hover:bg-amber-500 text-stone-950 font-black px-2.5 py-1 rounded-lg">+ नवीन मालक</button>
                 </div>
                 <div id="ownersList" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
             </div>
 
-            <!-- ❓ INQUIRIES FOLDER (Collapsible) -->
+            <!-- INQUIRIES FOLDER (Collapsible) -->
             <div class="bg-[#3a1005] border-2 border-orange-500/50 rounded-2xl overflow-hidden shadow-md">
                 <button type="button" onclick="toggleFolder('inquiriesContent', 'inqArrow')" 
                     class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-orange-950/80 to-[#2b0802] text-left">
@@ -103,7 +109,7 @@
                 <div id="inquiriesContent" class="hidden p-3 space-y-2 bg-[#200701] border-t border-orange-500/30"></div>
             </div>
 
-            <!-- 📦 PENDING BOOKINGS FOLDER (Collapsible) -->
+            <!-- PENDING BOOKINGS FOLDER (Collapsible) -->
             <div class="bg-[#3a1005] border-2 border-amber-500/50 rounded-2xl overflow-hidden shadow-md">
                 <button type="button" onclick="toggleFolder('bookingsContent', 'bookArrow')" 
                     class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-amber-950/80 to-[#2b0802] text-left">
@@ -119,7 +125,7 @@
                 <div id="bookingsContent" class="hidden p-3 space-y-2 bg-[#200701] border-t border-amber-500/30"></div>
             </div>
 
-            <!-- ✅ ASSIGNED TRIPS FOLDER (Collapsible) -->
+            <!-- ASSIGNED TRIPS FOLDER (Collapsible) -->
             <div class="bg-[#3a1005] border-2 border-emerald-500/50 rounded-2xl overflow-hidden shadow-md">
                 <button type="button" onclick="toggleFolder('assignedContent', 'assignedArrow')" 
                     class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-emerald-950/80 to-[#2b0802] text-left">
@@ -138,7 +144,7 @@
         </div>
     </div>
 
-    <!-- 🔑 MODAL: CHANGE EMAIL & PASSWORD -->
+    <!-- MODAL: CHANGE EMAIL & PASSWORD -->
     <div id="changeSettingsModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
         <div class="bg-[#3a1005] border border-amber-500 p-5 rounded-2xl max-w-sm w-full space-y-3">
             <h3 class="text-xs font-black text-amber-300 uppercase">ॲडमिन सेटिंग्ज (Email & Password)</h3>
@@ -152,7 +158,7 @@
         </div>
     </div>
 
-    <!-- ➕ MODAL: ADD NEW VEHICLE -->
+    <!-- MODAL: ADD NEW VEHICLE -->
     <div id="addVehicleModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
         <div class="bg-[#3a1005] border border-amber-500 p-5 rounded-2xl max-w-sm w-full space-y-3">
             <h3 class="text-xs font-black text-amber-300 uppercase">नवीन गाडी व दर जोडा</h3>
@@ -165,7 +171,7 @@
         </div>
     </div>
 
-    <!-- ➕ MODAL: ADD OWNER -->
+    <!-- MODAL: ADD OWNER -->
     <div id="ownerModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
         <div class="bg-[#3a1005] border border-amber-500 p-5 rounded-2xl max-w-sm w-full space-y-3">
             <h3 class="text-xs font-black text-amber-300 uppercase">नवीन ट्रक मालक जोडा</h3>
@@ -234,17 +240,17 @@
             const cred = await getSavedCredentials();
 
             if (oldPassInput !== cred.pass) {
-                alert("जुना पासवर्ड चुकीचा आहे!");
+                alert("जुना पासवर्ड चुकीचा आहे");
                 return;
             }
             if (!newEmail) {
-                alert("ईमेल आयडी रिक्त असू शकत नाही!");
+                alert("ईमेल आयडी रिक्त असू शकत नाही");
                 return;
             }
             
             let finalPass = newPassInput ? newPassInput : cred.pass;
             if (newPassInput && newPassInput.length < 4) {
-                alert("नवीन पासवर्ड किमान ४ अक्षरांचा असावा!");
+                alert("नवीन पासवर्ड किमान ४ अक्षरांचा असावा");
                 return;
             }
 
@@ -257,22 +263,22 @@
                 localStorage.setItem("chahade_admin_email", newEmail);
                 localStorage.setItem("chahade_admin_password", finalPass);
                 
-                alert("ॲडमिन ईमेल आणि पासवर्ड यशस्वीरीत्या बदलले गेले!");
+                alert("ॲडमिन ईमेल आणि पासवर्ड यशस्वीरीत्या बदलले गेले");
                 document.getElementById('oldPassInput').value = "";
                 document.getElementById('newPassInput').value = "";
                 closeChangeSettingsModal();
             } catch(e) {
-                alert("नेटवर्क एरर! क्लाउडवर सेव्ह होऊ शकले नाही.");
+                alert("नेटवर्क एरर क्लाउडवर सेव्ह होऊ शकले नाही");
             }
         }
 
         function checkNotificationSetup() {
             if ("Notification" in window) {
                 if (Notification.permission === "granted") {
-                    document.getElementById('notifStatusText').innerText = "🔔 नोटिफिकेशन चालू आहे (सक्रिय)";
+                    document.getElementById('notifStatusText').innerText = "नोटिफिकेशन चालू आहे (सक्रिय)";
                     document.getElementById('notifBtn').classList.add('hidden');
                 } else {
-                    document.getElementById('notifStatusText').innerText = "🔔 नवीन ऑर्डरच्या सूचना मिळवण्यासाठी येथे क्लिक करा:";
+                    document.getElementById('notifStatusText').innerText = "नवीन ऑर्डरच्या सूचना मिळवण्यासाठी येथे क्लिक करा:";
                     document.getElementById('notifBtn').classList.remove('hidden');
                 }
             }
@@ -283,7 +289,7 @@
                 Notification.requestPermission().then(permission => {
                     if (permission === "granted") {
                         checkNotificationSetup();
-                        new Notification("चाहाडे ट्रान्सपोर्ट", { body: "नोटिफिकेशन सुविधा यशस्वीरीत्या चालू झाली आहे!" });
+                        new Notification("चाहाडे ट्रान्सपोर्ट", { body: "नोटिफिकेशन सुविधा यशस्वीरीत्या चालू झाली आहे" });
                     }
                 });
             }
@@ -338,11 +344,11 @@
 
                 if (!isFirstLoad) {
                     if (newOrders.length > cachedOrders.length) {
-                        triggerBrowserNotification("📦 नवीन बुकिंग आली आहे!", "डॅशबोर्ड तपासा, नवीन ऑर्डर प्राप्त झाली आहे.");
+                        triggerBrowserNotification("नवीन बुकिंग आली आहे", "डॅशबोर्ड तपासा, नवीन ऑर्डर प्राप्त झाली आहे.");
                         playHornSound();
                     }
                     if (newInquiries.length > cachedInquiries.length) {
-                        triggerBrowserNotification("❓ नवीन चौकशी (Inquiry) आली आहे!", "कस्टमरकडून नवीन चौकशी प्राप्त झाली आहे.");
+                        triggerBrowserNotification("नवीन चौकशी आली आहे", "कस्टमरकडून नवीन चौकशी प्राप्त झाली आहे.");
                         playHornSound();
                     }
                 }
@@ -397,7 +403,7 @@
             const newRate = Number(document.getElementById(`rate_${idx}`).value);
             vehicleCategories[idx].rate = newRate;
             await fetch(dbUrl + "vehicles.json", { method: "PUT", body: JSON.stringify(vehicleCategories) });
-            alert("गाडीचा दर यशस्वीरीत्या बदलला गेला!");
+            alert("गाडीचा दर यशस्वीरीत्या बदलला गेला");
             fetchAllCloudData();
         }
 
@@ -407,7 +413,7 @@
         async function saveNewVehicle() {
             const name = document.getElementById('newVehName').value.trim();
             const rate = Number(document.getElementById('newVehRate').value);
-            if(!name || !rate) { alert("कृपया गाडीचे नाव आणि दर भरा!"); return; }
+            if(!name || !rate) { alert("कृपया गाडीचे नाव आणि दर भरा"); return; }
 
             const newId = 'v_' + Date.now();
             vehicleCategories.push({ id: newId, name: name, rate: rate, available: true });
@@ -416,7 +422,7 @@
             closeAddVehicleModal();
             document.getElementById('newVehName').value = "";
             document.getElementById('newVehRate').value = "";
-            alert("नवीन गाडी यशस्वीरीत्या जोडली गेली!");
+            alert("नवीन गाडी यशस्वीरीत्या जोडली गेली");
             fetchAllCloudData();
         }
 
@@ -435,8 +441,8 @@
                 list.innerHTML += `
                     <div class="flex justify-between items-center bg-[#200701] p-2 rounded-xl text-xs border border-amber-500/20">
                         <div>
-                            <p class="font-bold text-white">${o.name} <span class="text-amber-300">(${o.vehicleNo || 'वाहन क्र. नाही'})</span></p>
-                            <p class="text-[10px] text-amber-300/80">📞 ${o.phone}</p>
+                            <p class="font-bold text-white">${o.name} <span class="text-amber-300">(${o.vehicleNo || 'वाहन क्र नाही'})</span></p>
+                            <p class="text-[10px] text-amber-300/80">फोन: ${o.phone}</p>
                         </div>
                         <button onclick="deleteOwner('${o.id}')" class="text-red-400 hover:text-red-300 p-1"><i class="fa-solid fa-trash"></i></button>
                     </div>
@@ -451,7 +457,7 @@
             const name = document.getElementById('ownerName').value.trim();
             const phone = document.getElementById('ownerPhone').value.trim();
             const vehicleNo = document.getElementById('ownerVehicleNo').value.trim();
-            if(!name || phone.length !== 10) { alert("कृपया योग्य नाव व १० अंकी नंबर टाका!"); return; }
+            if(!name || phone.length !== 10) { alert("कृपया योग्य नाव व १० अंकी नंबर टाका"); return; }
 
             const key = 'own_' + Date.now();
             await fetch(dbUrl + `owners/${key}.json`, { 
@@ -481,14 +487,14 @@
             cachedInquiries.forEach(inq => {
                 const isEmailChannel = (inq.replyChannel === 'email');
                 const replyTarget = inq.replyTarget || inq.customer;
+                const inquiryNoteContent = inq.inquiryNote ? inq.inquiryNote : 'कोणतीही अतिरिक्त नोंद नाही.';
                 
-                // Marathi automated templates
-                const mailSubject = encodeURIComponent(`चाहाडे ट्रान्सपोर्ट - चौकशी संदर्भ #${inq.id}`);
-                const mailBody = encodeURIComponent(`नमस्ते,\n\nआपण चाहाडे ट्रान्सपोर्टकडे चौकशी (#${inq.id}) नोंदवली होती.\nमार्ग: ${inq.from} ते ${inq.to}\nविषय: ${inq.subType || 'सामान्य चौकशी'}\n\nआपल्या चौकशीचे सविस्तर उत्तर खालीलप्रमाणे आहे:\n[येथे आपले उत्तर लिहा]\n\nअधिक माहितीसाठी संपर्क: चाहाडे ट्रान्सपोर्ट, पालघर.`);
-                const waMessage = encodeURIComponent(`नमस्ते, चाहाडे ट्रान्सपोर्ट कडून: आपल्या चौकशीचा (#${inq.id} - ${inq.subType || ''}) संदर्भात हा प्रतिसाद आहे. आम्ही आपल्या सेवेत तत्पर आहोत.`);
+                const mailSubject = encodeURIComponent(`चाहाडे ट्रान्सपोर्ट - चौकशी उत्तर #${inq.id}`);
+                const mailBody = encodeURIComponent(`नमस्ते,\n\nआपण चाहाडे ट्रान्सपोर्टकडे चौकशी (#${inq.id}) नोंदवली होती.\nमार्ग: ${inq.from} ते ${inq.to}\nविषय: ${inq.subType || 'चौकशी'}\nआपला संदेश: "${inquiryNoteContent}"\n\nआमचे उत्तर:\n[येथे उत्तर लिहा]\n\nधन्यवाद,\nचाहाडे ट्रान्सपोर्ट, पालघर.`);
+                const waMessage = encodeURIComponent(`नमस्ते, चाहाडे ट्रान्सपोर्ट कडून: आपल्या चौकशीचा (#${inq.id} - ${inq.subType || ''}) संदर्भात हा प्रतिसाद आहे.\nआपला संदेश: "${inquiryNoteContent}"\n\nआमचे उत्तर: `);
 
                 acc.innerHTML += `
-                    <div class="bg-[#3a1005] p-3 rounded-xl border border-orange-500/40 space-y-2 text-xs">
+                    <div class="bg-[#3a1005] p-3.5 rounded-xl border border-orange-500/40 space-y-2.5 text-xs">
                         <div class="flex justify-between font-black text-orange-300 border-b border-orange-500/20 pb-1">
                             <span>#${inq.id} [${inq.subType || 'चौकशी'}]</span>
                             <button onclick="deleteRecord('inquiries', '${inq.id}')" class="text-red-400 hover:text-red-300">पुसा</button>
@@ -498,9 +504,19 @@
                         <p class="text-stone-300">📦 माल: ${inq.material} (${inq.vehicle || ''})</p>
                         <p class="text-amber-200 font-bold">📞 मुख्य नंबर: ${inq.customer}</p>
                         
+                        <!-- 📝 DETAILED INQUIRY NOTE DISPLAY -->
+                        <div class="p-2.5 rounded-lg bg-[#1a0501] border border-orange-500/30 text-[11px] space-y-1">
+                            <p class="text-amber-300 font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-comment-dots text-orange-400"></i> ग्राहकाचा सविस्तर संदेश / प्रश्न:
+                            </p>
+                            <p class="text-stone-200 leading-relaxed italic bg-black/40 p-2 rounded border border-amber-500/20">
+                                "${inquiryNoteContent}"
+                            </p>
+                        </div>
+
                         <div class="p-2 rounded-lg bg-[#200701] border border-amber-500/30 text-[11px] space-y-1">
-                            <p class="text-stone-300">🎯 ग्राहकाची प्रतिसाद निवड: <strong class="${isEmailChannel ? 'text-amber-300' : 'text-emerald-400'} uppercase">${isEmailChannel ? '✉️ Email' : '💬 WhatsApp'}</strong></p>
-                            <p class="text-white font-mono">प्रतिसाद पत्ता/नंबर: <strong>${replyTarget}</strong></p>
+                            <p class="text-stone-300">प्रतिसाद माध्यम: <strong class="${isEmailChannel ? 'text-amber-300' : 'text-emerald-400'} uppercase">${isEmailChannel ? 'Email' : 'WhatsApp'}</strong></p>
+                            <p class="text-white font-mono">पत्ता किंवा नंबर: <strong>${replyTarget}</strong></p>
                         </div>
 
                         <div class="pt-1">
@@ -590,7 +606,7 @@
 
         async function assignOwner(orderId) {
             const selectElem = document.getElementById(`sel_${orderId}`);
-            if(!selectElem || !selectElem.value) { alert("कृपया आधी ट्रक मालक निवडा!"); return; }
+            if(!selectElem || !selectElem.value) { alert("कृपया आधी ट्रक मालक निवडा"); return; }
             const [name, phone, vehicleNo] = selectElem.value.split('|');
 
             await fetch(dbUrl + `orders/${orderId}.json`, {
@@ -601,7 +617,7 @@
                     assignedVehicleNo: vehicleNo 
                 })
             });
-            alert("ट्रक मालक यशस्वीरीत्या असाइन झाला! आता ही ट्रिप 'असाइन केलेल्या ट्रिप्स' फोल्डरमध्ये जाईल.");
+            alert("ट्रक मालक यशस्वीरीत्या असाइन झाला! ट्रिप असाइन फोल्डरमध्ये हलवली गेली.");
             fetchAllCloudData();
         }
 
