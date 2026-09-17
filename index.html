@@ -19,11 +19,17 @@
 
     <div class="max-w-lg w-full bg-gradient-to-b from-[#3a1005] via-[#2a0b03] to-[#1c0601] rounded-3xl shadow-2xl overflow-hidden border-2 border-amber-500/70">
         
+        <!-- Developer Credit Strip -->
+        <div class="bg-black/60 py-1.5 px-3 text-center border-b border-amber-500/30 flex justify-between items-center text-[10px] text-amber-200">
+            <span>चाहाडे डिजिटल पोर्टल</span>
+            <span>वेबसाइट बनवण्यासाठी ईमेल करा: <a href="mailto:shabaj9769@gmail.com" class="font-bold text-amber-400 underline">shabaj9769@gmail.com</a></span>
+        </div>
+
         <!-- Top Strip -->
         <div class="bg-gradient-to-r from-orange-700 via-amber-500 to-red-700 py-2.5 px-4 text-center shadow-md flex items-center justify-center gap-2 border-b border-amber-300/40">
             <span class="text-white text-lg">🚩</span>
             <span class="text-white font-black text-sm md:text-base tracking-wider drop-shadow">
-                ॥ जय भवानी ॥ जय शिवाजी ॥ जय महाराष्ट्र ॥
+                जय भवानी जय शिवाजी जय महाराष्ट्र
             </span>
             <span class="text-white text-lg">🚩</span>
         </div>
@@ -46,14 +52,14 @@
                 <h1 class="text-3xl font-black tracking-tight text-amber-200 drop-shadow mt-2">चाहाडे ट्रान्सपोर्ट</h1>
                 <p class="text-xs font-bold text-amber-400 tracking-widest uppercase mt-0.5">लॉजिस्टिक आणि मालवाहतूक सेवा</p>
                 <span class="inline-flex items-center gap-1.5 bg-[#6c200a]/70 text-amber-200 text-[11px] font-bold px-3.5 py-1 rounded-full uppercase tracking-wider border border-amber-400/50 mt-2.5">
-                    📍 पालघर जिल्हा अधिकृत कमर्शियल लोडिंग हब
+                    पालघर जिल्हा अधिकृत कमर्शियल लोडिंग हब
                 </span>
             </div>
         </div>
 
         <div class="p-4 md:p-6 space-y-4">
             
-            <!-- 🔍 SECTION: CHECK & REMOVE BOOKING HISTORY (Inquiries excluded) -->
+            <!-- SECTION: CHECK & REMOVE BOOKING HISTORY -->
             <div class="bg-[#2a0b03] border-2 border-amber-500/40 rounded-2xl overflow-hidden shadow-lg">
                 <button type="button" onclick="toggleTrackOrderFolder()" 
                     class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-[#381005] to-[#200701] text-left">
@@ -83,7 +89,7 @@
                         <span id="historyMatchCount" class="text-[11px] font-bold text-amber-300"></span>
                         <button type="button" onclick="clearCustomerSearchedHistory()" 
                             class="text-[10px] bg-red-950 border border-red-500/40 text-red-300 px-2 py-1 rounded-lg font-bold hover:bg-red-900 transition">
-                            🗑️ सर्व इतिहास पुसा
+                            सर्व इतिहास पुसा
                         </button>
                     </div>
 
@@ -98,7 +104,7 @@
                 </p>
                 <div class="text-[11px] text-amber-100/90 mt-1.5 leading-relaxed space-y-1">
                     <p>• <strong>मध्यस्थ पोर्टल:</strong> मालवाहतुकीची व सुरक्षेची जबाबदारी संबंधित स्वतंत्र वाहन मालकाची राहील.</p>
-                    <p>• <strong>५०% ॲडव्हान्स:</strong> लोडिंग पॉईंटवर ५०% ॲडव्हान्स रोख किंवा UPI द्वारे चालकाकडे देणे बंधनकारक आहे.</p>
+                    <p>• <strong>५० टक्के ॲडव्हान्स:</strong> लोडिंग पॉईंटवर ५० टक्के ॲडव्हान्स रोख किंवा UPI द्वारे चालकाकडे देणे बंधनकारक आहे.</p>
                 </div>
             </div>
 
@@ -106,20 +112,20 @@
             <div id="bookingSuccessBox" class="hidden bg-gradient-to-b from-[#1b4317] to-[#0d230b] border-2 border-emerald-400 p-5 rounded-2xl text-center space-y-3 shadow-2xl">
                 <div class="w-14 h-14 mx-auto rounded-full bg-emerald-500 text-stone-950 flex items-center justify-center text-2xl font-black shadow-lg">✓</div>
                 <div>
-                    <h3 id="successTitle" class="text-lg font-black text-emerald-200">यशस्वीरीत्या नोंदवली गेली!</h3>
+                    <h3 id="successTitle" class="text-lg font-black text-emerald-200">यशस्वीरीत्या नोंदवली गेली</h3>
                     <p id="successDesc" class="text-xs text-stone-200 mt-1">आपली माहिती सिस्टीममध्ये पोहोचली आहे.</p>
                 </div>
                 <div class="bg-black/40 p-3 rounded-xl border border-emerald-500/40 text-left text-xs space-y-1.5 text-emerald-100">
-                    <p>🆔 <strong>नोंदणी ID:</strong> <span id="successOrderId" class="text-amber-300 font-black"></span></p>
-                    <p id="dateTimeSuccessRow">📅 <strong>तारीख व वेळ:</strong> <span id="successDateTime" class="text-white"></span></p>
-                    <p id="fareSuccessRow">💰 <strong>अंदाजे भाडे:</strong> <span id="successFare" class="text-amber-300 font-bold"></span></p>
+                    <p>नोंदणी ID: <span id="successOrderId" class="text-amber-300 font-black"></span></p>
+                    <p id="dateTimeSuccessRow">तारीख व वेळ: <span id="successDateTime" class="text-white"></span></p>
+                    <p id="fareSuccessRow">अंदाजे भाडे: <span id="successFare" class="text-amber-300 font-bold"></span></p>
                     <div id="inquiryChannelNotice" class="hidden mt-2 p-2.5 bg-amber-950/80 border border-amber-400/50 rounded-lg text-amber-200 text-xs">
-                        💬 <strong>चौकशी प्रतिसाद:</strong> आपल्या चौकशीचे सविस्तर उत्तर लवकरच आपल्या दिलेल्या <span id="successChannelName" class="font-bold text-white"></span> वर पाठवले जाईल.
+                        चौकशी प्रतिसाद: आपल्या चौकशीचे सविस्तर उत्तर लवकरच आपल्या दिलेल्या <span id="successChannelName" class="font-bold text-white"></span> वर पाठवले जाईल.
                     </div>
                 </div>
                 <button type="button" onclick="resetFormForNextBooking()" 
                     class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-xl text-xs uppercase tracking-wider transition">
-                    नवीन अर्ज करा (New Form)
+                    नवीन अर्ज करा
                 </button>
             </div>
 
@@ -138,9 +144,9 @@
                 <!-- 1.1 Palghar Loading Area -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                        <i class="fa-solid fa-city text-amber-400"></i> पालघरमध्ये माल कुठून भरायचा आहे? (गाव/MIDC/पत्ता)
+                        <i class="fa-solid fa-city text-amber-400"></i> पालघरमध्ये माल कुठून भरायचा आहे? (गाव किंवा MIDC पत्ता)
                     </label>
-                    <input type="text" id="palgharLoadingPoint" placeholder="उदा. चाहाडे गाव, बोईसर, मनोर, तारापूर MIDC..." required
+                    <input type="text" id="palgharLoadingPoint" placeholder="उदा. चाहाडे गाव, बोईसर, मनोर, तारापूर MIDC" required
                         class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
                 </div>
 
@@ -151,42 +157,42 @@
                     </label>
                     <select id="drop" required class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
                         <option value="" disabled selected>जिल्हा निवडा</option>
-                        <option value="मुंबई शहर" data-km="100">मुंबई शहर (Mumbai City) ~100 KM</option>
-                        <option value="मुंबई उपनगर" data-km="95">मुंबई उपनगर (Bandra/Andheri) ~95 KM</option>
-                        <option value="ठाणे" data-km="85">ठाणे (Thane / Bhiwandi) ~85 KM</option>
-                        <option value="नवी मुंबई" data-km="115">नवी मुंबई (Navi Mumbai / Panvel) ~115 KM</option>
-                        <option value="रायगड" data-km="160">रायगड (Raigad) ~160 KM</option>
-                        <option value="नाशिक" data-km="170">नाशिक (Nashik) ~170 KM</option>
-                        <option value="पुणे" data-km="220">पुणे (Pune / Pimpri Chinchwad) ~220 KM</option>
-                        <option value="धुळे" data-km="290">धुळे (Dhule) ~290 KM</option>
-                        <option value="नंदुरबार" data-km="330">नंदुरबार (Nandurbar) ~330 KM</option>
-                        <option value="जळगाव" data-km="380">जळगाव (Jalgaon) ~380 KM</option>
-                        <option value="अहिल्यानगर" data-km="260">अहिल्यानगर (अहमदनगर) ~260 KM</option>
-                        <option value="छत्रपती संभाजीनगर" data-km="350">छत्रपती संभाजीनगर (औरंगाबाद) ~350 KM</option>
-                        <option value="जालना" data-km="410">जालना (Jalna) ~410 KM</option>
-                        <option value="सातारा" data-km="330">सातारा (Satara) ~330 KM</option>
-                        <option value="सांगली" data-km="440">सांगली (Sangli) ~440 KM</option>
-                        <option value="कोल्हापूर" data-km="450">कोल्हापूर (Kolhapur) ~450 KM</option>
-                        <option value="सोलापूर" data-km="480">सोलापूर (Solapur) ~480 KM</option>
-                        <option value="रत्नागिरी" data-km="390">रत्नागिरी (Ratnagiri) ~390 KM</option>
-                        <option value="सिंधुदुर्ग" data-km="530">सिंधुदुर्ग (Sindhudurg) ~530 KM</option>
-                        <option value="बीड" data-km="440">बीड (Beed) ~440 KM</option>
-                        <option value="धाराशिव" data-km="510">धाराशिव (उस्मानाबाद) ~510 KM</option>
-                        <option value="लातूर" data-km="560">लातूर (Latur) ~560 KM</option>
-                        <option value="नांदेड" data-km="610">नांदेड (Nanded) ~610 KM</option>
-                        <option value="परभणी" data-km="520">परभणी (Parbhani) ~520 KM</option>
-                        <option value="हिंगोली" data-km="560">हिंगोली (Hingoli) ~560 KM</option>
-                        <option value="बुलढाणा" data-km="460">बुलढाणा (Buldhana) ~460 KM</option>
-                        <option value="अकोला" data-km="530">अकोला (Akola) ~530 KM</option>
-                        <option value="वाशिम" data-km="560">वाशिम (Washim) ~560 KM</option>
-                        <option value="अमरावती" data-km="610">अमरावती (Amravati) ~610 KM</option>
-                        <option value="यवतमाळ" data-km="650">यवतमाळ (Yavatmal) ~650 KM</option>
-                        <option value="वर्धा" data-km="720">वर्धा (Wardha) ~720 KM</option>
-                        <option value="नागपूर" data-km="790">नागपूर (Nagpur) ~790 KM</option>
-                        <option value="भंडारा" data-km="850">भंडारा (Bhandara) ~850 KM</option>
-                        <option value="गोंदिया" data-km="920">गोंदिया (Gondia) ~920 KM</option>
-                        <option value="चंद्रपूर" data-km="790">चंद्रपूर (Chandrapur) ~790 KM</option>
-                        <option value="गडचिरोली" data-km="870">गडचिरोली (Gadchiroli) ~870 KM</option>
+                        <option value="मुंबई शहर" data-km="100">मुंबई शहर (Mumbai City) 100 KM</option>
+                        <option value="मुंबई उपनगर" data-km="95">मुंबई उपनगर (Bandra/Andheri) 95 KM</option>
+                        <option value="ठाणे" data-km="85">ठाणे (Thane / Bhiwandi) 85 KM</option>
+                        <option value="नवी मुंबई" data-km="115">नवी मुंबई (Navi Mumbai / Panvel) 115 KM</option>
+                        <option value="रायगड" data-km="160">रायगड (Raigad) 160 KM</option>
+                        <option value="नाशिक" data-km="170">नाशिक (Nashik) 170 KM</option>
+                        <option value="पुणे" data-km="220">पुणे (Pune / Pimpri Chinchwad) 220 KM</option>
+                        <option value="धुळे" data-km="290">धुळे (Dhule) 290 KM</option>
+                        <option value="नंदुरबार" data-km="330">नंदुरबार (Nandurbar) 330 KM</option>
+                        <option value="जळगाव" data-km="380">जळगाव (Jalgaon) 380 KM</option>
+                        <option value="अहिल्यानगर" data-km="260">अहिल्यानगर (अहमदनगर) 260 KM</option>
+                        <option value="छत्रपती संभाजीनगर" data-km="350">छत्रपती संभाजीनगर (औरंगाबाद) 350 KM</option>
+                        <option value="जालना" data-km="410">जालना (Jalna) 410 KM</option>
+                        <option value="सातारा" data-km="330">सातारा (Satara) 330 KM</option>
+                        <option value="सांगली" data-km="440">सांगली (Sangli) 440 KM</option>
+                        <option value="कोल्हापूर" data-km="450">कोल्हापूर (Kolhapur) 450 KM</option>
+                        <option value="सोलापूर" data-km="480">सोलापूर (Solapur) 480 KM</option>
+                        <option value="रत्नागिरी" data-km="390">रत्नागिरी (Ratnagiri) 390 KM</option>
+                        <option value="सिंधुदुर्ग" data-km="530">सिंधुदुर्ग (Sindhudurg) 530 KM</option>
+                        <option value="बीड" data-km="440">बीड (Beed) 440 KM</option>
+                        <option value="धाराशिव" data-km="510">धाराशिव (उस्मानाबाद) 510 KM</option>
+                        <option value="लातूर" data-km="560">लातूर (Latur) 560 KM</option>
+                        <option value="नांदेड" data-km="610">नांदेड (Nanded) 610 KM</option>
+                        <option value="परभणी" data-km="520">परभणी (Parbhani) 520 KM</option>
+                        <option value="हिंगोली" data-km="560">हिंगोली (Hingoli) 560 KM</option>
+                        <option value="बुलढाणा" data-km="460">बुलढाणा (Buldhana) 460 KM</option>
+                        <option value="अकोला" data-km="530">अकोला (Akola) 530 KM</option>
+                        <option value="वाशिम" data-km="560">वाशिम (Washim) 560 KM</option>
+                        <option value="अमरावती" data-km="610">अमरावती (Amravati) 610 KM</option>
+                        <option value="यवतमाळ" data-km="650">यवतमाळ (Yavatmal) 650 KM</option>
+                        <option value="वर्धा" data-km="720">वर्धा (Wardha) 720 KM</option>
+                        <option value="नागपूर" data-km="790">नागपूर (Nagpur) 790 KM</option>
+                        <option value="भंडारा" data-km="850">भंडारा (Bhandara) 850 KM</option>
+                        <option value="गोंदिया" data-km="920">गोंदिया (Gondia) 920 KM</option>
+                        <option value="चंद्रपूर" data-km="790">चंद्रपूर (Chandrapur) 790 KM</option>
+                        <option value="गडचिरोली" data-km="870">गडचिरोली (Gadchiroli) 870 KM</option>
                     </select>
                 </div>
 
@@ -195,7 +201,7 @@
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-house-chimney text-amber-400"></i> ३. माल खाली करण्याचा सविस्तर पत्ता (पिनकोडसह)
                     </label>
-                    <textarea id="fullAddress" rows="2" placeholder="दुकान/कंपनी नाव, गल्ली, लँडमार्क, एरिया पिनकोड..." required
+                    <textarea id="fullAddress" rows="2" placeholder="दुकान किंवा कंपनी नाव, गल्ली, लँडमार्क, एरिया पिनकोड" required
                         class="w-full px-4 py-2.5 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition"></textarea>
                 </div>
 
@@ -204,7 +210,7 @@
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                         <i class="fa-solid fa-boxes-stacked text-amber-400"></i> ४. मालाचा प्रकार
                     </label>
-                    <input type="text" id="material" placeholder="उदा. पॅकेजिंग सामान, भाजीपाला, लोखंड, प्लास्टिक..." required
+                    <input type="text" id="material" placeholder="उदा. पॅकेजिंग सामान, भाजीपाला, लोखंड, प्लास्टिक" required
                         class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-medium text-white placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
                 </div>
 
@@ -212,7 +218,7 @@
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                         <span class="flex items-center gap-1.5"><i class="fa-solid fa-weight-scale text-amber-400"></i> ५. मालाचे अंदाजे वजन</span>
-                        <span class="text-[10px] text-emerald-400 font-bold">● गाडी आपोआप निवडली जाईल</span>
+                        <span class="text-[10px] text-emerald-400 font-bold">गाडी आपोआप निवडली जाईल</span>
                     </label>
                     <select id="cargoWeight" onchange="syncWeightToVehicle()" required class="w-full px-3 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-amber-200 text-xs focus:outline-none focus:border-amber-400 transition">
                         <option value="५०० किलो पर्यंत" data-vindex="1">५०० किलो पर्यंत (हलका माल - टाटा एस)</option>
@@ -220,7 +226,7 @@
                         <option value="१ टन ते १.७ टन" data-vindex="0" selected>१ टन ते १.७ टन (बोलेरो पिकअप)</option>
                         <option value="२ टन ते ४.५ टन" data-vindex="2">२ टन ते ४.५ टन (आयशर १४ फूट)</option>
                         <option value="५ टन ते ९ टन" data-vindex="3">५ टन ते ९ टन (आयशर १९ फूट)</option>
-                        <option value="१० टन किंवा जास्त" data-vindex="4">१० टन किंवा जास्त (६ चाकी / हेवी)</option>
+                        <option value="१० टन किंवा जास्त" data-vindex="4">१० टन किंवा जास्त (६ चाकी किंवा हेवी)</option>
                     </select>
                 </div>
 
@@ -255,10 +261,10 @@
                             </select>
 
                             <select id="timeAmPm" class="px-3 py-2.5 bg-[#330e04] border border-amber-500/60 rounded-xl font-black text-amber-300 text-xs focus:outline-none">
-                                <option value="AM (सकाळ / Morning)">🌅 AM (सकाळ)</option>
-                                <option value="PM (दुपार / Afternoon)">☀️ PM (दुपार)</option>
-                                <option value="PM (संध्याकाळ / Evening)">🌇 PM (संध्याकाळ)</option>
-                                <option value="PM (रात्र / Night)">🌙 PM (रात्र)</option>
+                                <option value="AM (सकाळ)">AM (सकाळ)</option>
+                                <option value="PM (दुपार)">PM (दुपार)</option>
+                                <option value="PM (संध्याकाळ)">PM (संध्याकाळ)</option>
+                                <option value="PM (रात्र)">PM (रात्र)</option>
                             </select>
                         </div>
                     </div>
@@ -275,46 +281,60 @@
                         oninput="validateMobileInput(this)"
                         class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-black tracking-widest text-amber-200 placeholder-amber-200/40 text-sm focus:outline-none focus:border-amber-400 transition">
                     <p id="mobileErrorMsg" class="hidden text-[10px] text-red-400 font-bold mt-1">
-                        ⚠️ फक्त ० ते ९ अंक टाका! स्पेशल चिन्ह किंवा स्पेस चालणार नाही.
+                        फक्त ० ते ९ अंक टाका. स्पेशल चिन्ह किंवा स्पेस चालणार नाही.
                     </p>
                 </div>
 
                 <!-- 8. Commercial Vehicles -->
                 <div>
                     <label class="block text-xs font-bold text-amber-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                        <span><i class="fa-solid fa-truck-moving text-amber-400"></i> ८. लागणारी मालवाहतूक गाडी (Vehicle Category)</span>
-                        <span class="text-[10px] text-emerald-400 font-bold">● Live Status</span>
+                        <span><i class="fa-solid fa-truck-moving text-amber-400"></i> ८. लागणारी मालवाहतूक गाडी</span>
+                        <span class="text-[10px] text-emerald-400 font-bold">Live Status</span>
                     </label>
                     <select id="vehicle" onchange="syncVehicleToWeight()" class="w-full px-4 py-3 bg-[#421306]/90 border-2 border-amber-500/50 rounded-xl font-bold text-white text-sm focus:outline-none focus:border-amber-400 transition">
                     </select>
                 </div>
 
-                <!-- 🎯 9. BOOKING OR INQUIRY MODE SELECTOR -->
+                <!-- 9. BOOKING OR INQUIRY MODE SELECTOR -->
                 <div class="bg-[#4d1607]/90 p-4 rounded-2xl border-2 border-amber-500/60 space-y-3">
                     <label class="block text-xs font-black text-amber-300 uppercase tracking-wider">
-                        ९. तुम्हाला काय करायचे आहे? (Select Action)
+                        ९. तुम्हाला काय करायचे आहे? (पर्याय निवडा)
                     </label>
                     <div class="grid grid-cols-2 gap-3">
                         <button type="button" onclick="selectActionType('booking')" id="btnBooking"
                             class="py-3 px-2 bg-emerald-600 text-white font-black rounded-xl text-xs uppercase border-2 border-emerald-400 shadow transition">
-                            📦 थेट बुकिंग (Booking)
+                            थेट बुकिंग (Booking)
                         </button>
                         <button type="button" onclick="selectActionType('inquiry')" id="btnInquiry"
                             class="py-3 px-2 bg-[#330e04] text-amber-300 font-black rounded-xl text-xs uppercase border-2 border-amber-500/40 shadow transition">
-                            ❓ चौकशी (Inquiry)
+                            चौकशी (Inquiry)
                         </button>
                     </div>
 
-                    <!-- Inquiry Sub-options (WhatsApp vs Email Response Channel) -->
+                    <!-- Inquiry Details & 200 Words Note Box -->
                     <div id="inquiryOptionsBox" class="hidden pt-3 border-t border-amber-500/30 space-y-3">
                         <div>
                             <label class="block text-xs font-bold text-amber-200 mb-1">चौकशीचा विषय निवडा:</label>
                             <select id="inquirySubtype" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white focus:outline-none">
                                 <option value="भाडे विषयक चौकशी (Price Inquiry)">भाडे विषयक चौकशी (Price Inquiry)</option>
-                                <option value="अंतर/रूट विषयक चौकशी (Distance Inquiry)">अंतर/रूट विषयक चौकशी (Distance Inquiry)</option>
+                                <option value="अंतर आणि रूट चौकशी (Distance Inquiry)">अंतर आणि रूट चौकशी (Distance Inquiry)</option>
                                 <option value="ॲडव्हान्स बुकिंग चौकशी (Advance Booking Inquiry)">ॲडव्हान्स बुकिंग चौकशी (Advance Booking Inquiry)</option>
                                 <option value="इतर व्यावसायिक चौकशी (General Inquiry)">इतर व्यावसायिक चौकशी (General Inquiry)</option>
                             </select>
+                        </div>
+
+                        <!-- 200 Words Detailed Inquiry Box -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <label class="block text-xs font-bold text-amber-300">
+                                    <i class="fa-solid fa-pen-to-square text-amber-400 mr-1"></i> चौकशीचा सविस्तर तपशील (काय विचारायचे आहे?):
+                                </label>
+                                <span id="inquiryWordCount" class="text-[10px] text-amber-400 font-bold">० / २५० शब्द</span>
+                            </div>
+                            <textarea id="inquiryNote" rows="4" 
+                                oninput="countInquiryWords(this)"
+                                placeholder="येथे आपले प्रश्न सविस्तर लिहा. उदा. विशिष्ट लोडिंग वेळ, मालाचे विशेष पॅकेजिंग, रिटर्न भाडे, मजूर मदत इत्यादी माहिती २०० शब्दांपर्यंत लिहा."
+                                class="w-full px-3 py-2.5 bg-[#200701] border-2 border-amber-500/50 rounded-xl text-xs text-white placeholder-amber-200/40 leading-relaxed focus:outline-none focus:border-amber-400 transition"></textarea>
                         </div>
 
                         <div>
@@ -345,18 +365,18 @@
                     </div>
                 </div>
 
-                <!-- Calculate Fare Button (For Booking) -->
+                <!-- Calculate Fare Button -->
                 <button type="button" id="calcBtn" onclick="toggleCalculateFare()" 
                     class="w-full py-4 px-4 bg-gradient-to-r from-orange-600 via-amber-500 to-red-600 hover:brightness-110 text-white font-black rounded-2xl shadow-xl shadow-orange-950/60 text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-[0.98] border border-amber-300/40">
                     <i class="fa-solid fa-calculator text-base"></i> <span id="calcBtnText">अंदाजे भाडे तपासा (Show Fare)</span>
                 </button>
 
-                <!-- 📊 FARE RESULT CARD (Updated with Mandatory Driver Call & Recording Terms) -->
+                <!-- FARE RESULT CARD -->
                 <div id="fareResultCard" class="hidden space-y-4 pt-3 border-t-2 border-amber-500/40">
                     <div class="bg-[#4a1507]/90 border-2 border-amber-400/70 p-4 rounded-2xl space-y-3 shadow-xl">
                         
                         <div class="flex justify-between items-center bg-[#300c03] px-3 py-2 rounded-xl border border-amber-500/30 text-xs">
-                            <span class="text-amber-200 font-bold">🛣️ अंदाजे रस्ता अंतर:</span>
+                            <span class="text-amber-200 font-bold">अंदाजे रस्ता अंतर:</span>
                             <span id="distanceDisplay" class="font-black text-amber-300">0 KM</span>
                         </div>
 
@@ -366,19 +386,19 @@
                         </div>
 
                         <div class="text-xs text-amber-100 flex justify-between border-t border-amber-600/40 pt-2 font-bold">
-                            <span>५०% लोडिंग ॲडव्हान्स: <strong id="advanceDisplay" class="text-amber-300">₹ 0</strong></span>
-                            <span>५०% पोहोचल्यावर: <strong id="balanceDisplay" class="text-emerald-300">₹ 0</strong></span>
+                            <span>५० टक्के लोडिंग ॲडव्हान्स: <strong id="advanceDisplay" class="text-amber-300">₹ 0</strong></span>
+                            <span>५० टक्के पोहोचल्यावर: <strong id="balanceDisplay" class="text-emerald-300">₹ 0</strong></span>
                         </div>
 
-                        <!-- ⚠️ TERMS & CONDITIONS NOTICE -->
+                        <!-- TERMS & MANDATORY DRIVER CALL WITH RECORDING -->
                         <div class="bg-[#240802] p-3 rounded-xl border border-amber-500/40 space-y-1.5 text-[11px] text-amber-100/90 leading-relaxed text-left">
                             <p class="font-black text-amber-300 uppercase tracking-wide flex items-center gap-1.5">
                                 <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> महत्वाच्या अटी, ड्रायव्हर कॉल व रेकॉर्डिंग सूचना:
                             </p>
                             <p>• <strong>केवळ प्राथमिक भाडे अंदाज:</strong> वर दिलेले भाडे केवळ अंतरानुसार प्राथमिक अंदाज आहे.</p>
-                            <p>• <strong>ड्रायव्हर कॉल बंधनकारक (Compulsory):</strong> बुकिंग कन्फर्म झाल्यानंतर संबंधित ट्रक ड्रायव्हर/मालकाचा थेट कॉल ग्राहकाला येणे बंधनकारक आहे. प्रत्यक्ष मालाचा प्रकार, वजन व परिस्थितीनुसार ड्रायव्हरच अंतिम भाडे (Final Price) निश्चित करतील.</p>
-                            <p>• <strong>कॉल रेकॉर्डिंग सूचना:</strong> दोन्ही बाजूंच्या पारदर्शकतेसाठी, सुरक्षेसाठी व अधिकृत नोंदीसाठी (Record purpose) ड्रायव्हर आणि ग्राहक यांच्यातील सर्व फोन संभाषण रेकॉर्ड केले जाईल.</p>
-                            <p>• <strong>बुकिंग रद्द/बदल धोरण:</strong> बुकिंग रद्द करणे, वेळ बदलणे अथवा कोणत्याही वादामध्ये ग्राहक व वाहन मालक यांची परस्पर जबाबदारी राहील. पोर्टल/ॲपचा यात कोणताही हस्तक्षेप किंवा जबाबदारी नसेल.</p>
+                            <p>• <strong>ड्रायव्हर कॉल बंधनकारक:</strong> बुकिंग कन्फर्म झाल्यानंतर संबंधित ट्रक ड्रायव्हर किंवा मालकाचा थेट कॉल ग्राहकाला येणे बंधनकारक आहे. प्रत्यक्ष मालाचा प्रकार, वजन व परिस्थितीनुसार ड्रायव्हरच अंतिम भाडे (Final Price) निश्चित करतील.</p>
+                            <p>• <strong>कॉल रेकॉर्डिंग सूचना:</strong> दोन्ही बाजूंच्या पारदर्शकतेसाठी, सुरक्षेसाठी व अधिकृत नोंदीसाठी ड्रायव्हर आणि ग्राहक यांच्यातील सर्व फोन संभाषण रेकॉर्ड केले जाईल.</p>
+                            <p>• <strong>बुकिंग रद्द किंवा बदल धोरण:</strong> बुकिंग रद्द करणे अथवा वेळेत बदल करणे ग्राहक व वाहन मालक यांची परस्पर जबाबदारी राहील. पोर्टल किंवा ॲपचा यात कोणताही हस्तक्षेप राहणार नाही.</p>
                         </div>
                     </div>
 
@@ -439,7 +459,7 @@
                 
                 if (v.available === false) {
                     opt.disabled = true;
-                    opt.innerText = `🚫 ${v.name} (तात्पुरती उपलब्ध नाही)`;
+                    opt.innerText = `${v.name} (तात्पुरती उपलब्ध नाही)`;
                 } else {
                     opt.innerText = `${v.name} (₹${v.rate}/KM)`;
                 }
@@ -447,6 +467,15 @@
             });
 
             syncWeightToVehicle();
+        }
+
+        function countInquiryWords(textarea) {
+            const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0);
+            const badge = document.getElementById('inquiryWordCount');
+            if (words.length > 250) {
+                textarea.value = words.slice(0, 250).join(" ");
+            }
+            badge.innerText = `${Math.min(words.length, 250)} / २५० शब्द`;
         }
 
         function toggleReplyChannelInput() {
@@ -506,7 +535,7 @@
             }
         }
 
-        // Only confirmed bookings are shown in customer panel; inquiries are sent directly to admin panel
+        // Only confirmed bookings are shown in customer panel; inquiries go directly to admin panel
         async function searchCustomerHistory() {
             const searchPhone = document.getElementById('trackMobileInput').value.trim();
             const resultsContainer = document.getElementById('trackedHistoryList');
@@ -516,7 +545,7 @@
             resultsContainer.innerHTML = "<p class='text-xs text-amber-300 py-2'>शोधत आहे...</p>";
 
             if (!searchPhone || searchPhone.length < 10) {
-                alert("कृपया आपला १० अंकी मोबाईल नंबर टाका!");
+                alert("कृपया आपला १० अंकी मोबाईल नंबर टाका");
                 resultsContainer.innerHTML = "";
                 return;
             }
@@ -546,7 +575,7 @@
 
                     card.innerHTML = `
                         <div class="flex justify-between items-center border-b border-amber-600/30 pb-1.5">
-                            <span class="text-amber-300 font-black">#${(o.id || o.key).toString().slice(-6)} (📦 बुकिंग)</span>
+                            <span class="text-amber-300 font-black">#${(o.id || o.key).toString().slice(-6)} (बुकिंग)</span>
                             <div class="flex items-center gap-2">
                                 <span class="text-emerald-400 font-bold">₹${o.fare || 0}</span>
                                 <button onclick="removeCustomerRecord('${o.key}')" title="काढून टाका" 
@@ -556,21 +585,21 @@
                             </div>
                         </div>
                         
-                        <p class="text-stone-300">📅 ${o.loadingDate} (${o.loadingTime || ''})</p>
-                        <p class="text-stone-300">📍 ${o.from} ➔ 🎯 ${o.to}</p>
-                        <p class="text-amber-200">🚛 गाडी: <strong>${o.vehicle}</strong></p>
+                        <p class="text-stone-300">तारीख: ${o.loadingDate} (${o.loadingTime || ''})</p>
+                        <p class="text-stone-300">मार्ग: ${o.from} ते ${o.to}</p>
+                        <p class="text-amber-200">गाडी: <strong>${o.vehicle}</strong></p>
                         
                         <div class="p-2.5 rounded-lg border bg-emerald-950/60 border-emerald-500/50 space-y-1.5">
                             <div class="flex items-center justify-between">
-                                <span class="text-xs font-black text-emerald-300">✓ बुकिंग कन्फर्म</span>
+                                <span class="text-xs font-black text-emerald-300">बुकिंग कन्फर्म</span>
                                 <span class="text-[10px] text-amber-300">चाहाडे नेटवर्क</span>
                             </div>
 
                             ${isAssigned ? `
                                 <div class="pt-1 border-t border-emerald-500/30 text-xs">
-                                    <p class="text-stone-300">वाटप झालेले चालक / मालक:</p>
-                                    <p class="text-white font-bold text-sm mt-0.5">👤 ${o.assignedDriverName} (${o.assignedVehicleNo || ''})</p>
-                                    <p class="text-emerald-300 font-black">📞 ${o.assignedDriverPhone}</p>
+                                    <p class="text-stone-300">वाटप झालेले चालक किंवा मालक:</p>
+                                    <p class="text-white font-bold text-sm mt-0.5">चालक: ${o.assignedDriverName} (${o.assignedVehicleNo || ''})</p>
+                                    <p class="text-emerald-300 font-black">नंबर: ${o.assignedDriverPhone}</p>
                                     <a href="tel:${o.assignedDriverPhone}" class="mt-2 inline-flex items-center justify-center gap-1.5 w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-lg text-xs transition shadow-md">
                                         <i class="fa-solid fa-phone"></i> थेट ड्रायव्हरला कॉल करा
                                     </a>
@@ -585,7 +614,7 @@
                     resultsContainer.appendChild(card);
                 });
             } catch(e) {
-                resultsContainer.innerHTML = `<p class="text-xs text-red-400 italic py-2">नेटवर्क एरर, पुन्हा प्रयत्न करा.</p>`;
+                resultsContainer.innerHTML = `<p class="text-xs text-red-400 italic py-2">नेटवर्क अडचण आली, पुन्हा प्रयत्न करा.</p>`;
             }
         }
 
@@ -669,7 +698,7 @@
             const mobile = document.getElementById('mobile').value;
 
             if(!palgharLoadingPoint || !dropSelect.value || !fullAddress || mobile.length !== 10) {
-                alert("कृपया सर्व माहिती व अचूक १० अंकी मोबाईल नंबर भरा!");
+                alert("कृपया सर्व माहिती व अचूक १० अंकी मोबाईल नंबर भरा");
                 return;
             }
 
@@ -682,7 +711,7 @@
             calculatedPrice = Math.round((routeKm * ratePerKm) + baseFixedCharge);
             const advance = Math.round(calculatedPrice * 0.5);
 
-            document.getElementById('distanceDisplay').innerText = `~${routeKm} KM (पालघर ते ${dropSelect.value})`;
+            document.getElementById('distanceDisplay').innerText = `${routeKm} KM (पालघर ते ${dropSelect.value})`;
             document.getElementById('fareDisplay').innerText = "₹ " + calculatedPrice.toLocaleString('en-IN');
             document.getElementById('advanceDisplay').innerText = "₹ " + advance.toLocaleString('en-IN');
             document.getElementById('balanceDisplay').innerText = "₹ " + advance.toLocaleString('en-IN');
@@ -708,25 +737,27 @@
             const vehicle = document.getElementById('vehicle').value;
 
             if(!palgharLoadingPoint || !fullAddress || !material || customerMobile.length !== 10) {
-                alert("कृपया सर्व माहिती व अचूक १० अंकी मोबाईल नंबर भरा!");
+                alert("कृपया सर्व माहिती व अचूक १० अंकी मोबाईल नंबर भरा");
                 return;
             }
 
             let replyChannelChoice = "whatsapp";
             let replyChannelValue = customerMobile;
+            let inquiryNoteText = "";
 
             if (currentMode === 'inquiry') {
+                inquiryNoteText = document.getElementById('inquiryNote').value.trim();
                 replyChannelChoice = document.querySelector('input[name="replyChannel"]:checked').value;
                 if (replyChannelChoice === 'whatsapp') {
                     replyChannelValue = document.getElementById('inquiryWhatsappInput').value.trim() || customerMobile;
                     if (replyChannelValue.length !== 10) {
-                        alert("कृपया अचूक १० अंकी व्हॉट्सॲप नंबर भरा!");
+                        alert("कृपया अचूक १० अंकी व्हॉट्सॲप नंबर भरा");
                         return;
                     }
                 } else {
                     replyChannelValue = document.getElementById('inquiryEmailInput').value.trim();
                     if (!replyChannelValue || !replyChannelValue.includes('@')) {
-                        alert("कृपया अचूक ईमेल आयडी भरा!");
+                        alert("कृपया अचूक ईमेल आयडी भरा");
                         return;
                     }
                 }
@@ -738,6 +769,7 @@
                 id: recordId,
                 type: currentMode,
                 subType: currentMode === 'inquiry' ? document.getElementById('inquirySubtype').value : 'Direct Booking',
+                inquiryNote: inquiryNoteText,
                 replyChannel: currentMode === 'inquiry' ? replyChannelChoice : 'phone',
                 replyTarget: currentMode === 'inquiry' ? replyChannelValue : customerMobile,
                 bookedOn: new Date().toLocaleDateString('en-IN'),
@@ -769,7 +801,7 @@
             document.getElementById('successOrderId').innerText = recordData.id;
             
             if(currentMode === 'inquiry') {
-                document.getElementById('successTitle').innerText = "चौकशी यशस्वीरीत्या ॲडमिनकडे पाठवली!";
+                document.getElementById('successTitle').innerText = "चौकशी यशस्वीरीत्या ॲडमिनकडे पाठवली गेली";
                 document.getElementById('successDesc').innerText = "आपली चौकशी ॲडमिन पॅनेलवर सुरक्षित प्राप्त झाली आहे.";
                 document.getElementById('fareSuccessRow').classList.add('hidden');
                 document.getElementById('dateTimeSuccessRow').classList.add('hidden');
@@ -779,7 +811,7 @@
                 channelName.innerText = replyChannelChoice === 'whatsapp' ? `WhatsApp (${replyChannelValue})` : `Email (${replyChannelValue})`;
                 channelNotice.classList.remove('hidden');
             } else {
-                document.getElementById('successTitle').innerText = "बुकिंग यशस्वीरीत्या नोंदवली गेली!";
+                document.getElementById('successTitle').innerText = "बुकिंग यशस्वीरीत्या नोंदवली गेली";
                 document.getElementById('successDesc').innerText = "आपली ऑर्डर अधिकृतपणे सिस्टीममध्ये कन्फर्म झाली आहे. लवकरच ड्रायव्हरचा कॉल येईल.";
                 document.getElementById('dateTimeSuccessRow').classList.remove('hidden');
                 document.getElementById('successDateTime').innerText = `${loadingDate} (${completeTimeString})`;
@@ -799,6 +831,7 @@
             document.getElementById('fareResultCard').classList.add('hidden');
             isFareCardOpen = false;
             document.getElementById('calcBtnText').innerText = "अंदाजे भाडे तपासा (Show Fare)";
+            document.getElementById('inquiryWordCount').innerText = "० / २५० शब्द";
             selectActionType('booking');
             loadData();
         }
