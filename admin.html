@@ -196,7 +196,6 @@
                     return { email: cloudAuth.email, pass: cloudAuth.password };
                 }
             } catch(e) {}
-            // Local fallback only if network completely fails
             const email = localStorage.getItem("chahade_admin_email") || "shabaj9769@gmail.com";
             const pass = localStorage.getItem("chahade_admin_password") || "Shabaj@9769";
             return { email, pass };
@@ -480,24 +479,42 @@
             acc.innerHTML = cachedInquiries.length === 0 ? '<p class="text-xs text-stone-400 italic py-2">कोणतीही नवीन चौकशी नाही.</p>' : '';
 
             cachedInquiries.forEach(inq => {
+                const isEmailChannel = (inq.replyChannel === 'email');
+                const replyTarget = inq.replyTarget || inq.customer;
+                
+                // Marathi automated templates
+                const mailSubject = encodeURIComponent(`चाहाडे ट्रान्सपोर्ट - चौकशी संदर्भ #${inq.id}`);
+                const mailBody = encodeURIComponent(`नमस्ते,\n\nआपण चाहाडे ट्रान्सपोर्टकडे चौकशी (#${inq.id}) नोंदवली होती.\nमार्ग: ${inq.from} ते ${inq.to}\nविषय: ${inq.subType || 'सामान्य चौकशी'}\n\nआपल्या चौकशीचे सविस्तर उत्तर खालीलप्रमाणे आहे:\n[येथे आपले उत्तर लिहा]\n\nअधिक माहितीसाठी संपर्क: चाहाडे ट्रान्सपोर्ट, पालघर.`);
+                const waMessage = encodeURIComponent(`नमस्ते, चाहाडे ट्रान्सपोर्ट कडून: आपल्या चौकशीचा (#${inq.id} - ${inq.subType || ''}) संदर्भात हा प्रतिसाद आहे. आम्ही आपल्या सेवेत तत्पर आहोत.`);
+
                 acc.innerHTML += `
                     <div class="bg-[#3a1005] p-3 rounded-xl border border-orange-500/40 space-y-2 text-xs">
                         <div class="flex justify-between font-black text-orange-300 border-b border-orange-500/20 pb-1">
-                            <span>#${inq.id} [${inq.subType}]</span>
+                            <span>#${inq.id} [${inq.subType || 'चौकशी'}]</span>
                             <button onclick="deleteRecord('inquiries', '${inq.id}')" class="text-red-400 hover:text-red-300">पुसा</button>
                         </div>
                         <p class="text-white">📍 भरणे: <strong>${inq.from}</strong> ➔ खाली करणे: <strong>${inq.to}</strong></p>
                         <p class="text-stone-300">🏠 पत्ता: ${inq.fullAddress}</p>
-                        <p class="text-stone-300">📦 माल: ${inq.material}</p>
-                        <p class="text-amber-200 font-bold">📞 ग्राहक नंबर: ${inq.customer}</p>
-                        <div class="flex gap-2 pt-1">
-                            <a href="https://wa.me/91${inq.customer}?text=${encodeURIComponent('नमस्ते, चाहाडे ट्रान्सपोर्ट कडून: आपल्या चौकशीचा आम्ही लवकरच सविस्तर प्रतिसाद देत आहोत.')}" target="_blank"
-                                class="w-full py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded text-center shadow">
-                                <i class="fa-brands fa-whatsapp"></i> मराठी मेसेज पाठवा
-                            </a>
-                            <button onclick="convertToBooking('${inq.id}')" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded whitespace-nowrap shadow">
-                                डील कन्फर्म करा
-                            </button>
+                        <p class="text-stone-300">📦 माल: ${inq.material} (${inq.vehicle || ''})</p>
+                        <p class="text-amber-200 font-bold">📞 मुख्य नंबर: ${inq.customer}</p>
+                        
+                        <div class="p-2 rounded-lg bg-[#200701] border border-amber-500/30 text-[11px] space-y-1">
+                            <p class="text-stone-300">🎯 ग्राहकाची प्रतिसाद निवड: <strong class="${isEmailChannel ? 'text-amber-300' : 'text-emerald-400'} uppercase">${isEmailChannel ? '✉️ Email' : '💬 WhatsApp'}</strong></p>
+                            <p class="text-white font-mono">प्रतिसाद पत्ता/नंबर: <strong>${replyTarget}</strong></p>
+                        </div>
+
+                        <div class="pt-1">
+                            ${isEmailChannel ? `
+                                <a href="mailto:${replyTarget}?subject=${mailSubject}&body=${mailBody}"
+                                    class="w-full py-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:brightness-110 text-white font-black rounded-lg text-center shadow flex items-center justify-center gap-2">
+                                    <i class="fa-solid fa-envelope"></i> ईमेलद्वारे उत्तर पाठवा (${replyTarget})
+                                </a>
+                            ` : `
+                                <a href="https://wa.me/91${replyTarget}?text=${waMessage}" target="_blank"
+                                    class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-lg text-center shadow flex items-center justify-center gap-2">
+                                    <i class="fa-brands fa-whatsapp"></i> व्हॉट्सॲपवर उत्तर पाठवा (${replyTarget})
+                                </a>
+                            `}
                         </div>
                     </div>
                 `;
@@ -586,20 +603,6 @@
             });
             alert("ट्रक मालक यशस्वीरीत्या असाइन झाला! आता ही ट्रिप 'असाइन केलेल्या ट्रिप्स' फोल्डरमध्ये जाईल.");
             fetchAllCloudData();
-        }
-
-        async function convertToBooking(inqId) {
-            const res = await fetch(dbUrl + `inquiries/${inqId}.json`);
-            const inqData = await res.json();
-            if(inqData) {
-                inqData.id = "ORD-" + Math.floor(1000 + Math.random() * 9000);
-                inqData.type = "booking";
-                inqData.status = "Confirmed";
-                await fetch(dbUrl + `orders/${inqData.id}.json`, { method: "PUT", body: JSON.stringify(inqData) });
-                await fetch(dbUrl + `inquiries/${inqId}.json`, { method: "DELETE" });
-                fetchAllCloudData();
-                alert("चौकशी यशस्वीरीत्या कन्फर्म बुकिंगमध्ये बदलली गेली!");
-            }
         }
 
         async function deleteRecord(folder, id) {
