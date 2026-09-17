@@ -572,7 +572,7 @@
         }
 
         async function assignOwner(orderId) {
-            const sel = document.getElementById(`sel_${ord.id}`).value;
+            const sel = document.getElementById(`sel_${orderId}`).value;
             if(!sel) { alert("कृपया आधी ट्रक मालक निवडा!"); return; }
             const [name, phone, vehicleNo] = sel.split('|');
 
