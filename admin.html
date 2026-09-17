@@ -43,7 +43,7 @@
         <!-- Header -->
         <div class="bg-gradient-to-r from-orange-800 via-amber-600 to-red-800 p-5 text-center border-b border-amber-400/40 relative">
             <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">🛠️ चाहाडे ट्रान्सपोर्ट ॲडमिन पॅनेल</h1>
-            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">क्लाउड डेटा सुरक्षित - गाड्या, दर व ऑर्डर नियंत्रण</p>
+            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">क्लाउड डेटा सुरक्षित - गाड्या, दर व नोटिफिकेशन</p>
             
             <div class="absolute top-4 right-4 flex gap-2">
                 <button onclick="lockAdminPanel()" class="bg-black/40 hover:bg-black/60 text-red-300 text-xs px-3 py-1.5 rounded-lg border border-red-400/30 font-bold transition">
@@ -52,7 +52,13 @@
             </div>
         </div>
 
-        <div class="p-4 md:p-6 space-y-6">
+        <div class="p-4 md:p-6 space-y-5">
+
+            <!-- Notification Permission Banner -->
+            <div id="notifBanner" class="hidden bg-amber-900/60 border border-amber-500/50 p-3 rounded-xl flex justify-between items-center text-xs">
+                <span class="text-amber-200">🔔 नवीन ऑर्डरच्या नोटिफिकेशन मिळवण्यासाठी परवानगी द्या:</span>
+                <button onclick="requestNotificationPermission()" class="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-lg">परवानगी द्या</button>
+            </div>
 
             <!-- 🚛 VEHICLE RATE & ADD VEHICLE MANAGEMENT -->
             <div class="bg-[#3a1005] border-2 border-amber-500/40 p-4 rounded-2xl space-y-3">
@@ -74,26 +80,52 @@
                 <div id="ownersList" class="space-y-2 max-h-40 overflow-y-auto pr-1"></div>
             </div>
 
-            <!-- ❓ INQUIRIES FOLDER (चौकशी फोल्डर) -->
-            <div class="bg-[#3a1005] border-2 border-orange-500/50 p-4 rounded-2xl space-y-3">
-                <div class="flex justify-between items-center border-b border-orange-600/30 pb-2">
-                    <h3 class="text-xs font-black text-orange-300 uppercase tracking-wider flex items-center gap-2">
-                        <span>📁 कस्टमर चौकशी फोल्डर (Inquiries)</span>
-                        <span id="inquiryCountBadge" class="bg-orange-600 text-white text-xs px-2 py-0.5 rounded-full font-black">0</span>
-                    </h3>
-                </div>
-                <div id="inquiriesAccordion" class="space-y-2"></div>
+            <!-- ❓ INQUIRIES FOLDER (Collapsible) -->
+            <div class="bg-[#3a1005] border-2 border-orange-500/50 rounded-2xl overflow-hidden shadow-md">
+                <button type="button" onclick="toggleFolder('inquiriesContent', 'inqArrow')" 
+                    class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-orange-950/80 to-[#2b0802] text-left">
+                    <div class="flex items-center gap-2">
+                        <span>📁</span>
+                        <div>
+                            <p class="text-xs font-black text-orange-300 uppercase tracking-wider">कस्टमर चौकशी फोल्डर (Inquiries)</p>
+                            <p class="text-[10px] text-orange-200/70">एकूण चौकशी: <span id="inquiryCountBadge">0</span></p>
+                        </div>
+                    </div>
+                    <span id="inqArrow" class="text-xs font-bold text-orange-300 bg-black/40 px-2 py-1 rounded border border-orange-500/30">उघडा ⬇️</span>
+                </button>
+                <div id="inquiriesContent" class="hidden p-3 space-y-2 bg-[#200701] border-t border-orange-500/30"></div>
             </div>
 
-            <!-- 📦 BOOKINGS FOLDER (बुकिंग्स फोल्डर) -->
-            <div class="bg-[#3a1005] border-2 border-emerald-500/50 p-4 rounded-2xl space-y-3">
-                <div class="flex justify-between items-center border-b border-emerald-600/30 pb-2">
-                    <h3 class="text-xs font-black text-emerald-300 uppercase tracking-wider flex items-center gap-2">
-                        <span>📦 कन्फर्म बुकिंग फोल्डर (Bookings)</span>
-                        <span id="bookingCountBadge" class="bg-emerald-600 text-white text-xs px-2 py-0.5 rounded-full font-black">0</span>
-                    </h3>
-                </div>
-                <div id="bookingsAccordion" class="space-y-2"></div>
+            <!-- 📦 PENDING BOOKINGS FOLDER (Collapsible) -->
+            <div class="bg-[#3a1005] border-2 border-amber-500/50 rounded-2xl overflow-hidden shadow-md">
+                <button type="button" onclick="toggleFolder('bookingsContent', 'bookArrow')" 
+                    class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-amber-950/80 to-[#2b0802] text-left">
+                    <div class="flex items-center gap-2">
+                        <span>📁</span>
+                        <div>
+                            <p class="text-xs font-black text-amber-300 uppercase tracking-wider">नवीन कन्फर्म बुकिंग्स (Pending Assignment)</p>
+                            <p class="text-[10px] text-amber-200/70">एकूण बुकिंग्स: <span id="bookingCountBadge">0</span></p>
+                        </div>
+                    </div>
+                    <span id="bookArrow" class="text-xs font-bold text-amber-300 bg-black/40 px-2 py-1 rounded border border-amber-500/30">उघडा ⬇️</span>
+                </button>
+                <div id="bookingsContent" class="hidden p-3 space-y-2 bg-[#200701] border-t border-amber-500/30"></div>
+            </div>
+
+            <!-- ✅ ASSIGNED TRIPS FOLDER (Collapsible) -->
+            <div class="bg-[#3a1005] border-2 border-emerald-500/50 rounded-2xl overflow-hidden shadow-md">
+                <button type="button" onclick="toggleFolder('assignedContent', 'assignedArrow')" 
+                    class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-emerald-950/80 to-[#2b0802] text-left">
+                    <div class="flex items-center gap-2">
+                        <span>📁</span>
+                        <div>
+                            <p class="text-xs font-black text-emerald-300 uppercase tracking-wider">पूर्ण असाइन केलेल्या ट्रिप्स (Assigned Trips)</p>
+                            <p class="text-[10px] text-emerald-200/70">एकूण ट्रिप्स: <span id="assignedCountBadge">0</span></p>
+                        </div>
+                    </div>
+                    <span id="assignedArrow" class="text-xs font-bold text-emerald-300 bg-black/40 px-2 py-1 rounded border border-emerald-500/30">उघडा ⬇️</span>
+                </button>
+                <div id="assignedContent" class="hidden p-3 space-y-2 bg-[#200701] border-t border-emerald-500/30"></div>
             </div>
 
         </div>
@@ -134,6 +166,9 @@
         let cachedOrders = [];
         let cachedInquiries = [];
         let currentAdminPin = "1234";
+        let lastOrderCount = 0;
+        let lastInquiryCount = 0;
+        let isFirstLoad = true;
 
         async function verifyAdminPin() {
             const entered = document.getElementById('adminPinInput').value;
@@ -148,9 +183,33 @@
             if (entered === currentAdminPin) {
                 document.getElementById('pinLockModal').classList.add('hidden');
                 document.getElementById('adminDashboardContent').classList.remove('hidden');
+                checkNotificationSetup();
                 initAdminDashboard();
             } else {
                 errorMsg.classList.remove('hidden');
+            }
+        }
+
+        function checkNotificationSetup() {
+            if ("Notification" in window && Notification.permission !== "granted") {
+                document.getElementById('notifBanner').classList.remove('hidden');
+            }
+        }
+
+        function requestNotificationPermission() {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        document.getElementById('notifBanner').classList.add('hidden');
+                        new Notification("चाहाडे ट्रान्सपोर्ट", { body: "नोटिफिकेशन सुविधा यशस्वीरीत्या चालू झाली आहे!" });
+                    }
+                });
+            }
+        }
+
+        function triggerBrowserNotification(title, bodyText) {
+            if ("Notification" in window && Notification.permission === "granted") {
+                new Notification(title, { body: bodyText, icon: "https://cdn-icons-png.flaticon.com/512/741/741407.png" });
             }
         }
 
@@ -158,6 +217,18 @@
             document.getElementById('adminPinInput').value = "";
             document.getElementById('adminDashboardContent').classList.add('hidden');
             document.getElementById('pinLockModal').classList.remove('hidden');
+        }
+
+        function toggleFolder(contentId, arrowId) {
+            const content = document.getElementById(contentId);
+            const arrow = document.getElementById(arrowId);
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                arrow.innerText = "बंद करा ⬆️";
+            } else {
+                content.classList.add('hidden');
+                arrow.innerText = "उघडा ⬇️";
+            }
         }
 
         async function initAdminDashboard() {
@@ -170,25 +241,53 @@
                 const res = await fetch(dbUrl + ".json");
                 const data = await res.json() || {};
 
-                // Vehicles data
                 vehicleCategories = data.vehicles || [
                     { id: "v_pickup", name: "महिंद्रा बोलेरो / पिकअप (कमाल १.५ टन)", rate: 22, available: true },
-                    { id: "v_ace", name: "टाटा एस - छोटा हत्ती (कमाल १ टन)", rate: 16, available: true },
-                    { id: "v_eicher14", name: "आयशर १४ फूट ट्रक (कमाल ४-५ टन)", rate: 36, available: true }
+                    { id: "v_ace", name: "टाटा एस - छोटा हत्ती (कमाल १ टन)", rate: 16, available: true }
                 ];
                 renderRateEditor();
 
-                // Owners data
                 cachedOwners = data.owners ? Object.keys(data.owners).map(k => ({ id: k, ...data.owners[k] })) : [];
                 renderOwners();
 
-                // Bookings data
-                cachedOrders = data.orders ? Object.values(data.orders) : [];
-                renderBookings();
+                const newOrders = data.orders ? Object.values(data.orders) : [];
+                const newInquiries = data.inquiries ? Object.values(data.inquiries) : [];
 
-                // Inquiries data
-                cachedInquiries = data.inquiries ? Object.values(data.inquiries) : [];
+                if (!isFirstLoad) {
+                    if (newOrders.length > cachedOrders.length) {
+                        triggerBrowserNotification("📦 नवीन बुकिंग आली आहे!", "डॅशबोर्ड तपासा, नवीन ऑर्डर प्राप्त झाली आहे.");
+                        playHornSound();
+                    }
+                    if (newInquiries.length > cachedInquiries.length) {
+                        triggerBrowserNotification("❓ नवीन चौकशी (Inquiry) आली आहे!", "कस्टमरकडून नवीन चौकशी प्राप्त झाली आहे.");
+                        playHornSound();
+                    }
+                }
+
+                cachedOrders = newOrders;
+                cachedInquiries = newInquiries;
+                isFirstLoad = false;
+                
                 renderInquiries();
+                renderBookings();
+            } catch(e) {}
+        }
+
+        function playHornSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if(ctx.state === 'suspended') { ctx.resume(); }
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.5);
             } catch(e) {}
         }
 
@@ -281,7 +380,6 @@
             document.getElementById('ownerName').value = "";
             document.getElementById('ownerPhone').value = "";
             document.getElementById('ownerVehicleNo').value = "";
-            closeOwnerModal();
             fetchAllCloudData();
         }
 
@@ -293,13 +391,13 @@
         }
 
         function renderInquiries() {
-            const acc = document.getElementById('inquiriesAccordion');
+            const acc = document.getElementById('inquiriesContent');
             document.getElementById('inquiryCountBadge').innerText = cachedInquiries.length;
             acc.innerHTML = cachedInquiries.length === 0 ? '<p class="text-xs text-stone-400 italic py-2">कोणतीही नवीन चौकशी नाही.</p>' : '';
 
             cachedInquiries.forEach(inq => {
                 acc.innerHTML += `
-                    <div class="bg-[#200701] p-3 rounded-xl border border-orange-500/40 space-y-2 text-xs">
+                    <div class="bg-[#3a1005] p-3 rounded-xl border border-orange-500/40 space-y-2 text-xs">
                         <div class="flex justify-between font-black text-orange-300 border-b border-orange-500/20 pb-1">
                             <span>#${inq.id} [${inq.subType}]</span>
                             <button onclick="deleteRecord('inquiries', '${inq.id}')" class="text-red-400 hover:text-red-300">पुसा</button>
@@ -323,16 +421,24 @@
         }
 
         function renderBookings() {
-            const acc = document.getElementById('bookingsAccordion');
-            document.getElementById('bookingCountBadge').innerText = cachedOrders.length;
-            acc.innerHTML = cachedOrders.length === 0 ? '<p class="text-xs text-stone-400 italic py-2">कोणतीही बुकिंग नाही.</p>' : '';
+            const pendingAcc = document.getElementById('bookingsContent');
+            const assignedAcc = document.getElementById('assignedContent');
 
-            cachedOrders.forEach(ord => {
+            let pendingOrders = cachedOrders.filter(o => !o.assignedDriverPhone);
+            let assignedOrders = cachedOrders.filter(o => o.assignedDriverPhone);
+
+            document.getElementById('bookingCountBadge').innerText = pendingOrders.length;
+            document.getElementById('assignedCountBadge').innerText = assignedOrders.length;
+
+            pendingAcc.innerHTML = pendingOrders.length === 0 ? '<p class="text-xs text-stone-400 italic py-2">कोणतीही प्रलंबित बुकिंग नाही.</p>' : '';
+            assignedOrders.innerHTML = assignedOrders.length === 0 ? '<p class="text-xs text-stone-400 italic py-2">कोणतीही असाइन केलेली ट्रिप नाही.</p>' : '';
+
+            pendingOrders.forEach(ord => {
                 let ownerOptions = cachedOwners.map(ow => `<option value="${ow.name}|${ow.phone}|${ow.vehicleNo || 'NA'}">${ow.name} - ${ow.vehicleNo || ''} (${ow.phone})</option>`).join('');
                 
-                acc.innerHTML += `
-                    <div class="bg-[#200701] p-3 rounded-xl border border-emerald-500/40 space-y-2 text-xs">
-                        <div class="flex justify-between font-black text-emerald-300 border-b border-emerald-500/20 pb-1">
+                pendingAcc.innerHTML += `
+                    <div class="bg-[#3a1005] p-3 rounded-xl border border-amber-500/40 space-y-2 text-xs">
+                        <div class="flex justify-between font-black text-amber-300 border-b border-amber-500/20 pb-1">
                             <span>#${ord.id}</span>
                             <div class="flex items-center gap-2">
                                 <span class="text-amber-300 font-bold">₹${ord.fare}</span>
@@ -344,7 +450,7 @@
                         <p class="text-stone-300">📦 माल: ${ord.material} (${ord.weight || ''})</p>
                         <p class="text-amber-200 font-bold">📞 ग्राहक नंबर: ${ord.customer}</p>
                         
-                        <div class="bg-[#3a1005] p-2.5 rounded-xl border border-amber-500/40 space-y-2 mt-1">
+                        <div class="bg-[#200701] p-2.5 rounded-xl border border-amber-500/40 space-y-2 mt-1">
                             <p class="font-bold text-amber-200">ट्रक मालक नेमणूक (Assign Driver):</p>
                             <select id="sel_${ord.id}" class="w-full bg-black text-white p-2 rounded-lg border border-amber-500/50 text-xs">
                                 <option value="">-- ट्रक मालक निवडा --</option>
@@ -353,13 +459,28 @@
                             <button onclick="assignOwner('${ord.id}')" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-stone-950 font-black rounded-lg text-xs shadow">
                                 नेमणूक करा व कस्टमरला पाठवा
                             </button>
-                            ${ord.assignedDriverName ? `
-                                <div class="bg-emerald-950/80 p-2 rounded border border-emerald-500/40 text-[11px] text-emerald-200 space-y-0.5">
-                                    <p>✓ नियुक्त मालक: <strong>${ord.assignedDriverName}</strong></p>
-                                    <p>🚛 गाडी नंबर: <strong>${ord.assignedVehicleNo}</strong></p>
-                                    <p>📞 नंबर: <strong>${ord.assignedDriverPhone}</strong></p>
-                                </div>
-                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            assignedOrders.forEach(ord => {
+                assignedAcc.innerHTML += `
+                    <div class="bg-[#3a1005] p-3 rounded-xl border border-emerald-500/40 space-y-2 text-xs">
+                        <div class="flex justify-between font-black text-emerald-300 border-b border-emerald-500/20 pb-1">
+                            <span>#${ord.id}</span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-amber-300 font-bold">₹${ord.fare}</span>
+                                <button onclick="deleteRecord('orders', '${ord.id}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <p class="text-white">📍 <strong>${ord.from}</strong> ➔ <strong>${ord.to}</strong> (${ord.vehicle})</p>
+                        <p class="text-amber-200 font-bold">📞 ग्राहक: ${ord.customer}</p>
+                        
+                        <div class="bg-emerald-950/80 p-2.5 rounded-xl border border-emerald-500/50 text-xs text-emerald-200 space-y-1">
+                            <p>✓ नियुक्त मालक: <strong>${ord.assignedDriverName}</strong></p>
+                            <p>🚛 गाडी नंबर: <strong>${ord.assignedVehicleNo}</strong></p>
+                            <p>📞 नंबर: <strong>${ord.assignedDriverPhone}</strong></p>
                         </div>
                     </div>
                 `;
@@ -379,7 +500,7 @@
                     assignedVehicleNo: vehicleNo 
                 })
             });
-            alert("ट्रक मालकाची संपूर्ण माहिती अपडेट झाली जी कस्टमरच्या अकाउंटमध्ये दिसेल!");
+            alert("ट्रक मालक यशस्वीरीत्या असाइन झाला! आता ही ट्रिप 'असाइन केलेल्या ट्रिप्स' फोल्डरमध्ये जाईल.");
             fetchAllCloudData();
         }
 
