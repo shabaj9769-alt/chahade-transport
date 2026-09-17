@@ -17,23 +17,27 @@
 </head>
 <body class="p-3 md:p-6 min-h-screen flex items-center justify-center">
 
-    <!-- 🔒 SECURE PIN LOCK MODAL -->
+    <!-- 🔒 SECURE EMAIL & PASSWORD LOCK MODAL -->
     <div id="pinLockModal" class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
         <div class="max-w-sm w-full bg-[#3a1005] border-2 border-amber-500 p-6 rounded-3xl text-center space-y-4 shadow-2xl">
             <div class="w-16 h-16 mx-auto rounded-full bg-amber-500/20 border border-amber-400 flex items-center justify-center text-3xl">
-                🔒
+                🛡️
             </div>
             <div>
-                <h2 class="text-xl font-black text-amber-200">ॲडमिन पिन लॉक</h2>
-                <p class="text-xs text-amber-300/70 mt-1">डॅशबोर्ड उघडण्यासाठी ४ अंकी पिन टाका (डीफॉल्ट: 1234)</p>
+                <h2 class="text-xl font-black text-amber-200">ॲडमिन सुरक्षित लॉगिन</h2>
+                <p class="text-xs text-amber-300/70 mt-1">डॅशबोर्ड उघडण्यासाठी आपला ईमेल आणि पासवर्ड टाка</p>
             </div>
-            <input type="password" id="adminPinInput" maxlength="4" placeholder="••••" 
-                class="w-full text-center tracking-[1em] text-2xl py-3 bg-[#200701] border-2 border-amber-500/60 rounded-xl text-amber-300 focus:outline-none">
-            <button type="button" onclick="verifyAdminPin()" 
+            <div class="space-y-3">
+                <input type="email" id="adminEmailInput" placeholder="ईमेल आयडी" value="shabaj9769@gmail.com" readonly
+                    class="w-full text-center py-2.5 bg-[#200701] border border-amber-500/50 rounded-xl text-xs font-bold text-amber-300 focus:outline-none cursor-not-allowed opacity-90">
+                <input type="password" id="adminPassInput" placeholder="पासवर्ड टाका" 
+                    class="w-full text-center py-3 bg-[#200701] border-2 border-amber-500/60 rounded-xl text-sm font-bold text-amber-300 focus:outline-none">
+            </div>
+            <button type="button" onclick="verifyAdminCredentials()" 
                 class="w-full py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-black rounded-xl text-sm uppercase tracking-wider shadow-lg">
                 अनलॉक करा (Login)
             </button>
-            <p id="pinErrorMsg" class="hidden text-xs text-red-400 font-bold">चुकीचा पिन! पुन्हा प्रयत्न करा.</p>
+            <p id="pinErrorMsg" class="hidden text-xs text-red-400 font-bold">चुकीचा पासवर्ड! कृपया पुन्हा प्रयत्न करा.</p>
         </div>
     </div>
 
@@ -43,9 +47,12 @@
         <!-- Header -->
         <div class="bg-gradient-to-r from-orange-800 via-amber-600 to-red-800 p-5 text-center border-b border-amber-400/40 relative">
             <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">🛠️ चाहाडे ट्रान्सपोर्ट ॲडमिन पॅनेल</h1>
-            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">क्लाउड डेटा सुरक्षित - गाड्या, दर व नोटिफिकेशन</p>
+            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">सुरक्षित खाजगी डॅशबोर्ड - shabaj9769@gmail.com</p>
             
             <div class="absolute top-4 right-4 flex gap-2">
+                <button onclick="openChangePasswordModal()" class="bg-black/40 hover:bg-black/60 text-amber-300 text-xs px-3 py-1.5 rounded-lg border border-amber-400/30 font-bold transition">
+                    🔑 पासवर्ड बदला
+                </button>
                 <button onclick="lockAdminPanel()" class="bg-black/40 hover:bg-black/60 text-red-300 text-xs px-3 py-1.5 rounded-lg border border-red-400/30 font-bold transition">
                     🔒 लॉक आऊट
                 </button>
@@ -131,6 +138,19 @@
         </div>
     </div>
 
+    <!-- 🔑 MODAL: CHANGE ADMIN PASSWORD -->
+    <div id="changePasswordModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+        <div class="bg-[#3a1005] border border-amber-500 p-5 rounded-2xl max-w-sm w-full space-y-3">
+            <h3 class="text-xs font-black text-amber-300 uppercase">ॲडमिन पासवर्ड बदला (Change Password)</h3>
+            <input type="password" id="oldPassInput" placeholder="जुना पासवर्ड टाका" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white text-center">
+            <input type="password" id="newPassInput" placeholder="नवीन पासवर्ड टाका" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white text-center">
+            <div class="flex gap-2 pt-2">
+                <button type="button" onclick="updateAdminPassword()" class="w-full py-2 bg-emerald-600 text-white font-black rounded-xl text-xs">बदला</button>
+                <button type="button" onclick="closeChangePasswordModal()" class="w-full py-2 bg-stone-700 text-white font-black rounded-xl text-xs">रद्द करा</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ➕ MODAL: ADD NEW VEHICLE -->
     <div id="addVehicleModal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
         <div class="bg-[#3a1005] border border-amber-500 p-5 rounded-2xl max-w-sm w-full space-y-3">
@@ -165,28 +185,66 @@
         let cachedOwners = [];
         let cachedOrders = [];
         let cachedInquiries = [];
-        let currentAdminPin = "1234";
-        let lastOrderCount = 0;
-        let lastInquiryCount = 0;
         let isFirstLoad = true;
 
-        async function verifyAdminPin() {
-            const entered = document.getElementById('adminPinInput').value;
-            const errorMsg = document.getElementById('pinErrorMsg');
-            
+        async function getSavedPassword() {
+            let pass = localStorage.getItem("chahade_admin_password");
             try {
-                const res = await fetch(dbUrl + "admin_pin.json");
-                const pin = await res.json();
-                if (pin) currentAdminPin = pin.toString();
+                const res = await fetch(dbUrl + "admin_password.json");
+                const cloudPass = await res.json();
+                if (cloudPass) {
+                    pass = cloudPass.toString();
+                    localStorage.setItem("chahade_admin_password", pass);
+                }
             } catch(e) {}
+            return pass || "Shabaj@9769"; // Secure default initial password
+        }
 
-            if (entered === currentAdminPin) {
+        async function verifyAdminCredentials() {
+            const enteredPass = document.getElementById('adminPassInput').value.trim();
+            const errorMsg = document.getElementById('pinErrorMsg');
+            const correctPass = await getSavedPassword();
+
+            if (enteredPass === correctPass) {
+                errorMsg.classList.add('hidden');
                 document.getElementById('pinLockModal').classList.add('hidden');
                 document.getElementById('adminDashboardContent').classList.remove('hidden');
                 checkNotificationSetup();
                 initAdminDashboard();
             } else {
                 errorMsg.classList.remove('hidden');
+            }
+        }
+
+        function openChangePasswordModal() { document.getElementById('changePasswordModal').classList.remove('hidden'); }
+        function closeChangePasswordModal() { document.getElementById('changePasswordModal').classList.add('hidden'); }
+
+        async function updateAdminPassword() {
+            const oldPassInput = document.getElementById('oldPassInput').value.trim();
+            const newPassInput = document.getElementById('newPassInput').value.trim();
+            const currentPass = await getSavedPassword();
+
+            if (oldPassInput !== currentPass) {
+                alert("जुना पासवर्ड चुकीचा आहे!");
+                return;
+            }
+            if (!newPassInput || newPassInput.length < 4) {
+                alert("नवीन पासवर्ड किमान ४ अक्षरांचा असावा!");
+                return;
+            }
+
+            try {
+                await fetch(dbUrl + "admin_password.json", {
+                    method: "PUT",
+                    body: JSON.stringify(newPassInput)
+                });
+                localStorage.setItem("chahade_admin_password", newPassInput);
+                alert("ॲडमिन पासवर्ड यशस्वीरीत्या बदलला गेला!");
+                document.getElementById('oldPassInput').value = "";
+                document.getElementById('newPassInput').value = "";
+                closeChangePasswordModal();
+            } catch(e) {
+                alert("नेटवर्क एरर! पासवर्ड क्लाउडवर सेव्ह होऊ शकला नाही.");
             }
         }
 
@@ -214,7 +272,7 @@
         }
 
         function lockAdminPanel() {
-            document.getElementById('adminPinInput').value = "";
+            document.getElementById('adminPassInput').value = "";
             document.getElementById('adminDashboardContent').classList.add('hidden');
             document.getElementById('pinLockModal').classList.remove('hidden');
         }
@@ -376,7 +434,7 @@
                 body: JSON.stringify({ name, phone, vehicleNo }) 
             });
 
-            closeAddVehicleModal();
+            closeOwnerModal();
             document.getElementById('ownerName').value = "";
             document.getElementById('ownerPhone').value = "";
             document.getElementById('ownerVehicleNo').value = "";
