@@ -17,7 +17,7 @@
 </head>
 <body class="p-3 md:p-6 min-h-screen flex items-center justify-center">
 
-    <!-- 🔒 SECURE EMAIL & PASSWORD LOCK MODAL -->
+    <!-- 🔒 SECURE LOGIN MODAL (Blank & Hidden Credentials) -->
     <div id="pinLockModal" class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
         <div class="max-w-sm w-full bg-[#3a1005] border-2 border-amber-500 p-6 rounded-3xl text-center space-y-4 shadow-2xl">
             <div class="w-16 h-16 mx-auto rounded-full bg-amber-500/20 border border-amber-400 flex items-center justify-center text-3xl">
@@ -25,19 +25,19 @@
             </div>
             <div>
                 <h2 class="text-xl font-black text-amber-200">ॲडमिन सुरक्षित लॉगिन</h2>
-                <p class="text-xs text-amber-300/70 mt-1">डॅशबोर्ड उघडण्यासाठी आपला ईमेल आणि पासवर्ड टाका</p>
+                <p class="text-xs text-amber-300/70 mt-1">डॅशबोर्ड उघडण्यासाठी आपला अधिकृत ईमेल व पासवर्ड टाका</p>
             </div>
             <div class="space-y-3">
-                <input type="email" id="adminEmailInput" value="shabaj9769@gmail.com" readonly
-                    class="w-full text-center py-2.5 bg-[#200701] border border-amber-500/50 rounded-xl text-xs font-bold text-amber-300 focus:outline-none cursor-not-allowed opacity-90">
-                <input type="password" id="adminPassInput" placeholder="पासवर्ड टाका (डीफॉल्ट: Shabaj@9769)" 
+                <input type="email" id="adminEmailInput" placeholder="ईमेल आयडी टाका" autocomplete="off"
+                    class="w-full text-center py-2.5 bg-[#200701] border border-amber-500/50 rounded-xl text-xs font-bold text-amber-300 focus:outline-none">
+                <input type="password" id="adminPassInput" placeholder="पासवर्ड टाका" autocomplete="off"
                     class="w-full text-center py-3 bg-[#200701] border-2 border-amber-500/60 rounded-xl text-sm font-bold text-amber-300 focus:outline-none">
             </div>
             <button type="button" onclick="verifyAdminCredentials()" 
                 class="w-full py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-black rounded-xl text-sm uppercase tracking-wider shadow-lg">
                 अनलॉक करा (Login)
             </button>
-            <p id="pinErrorMsg" class="hidden text-xs text-red-400 font-bold">चुकीचा पासवर्ड! कृपया पुन्हा प्रयत्न करा.</p>
+            <p id="pinErrorMsg" class="hidden text-xs text-red-400 font-bold">चुकीचा ईमेल किंवा पासवर्ड! कृपया पुन्हा प्रयत्न करा.</p>
         </div>
     </div>
 
@@ -47,7 +47,7 @@
         <!-- Header -->
         <div class="bg-gradient-to-r from-orange-800 via-amber-600 to-red-800 p-5 text-center border-b border-amber-400/40 relative">
             <h1 class="text-2xl md:text-3xl font-black text-white tracking-tight">🛠️ चाहाडे ट्रान्सपोर्ट ॲडमिन पॅनेल</h1>
-            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">सुरक्षित डॅशबोर्ड - <span id="displayAdminEmail" class="underline font-black">shabaj9769@gmail.com</span></p>
+            <p class="text-xs font-bold text-amber-100 uppercase tracking-widest mt-1">सुरक्षित क्लाउड डॅशबोर्ड</p>
             
             <div class="absolute top-4 right-4 flex gap-2">
                 <button onclick="openChangeSettingsModal()" class="bg-black/40 hover:bg-black/60 text-amber-300 text-xs px-3 py-1.5 rounded-lg border border-amber-400/30 font-bold transition">
@@ -62,9 +62,9 @@
         <div class="p-4 md:p-6 space-y-5">
 
             <!-- Notification Permission Banner -->
-            <div id="notifBanner" class="hidden bg-amber-900/80 border border-amber-400 p-3 rounded-xl flex justify-between items-center text-xs">
-                <span class="text-amber-200 font-bold">🔔 नवीन ऑर्डर व नोटिफिकेशन मिळवण्यासाठी परवानगी द्या:</span>
-                <button onclick="requestNotificationPermission()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-lg shadow">परवानगी द्या</button>
+            <div id="notifBanner" class="bg-amber-950 border border-amber-400/80 p-3 rounded-xl flex justify-between items-center text-xs shadow-lg">
+                <span id="notifStatusText" class="text-amber-200 font-bold">🔔 नवीन ऑर्डरच्या सूचना मिळवण्यासाठी येथे क्लिक करा:</span>
+                <button id="notifBtn" onclick="requestNotificationPermission()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-lg shadow">चालू करा</button>
             </div>
 
             <!-- 🚛 VEHICLE RATE & ADD VEHICLE MANAGEMENT -->
@@ -189,33 +189,27 @@
         let isFirstLoad = true;
 
         async function getSavedCredentials() {
-            let email = localStorage.getItem("chahade_admin_email") || "shabaj9769@gmail.com";
-            let pass = localStorage.getItem("chahade_admin_password") || "Shabaj@9769";
             try {
                 const res = await fetch(dbUrl + "admin_auth.json");
                 const cloudAuth = await res.json();
-                if (cloudAuth) {
-                    if (cloudAuth.email) email = cloudAuth.email;
-                    if (cloudAuth.password) pass = cloudAuth.password;
-                    localStorage.setItem("chahade_admin_email", email);
-                    localStorage.setItem("chahade_admin_password", pass);
+                if (cloudAuth && cloudAuth.email && cloudAuth.password) {
+                    return { email: cloudAuth.email, pass: cloudAuth.password };
                 }
             } catch(e) {}
+            // Local fallback only if network completely fails
+            const email = localStorage.getItem("chahade_admin_email") || "shabaj9769@gmail.com";
+            const pass = localStorage.getItem("chahade_admin_password") || "Shabaj@9769";
             return { email, pass };
         }
 
-        async function initAuthDisplay() {
-            const cred = await getSavedCredentials();
-            document.getElementById('adminEmailInput').value = cred.email;
-            document.getElementById('displayAdminEmail').innerText = cred.email;
-        }
-
         async function verifyAdminCredentials() {
+            const enteredEmail = document.getElementById('adminEmailInput').value.trim();
             const enteredPass = document.getElementById('adminPassInput').value.trim();
             const errorMsg = document.getElementById('pinErrorMsg');
+            
             const cred = await getSavedCredentials();
 
-            if (enteredPass === cred.pass) {
+            if (enteredEmail === cred.email && enteredPass === cred.pass) {
                 errorMsg.classList.add('hidden');
                 document.getElementById('pinLockModal').classList.add('hidden');
                 document.getElementById('adminDashboardContent').classList.remove('hidden');
@@ -268,15 +262,20 @@
                 document.getElementById('oldPassInput').value = "";
                 document.getElementById('newPassInput').value = "";
                 closeChangeSettingsModal();
-                initAuthDisplay();
             } catch(e) {
                 alert("नेटवर्क एरर! क्लाउडवर सेव्ह होऊ शकले नाही.");
             }
         }
 
         function checkNotificationSetup() {
-            if ("Notification" in window && Notification.permission !== "granted") {
-                document.getElementById('notifBanner').classList.remove('hidden');
+            if ("Notification" in window) {
+                if (Notification.permission === "granted") {
+                    document.getElementById('notifStatusText').innerText = "🔔 नोटिफिकेशन चालू आहे (सक्रिय)";
+                    document.getElementById('notifBtn').classList.add('hidden');
+                } else {
+                    document.getElementById('notifStatusText').innerText = "🔔 नवीन ऑर्डरच्या सूचना मिळवण्यासाठी येथे क्लिक करा:";
+                    document.getElementById('notifBtn').classList.remove('hidden');
+                }
             }
         }
 
@@ -284,7 +283,7 @@
             if ("Notification" in window) {
                 Notification.requestPermission().then(permission => {
                     if (permission === "granted") {
-                        document.getElementById('notifBanner').classList.add('hidden');
+                        checkNotificationSetup();
                         new Notification("चाहाडे ट्रान्सपोर्ट", { body: "नोटिफिकेशन सुविधा यशस्वीरीत्या चालू झाली आहे!" });
                     }
                 });
@@ -298,6 +297,7 @@
         }
 
         function lockAdminPanel() {
+            document.getElementById('adminEmailInput').value = "";
             document.getElementById('adminPassInput').value = "";
             document.getElementById('adminDashboardContent').classList.add('hidden');
             document.getElementById('pinLockModal').classList.remove('hidden');
@@ -572,9 +572,9 @@
         }
 
         async function assignOwner(orderId) {
-            const sel = document.getElementById(`sel_${orderId}`).value;
-            if(!sel) { alert("कृपया आधी ट्रक मालक निवडा!"); return; }
-            const [name, phone, vehicleNo] = sel.split('|');
+            const selectElem = document.getElementById(`sel_${orderId}`);
+            if(!selectElem || !selectElem.value) { alert("कृपया आधी ट्रक मालक निवडा!"); return; }
+            const [name, phone, vehicleNo] = selectElem.value.split('|');
 
             await fetch(dbUrl + `orders/${orderId}.json`, {
                 method: "PATCH",
@@ -608,8 +608,6 @@
                 fetchAllCloudData();
             }
         }
-
-        window.onload = initAuthDisplay;
     </script>
 </body>
 </html>
