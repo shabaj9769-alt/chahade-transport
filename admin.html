@@ -47,7 +47,7 @@
         <!-- Developer Strip -->
         <div class="bg-black/70 py-1.5 px-4 border-b border-amber-500/30 flex justify-between items-center text-[10px] text-amber-200">
             <span>चाहाडे ट्रान्सपोर्ट ॲडमिन कंट्रोल</span>
-            <span>वेबसाइट बनवण्यासाठी संपर्क: <a href="mailto:shabaj9769@gmail.com" class="font-bold text-amber-400 underline">shabaj9769@gmail.com</a></span>
+            <span>वेबसाइट बनवण्यासाठी संपर्क: <a href="mailto:shabaj9769@gmail.com" class="font-bold text-amber-400 underline">shabaj9769@gmail.com</a>[span_4](start_span)[span_4](end_span)</span>
         </div>
 
         <!-- Header -->
@@ -73,11 +73,11 @@
                 <button id="notifBtn" onclick="requestNotificationPermission()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-lg shadow">चालू करा</button>
             </div>
 
-            <!-- VEHICLE RATE MANAGEMENT -->
+            <!-- VEHICLE RATE MANAGEMENT WITH ON/OFF TOGGLE -->
             <div class="bg-[#3a1005] border-2 border-amber-500/40 p-4 rounded-2xl space-y-3">
                 <div class="flex justify-between items-center border-b border-amber-600/30 pb-2">
                     <h3 class="text-xs font-black text-amber-300 uppercase tracking-wider">
-                        <i class="fa-solid fa-truck text-amber-400 mr-1"></i> गाड्यांची यादी, दर (Rate/KM) व नवीन गाडी जोडा
+                        <i class="fa-solid fa-truck text-amber-400 mr-1"></i> सर्व ५ गाड्यांची यादी, दर (Rate/KM), चालू/बंद व नवीन गाडी
                     </h3>
                     <button type="button" onclick="openAddVehicleModal()" class="text-[10px] bg-amber-600 hover:bg-amber-500 text-stone-950 font-black px-2.5 py-1 rounded-lg">+ नवीन गाडी जोडा</button>
                 </div>
@@ -187,6 +187,15 @@
 
     <script>
         const dbUrl = "https://manorbiryani-default-rtdb.firebaseio.com/chahade_transport/";
+
+        // 5 DEFAULT VEHICLES FULLY SYNCED
+        const defaultVehicles = [
+            { id: "v_pickup", name: "महिंद्रा बोलेरो / पिकअप (कमाल १.५ टन)", rate: 22, available: true },
+            { id: "v_ace", name: "टाटा एस - छोटा हत्ती (कमाल १ टन)", rate: 16, available: true },
+            { id: "v_eicher14", name: "आयशर १४ फूट ट्रक (कमाल ४-५ टन)", rate: 36, available: true },
+            { id: "v_eicher19", name: "आयशर १९ फूट हेवी ट्रक (कमाल ७-९ टन)", rate: 48, available: true },
+            { id: "v_wheeler6", name: "६-चाकी ओपन प्लॅटफॉर्म (कमाल १० टन)", rate: 62, available: true }
+        ];
 
         let vehicleCategories = [];
         let cachedOwners = [];
@@ -330,10 +339,13 @@
                 const res = await fetch(dbUrl + ".json");
                 const data = await res.json() || {};
 
-                vehicleCategories = data.vehicles || [
-                    { id: "v_pickup", name: "महिंद्रा बोलेरो / पिकअप (कमाल १.५ टन)", rate: 22, available: true },
-                    { id: "v_ace", name: "टाटा एस - छोटा हत्ती (कमाल १ टन)", rate: 16, available: true }
-                ];
+                // Load all 5 vehicles
+                if (data.vehicles && Array.isArray(data.vehicles) && data.vehicles.length >= 5) {
+                    vehicleCategories = data.vehicles;
+                } else {
+                    vehicleCategories = defaultVehicles;
+                    await fetch(dbUrl + "vehicles.json", { method: "PUT", body: JSON.stringify(defaultVehicles) });
+                }
                 renderRateEditor();
 
                 cachedOwners = data.owners ? Object.keys(data.owners).map(k => ({ id: k, ...data.owners[k] })) : [];
@@ -384,19 +396,39 @@
             const container = document.getElementById('rateEditorContainer');
             container.innerHTML = "";
             vehicleCategories.forEach((v, idx) => {
+                const isAvailable = v.available !== false;
                 container.innerHTML += `
-                    <div class="bg-[#200701] p-3 rounded-xl border border-amber-500/20 flex items-center justify-between gap-2 text-xs">
-                        <span class="font-bold text-white w-1/3">${v.name}</span>
-                        <div class="flex items-center gap-1">
-                            <span>₹</span>
-                            <input type="number" id="rate_${idx}" value="${v.rate}" class="w-16 px-2 py-1 bg-black text-amber-300 font-black rounded border border-amber-500/40 text-center">
-                            <span class="text-[10px]">/KM</span>
+                    <div class="bg-[#200701] p-3 rounded-xl border border-amber-500/20 flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <div class="w-full md:w-5/12 flex items-center gap-2">
+                            <span class="font-bold ${isAvailable ? 'text-white' : 'text-stone-500 line-through'}">${v.name}</span>
                         </div>
-                        <button onclick="updateVehicleRate(${idx})" class="px-2.5 py-1 bg-amber-600 font-black text-stone-950 rounded hover:brightness-110">अपडेट</button>
-                        <button onclick="deleteVehicle(${idx})" class="text-red-400 hover:text-red-300 p-1"><i class="fa-solid fa-trash"></i></button>
+                        
+                        <div class="flex items-center gap-2">
+                            <!-- Rate Input -->
+                            <div class="flex items-center gap-1">
+                                <span>₹</span>
+                                <input type="number" id="rate_${idx}" value="${v.rate}" class="w-16 px-2 py-1 bg-black text-amber-300 font-black rounded border border-amber-500/40 text-center">
+                                <span class="text-[10px]">/KM</span>
+                            </div>
+                            <button onclick="updateVehicleRate(${idx})" class="px-2 py-1 bg-amber-600 font-black text-stone-950 rounded hover:brightness-110">अपडेट</button>
+                            
+                            <!-- ON / OFF Toggle Button -->
+                            <button onclick="toggleVehicleStatus(${idx})" class="px-2.5 py-1 font-black rounded text-[11px] ${isAvailable ? 'bg-emerald-600 text-white' : 'bg-stone-700 text-stone-300'}">
+                                ${isAvailable ? '🟢 चालू' : '🔴 बंद'}
+                            </button>
+
+                            <!-- Delete Button -->
+                            <button onclick="deleteVehicle(${idx})" class="text-red-400 hover:text-red-300 p-1 ml-1"><i class="fa-solid fa-trash"></i></button>
+                        </div>
                     </div>
                 `;
             });
+        }
+
+        async function toggleVehicleStatus(idx) {
+            vehicleCategories[idx].available = (vehicleCategories[idx].available === false) ? true : false;
+            await fetch(dbUrl + "vehicles.json", { method: "PUT", body: JSON.stringify(vehicleCategories) });
+            renderRateEditor();
         }
 
         async function updateVehicleRate(idx) {
@@ -504,7 +536,7 @@
                         <p class="text-stone-300">📦 माल: ${inq.material} (${inq.vehicle || ''})</p>
                         <p class="text-amber-200 font-bold">📞 मुख्य नंबर: ${inq.customer}</p>
                         
-                        <!-- 📝 DETAILED INQUIRY NOTE DISPLAY -->
+                        <!-- DETAILED INQUIRY NOTE DISPLAY -->
                         <div class="p-2.5 rounded-lg bg-[#1a0501] border border-orange-500/30 text-[11px] space-y-1">
                             <p class="text-amber-300 font-bold flex items-center gap-1">
                                 <i class="fa-solid fa-comment-dots text-orange-400"></i> ग्राहकाचा सविस्तर संदेश / प्रश्न:
