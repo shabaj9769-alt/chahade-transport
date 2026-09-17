@@ -53,14 +53,14 @@
 
         <div class="p-4 md:p-6 space-y-4">
             
-            <!-- 🔍 SECTION: CHECK & REMOVE BOOKING / INQUIRY HISTORY -->
+            <!-- 🔍 SECTION: CHECK & REMOVE BOOKING HISTORY (Inquiries excluded) -->
             <div class="bg-[#2a0b03] border-2 border-amber-500/40 rounded-2xl overflow-hidden shadow-lg">
                 <button type="button" onclick="toggleTrackOrderFolder()" 
                     class="w-full p-3.5 flex justify-between items-center bg-gradient-to-r from-[#381005] to-[#200701] text-left">
                     <div class="flex items-center gap-2">
                         <span class="text-lg">📦</span>
                         <div>
-                            <p class="text-xs font-black text-amber-200 uppercase tracking-wide">माझी जुनी बुकिंग / चौकशी तपासा / ड्रायव्हर संपर्क</p>
+                            <p class="text-xs font-black text-amber-200 uppercase tracking-wide">माझी जुनी बुकिंग तपासा / ड्रायव्हर संपर्क</p>
                             <p class="text-[10px] text-amber-300/70">टॅप करा = उघडा / पुन्हा टॅप करा = बंद</p>
                         </div>
                     </div>
@@ -111,8 +111,11 @@
                 </div>
                 <div class="bg-black/40 p-3 rounded-xl border border-emerald-500/40 text-left text-xs space-y-1.5 text-emerald-100">
                     <p>🆔 <strong>नोंदणी ID:</strong> <span id="successOrderId" class="text-amber-300 font-black"></span></p>
-                    <p>📅 <strong>तारीख व वेळ:</strong> <span id="successDateTime" class="text-white"></span></p>
+                    <p id="dateTimeSuccessRow">📅 <strong>तारीख व वेळ:</strong> <span id="successDateTime" class="text-white"></span></p>
                     <p id="fareSuccessRow">💰 <strong>अंदाजे भाडे:</strong> <span id="successFare" class="text-amber-300 font-bold"></span></p>
+                    <div id="inquiryChannelNotice" class="hidden mt-2 p-2.5 bg-amber-950/80 border border-amber-400/50 rounded-lg text-amber-200 text-xs">
+                        💬 <strong>चौकशी प्रतिसाद:</strong> आपल्या चौकशीचे सविस्तर उत्तर लवकरच आपल्या दिलेल्या <span id="successChannelName" class="font-bold text-white"></span> वर पाठवले जाईल.
+                    </div>
                 </div>
                 <button type="button" onclick="resetFormForNextBooking()" 
                     class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-xl text-xs uppercase tracking-wider transition">
@@ -286,7 +289,7 @@
                     </select>
                 </div>
 
-                <!-- 🎯 9. BOOKING OR INQUIRY MODE SELECTOR (NEW FEATURE) -->
+                <!-- 🎯 9. BOOKING OR INQUIRY MODE SELECTOR -->
                 <div class="bg-[#4d1607]/90 p-4 rounded-2xl border-2 border-amber-500/60 space-y-3">
                     <label class="block text-xs font-black text-amber-300 uppercase tracking-wider">
                         ९. तुम्हाला काय करायचे आहे? (Select Action)
@@ -302,15 +305,43 @@
                         </button>
                     </div>
 
-                    <!-- Inquiry Sub-options (Appears when Inquiry is selected) -->
-                    <div id="inquiryOptionsBox" class="hidden pt-3 border-t border-amber-500/30 space-y-2">
-                        <label class="block text-xs font-bold text-amber-200">चौकशीचा विषय निवडा:</label>
-                        <select id="inquirySubtype" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white focus:outline-none">
-                            <option value="भाडे विषयक चौकशी (Price Inquiry)">भाडे विषयक चौकशी (Price Inquiry)</option>
-                            <option value="अंतर/रूट विषयक चौकशी (Distance Inquiry)">अंतर/रूट विषयक चौकशी (Distance Inquiry)</option>
-                            <option value="ॲडव्हान्स बुकिंग चौकशी (Advance Booking Inquiry)">ॲडव्हान्स बुकिंग चौकशी (Advance Booking Inquiry)</option>
-                            <option value="इतर व्यावसायिक चौकशी (General Inquiry)">इतर व्यावसायिक चौकशी (General Inquiry)</option>
-                        </select>
+                    <!-- Inquiry Sub-options (WhatsApp vs Email Response Channel) -->
+                    <div id="inquiryOptionsBox" class="hidden pt-3 border-t border-amber-500/30 space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-amber-200 mb-1">चौकशीचा विषय निवडा:</label>
+                            <select id="inquirySubtype" class="w-full px-3 py-2 bg-[#200701] border border-amber-500/50 rounded-xl text-xs text-white focus:outline-none">
+                                <option value="भाडे विषयक चौकशी (Price Inquiry)">भाडे विषयक चौकशी (Price Inquiry)</option>
+                                <option value="अंतर/रूट विषयक चौकशी (Distance Inquiry)">अंतर/रूट विषयक चौकशी (Distance Inquiry)</option>
+                                <option value="ॲडव्हान्स बुकिंग चौकशी (Advance Booking Inquiry)">ॲडव्हान्स बुकिंग चौकशी (Advance Booking Inquiry)</option>
+                                <option value="इतर व्यावसायिक चौकशी (General Inquiry)">इतर व्यावसायिक चौकशी (General Inquiry)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-amber-300 mb-1.5">चौकशीचे उत्तर कुठे हवे आहे?</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="flex items-center gap-2 bg-[#2a0b03] p-2.5 rounded-xl border border-amber-500/40 cursor-pointer">
+                                    <input type="radio" name="replyChannel" value="whatsapp" checked onchange="toggleReplyChannelInput()" class="accent-emerald-500">
+                                    <span class="text-xs font-bold text-emerald-300"><i class="fa-brands fa-whatsapp"></i> WhatsApp</span>
+                                </label>
+                                <label class="flex items-center gap-2 bg-[#2a0b03] p-2.5 rounded-xl border border-amber-500/40 cursor-pointer">
+                                    <input type="radio" name="replyChannel" value="email" onchange="toggleReplyChannelInput()" class="accent-amber-500">
+                                    <span class="text-xs font-bold text-amber-200"><i class="fa-solid fa-envelope"></i> Email</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="inquiryWhatsappBox">
+                            <label class="block text-[11px] font-bold text-amber-200 mb-1">WhatsApp नंबर:</label>
+                            <input type="tel" id="inquiryWhatsappInput" maxlength="10" placeholder="१० अंकी व्हॉट्सॲप नंबर टाका"
+                                class="w-full px-3 py-2 bg-[#200701] border border-emerald-500/60 rounded-xl text-xs font-bold text-white focus:outline-none">
+                        </div>
+
+                        <div id="inquiryEmailBox" class="hidden">
+                            <label class="block text-[11px] font-bold text-amber-200 mb-1">ईमेल आयडी:</label>
+                            <input type="email" id="inquiryEmailInput" placeholder="उदा. yourname@gmail.com"
+                                class="w-full px-3 py-2 bg-[#200701] border border-amber-500/60 rounded-xl text-xs font-bold text-white focus:outline-none">
+                        </div>
                     </div>
                 </div>
 
@@ -320,7 +351,7 @@
                     <i class="fa-solid fa-calculator text-base"></i> <span id="calcBtnText">अंदाजे भाडे तपासा (Show Fare)</span>
                 </button>
 
-                <!-- 📊 FARE RESULT CARD -->
+                <!-- 📊 FARE RESULT CARD (Updated with Mandatory Driver Call & Recording Terms) -->
                 <div id="fareResultCard" class="hidden space-y-4 pt-3 border-t-2 border-amber-500/40">
                     <div class="bg-[#4a1507]/90 border-2 border-amber-400/70 p-4 rounded-2xl space-y-3 shadow-xl">
                         
@@ -338,6 +369,17 @@
                             <span>५०% लोडिंग ॲडव्हान्स: <strong id="advanceDisplay" class="text-amber-300">₹ 0</strong></span>
                             <span>५०% पोहोचल्यावर: <strong id="balanceDisplay" class="text-emerald-300">₹ 0</strong></span>
                         </div>
+
+                        <!-- ⚠️ TERMS & CONDITIONS NOTICE -->
+                        <div class="bg-[#240802] p-3 rounded-xl border border-amber-500/40 space-y-1.5 text-[11px] text-amber-100/90 leading-relaxed text-left">
+                            <p class="font-black text-amber-300 uppercase tracking-wide flex items-center gap-1.5">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-400"></i> महत्वाच्या अटी, ड्रायव्हर कॉल व रेकॉर्डिंग सूचना:
+                            </p>
+                            <p>• <strong>केवळ प्राथमिक भाडे अंदाज:</strong> वर दिलेले भाडे केवळ अंतरानुसार प्राथमिक अंदाज आहे.</p>
+                            <p>• <strong>ड्रायव्हर कॉल बंधनकारक (Compulsory):</strong> बुकिंग कन्फर्म झाल्यानंतर संबंधित ट्रक ड्रायव्हर/मालकाचा थेट कॉल ग्राहकाला येणे बंधनकारक आहे. प्रत्यक्ष मालाचा प्रकार, वजन व परिस्थितीनुसार ड्रायव्हरच अंतिम भाडे (Final Price) निश्चित करतील.</p>
+                            <p>• <strong>कॉल रेकॉर्डिंग सूचना:</strong> दोन्ही बाजूंच्या पारदर्शकतेसाठी, सुरक्षेसाठी व अधिकृत नोंदीसाठी (Record purpose) ड्रायव्हर आणि ग्राहक यांच्यातील सर्व फोन संभाषण रेकॉर्ड केले जाईल.</p>
+                            <p>• <strong>बुकिंग रद्द/बदल धोरण:</strong> बुकिंग रद्द करणे, वेळ बदलणे अथवा कोणत्याही वादामध्ये ग्राहक व वाहन मालक यांची परस्पर जबाबदारी राहील. पोर्टल/ॲपचा यात कोणताही हस्तक्षेप किंवा जबाबदारी नसेल.</p>
+                        </div>
                     </div>
 
                     <button type="button" onclick="submitUserRequest()" 
@@ -346,7 +388,7 @@
                     </button>
                 </div>
 
-                <!-- Direct Inquiry Submit Button (For Inquiry Mode) -->
+                <!-- Direct Inquiry Submit Button -->
                 <button type="button" id="inquirySubmitBtn" onclick="submitUserRequest()" 
                     class="hidden w-full py-4 px-4 bg-gradient-to-r from-orange-600 to-amber-600 hover:brightness-110 text-white font-black rounded-2xl shadow-xl text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition active:scale-95 border border-amber-300/40">
                     <i class="fa-solid fa-paper-plane text-lg"></i> चौकशी थेट पाठवा (Send Inquiry)
@@ -362,7 +404,7 @@
         let calculatedPrice = 0;
         let routeKm = 0;
         let isFareCardOpen = false;
-        let currentMode = 'booking'; // 'booking' or 'inquiry'
+        let currentMode = 'booking';
 
         let availableVehicleCategories = [
             { id: "v_pickup", name: "महिंद्रा बोलेरो / पिकअप (कमाल १.५ टन)", rate: 22, available: true },
@@ -407,6 +449,20 @@
             syncWeightToVehicle();
         }
 
+        function toggleReplyChannelInput() {
+            const selected = document.querySelector('input[name="replyChannel"]:checked').value;
+            const waBox = document.getElementById('inquiryWhatsappBox');
+            const emBox = document.getElementById('inquiryEmailBox');
+
+            if (selected === 'whatsapp') {
+                waBox.classList.remove('hidden');
+                emBox.classList.add('hidden');
+            } else {
+                waBox.classList.add('hidden');
+                emBox.classList.remove('hidden');
+            }
+        }
+
         function selectActionType(mode) {
             currentMode = mode;
             const btnB = document.getElementById('btnBooking');
@@ -430,6 +486,11 @@
                 fareCard.classList.add('hidden');
                 isFareCardOpen = false;
                 inqSubBtn.classList.remove('hidden');
+
+                const mainMobile = document.getElementById('mobile').value.trim();
+                if (mainMobile.length === 10 && !document.getElementById('inquiryWhatsappInput').value) {
+                    document.getElementById('inquiryWhatsappInput').value = mainMobile;
+                }
             }
         }
 
@@ -445,6 +506,7 @@
             }
         }
 
+        // Only confirmed bookings are shown in customer panel; inquiries are sent directly to admin panel
         async function searchCustomerHistory() {
             const searchPhone = document.getElementById('trackMobileInput').value.trim();
             const resultsContainer = document.getElementById('trackedHistoryList');
@@ -461,35 +523,33 @@
 
             try {
                 const resOrders = await fetch(dbUrl + "orders.json");
-                const resInq = await fetch(dbUrl + "inquiries.json");
                 const ordersObj = await resOrders.json() || {};
-                const inqObj = await resInq.json() || {};
                 resultsContainer.innerHTML = "";
 
-                const allItems = [...Object.values(ordersObj), ...Object.values(inqObj)].filter(o => o.customer === searchPhone);
+                const allItems = Object.keys(ordersObj)
+                    .map(k => ({ key: k, folder: 'orders', ...ordersObj[k] }))
+                    .filter(o => o.customer === searchPhone);
 
                 if (allItems.length === 0) {
                     actionHeader.classList.add('hidden');
-                    resultsContainer.innerHTML = `<p class="text-xs text-amber-300/60 italic py-2">या नंबरवर कोणतीही बुकिंग किंवा चौकशी सापडली नाही.</p>`;
+                    resultsContainer.innerHTML = `<p class="text-xs text-amber-300/60 italic py-2">या नंबरवर कोणतीही बुकिंग सापडली नाही.</p>`;
                     return;
                 }
 
                 actionHeader.classList.remove('hidden');
-                matchCount.innerText = `एकूण ${allItems.length} नोंदी सापडल्या:`;
+                matchCount.innerText = `एकूण ${allItems.length} बुकिंग नोंदी सापडल्या:`;
 
                 allItems.reverse().forEach(o => {
                     const card = document.createElement('div');
                     card.className = "bg-[#280902] border border-amber-500/30 p-3 rounded-xl space-y-2 text-xs relative";
-                    
                     const isAssigned = o.assignedDriverPhone && o.assignedDriverName;
-                    const isBooking = o.type === 'booking';
 
                     card.innerHTML = `
                         <div class="flex justify-between items-center border-b border-amber-600/30 pb-1.5">
-                            <span class="text-amber-300 font-black">#${o.id.toString().slice(-6)} (${isBooking ? '📦 बुकिंग' : '❓ चौकशी'})</span>
+                            <span class="text-amber-300 font-black">#${(o.id || o.key).toString().slice(-6)} (📦 बुकिंग)</span>
                             <div class="flex items-center gap-2">
                                 <span class="text-emerald-400 font-bold">₹${o.fare || 0}</span>
-                                <button onclick="removeCustomerRecord('${o.id}', '${o.type}')" title="काढून टाका" 
+                                <button onclick="removeCustomerRecord('${o.key}')" title="काढून टाका" 
                                     class="px-2 py-0.5 bg-red-950 border border-red-500/40 text-red-300 hover:bg-red-900 rounded text-[10px] font-bold transition flex items-center gap-1">
                                     <i class="fa-solid fa-trash-can"></i> काढा
                                 </button>
@@ -499,13 +559,10 @@
                         <p class="text-stone-300">📅 ${o.loadingDate} (${o.loadingTime || ''})</p>
                         <p class="text-stone-300">📍 ${o.from} ➔ 🎯 ${o.to}</p>
                         <p class="text-amber-200">🚛 गाडी: <strong>${o.vehicle}</strong></p>
-                        ${!isBooking ? `<p class="text-orange-300 font-bold">📝 विषय: ${o.subType}</p>` : ''}
                         
-                        <div class="p-2.5 rounded-lg border ${isBooking ? 'bg-emerald-950/60 border-emerald-500/50' : 'bg-orange-950/60 border-orange-500/50'} space-y-1.5">
+                        <div class="p-2.5 rounded-lg border bg-emerald-950/60 border-emerald-500/50 space-y-1.5">
                             <div class="flex items-center justify-between">
-                                <span class="text-xs font-black ${isBooking ? 'text-emerald-300' : 'text-orange-300'}">
-                                    ${isBooking ? '✓ बुकिंग कन्फर्म' : '⏳ चौकशी प्रक्रियेत'}
-                                </span>
+                                <span class="text-xs font-black text-emerald-300">✓ बुकिंग कन्फर्म</span>
                                 <span class="text-[10px] text-amber-300">चाहाडे नेटवर्क</span>
                             </div>
 
@@ -520,7 +577,7 @@
                                 </div>
                             ` : `
                                 <p class="text-[10px] text-stone-300 italic pt-1 border-t border-amber-500/30">
-                                    ${isBooking ? 'कार्यालयाकडून ड्रायव्हर नियुक्त होताच नंबर येथे दिसेल.' : 'लवकरच आपल्या चौकशीचे उत्तर दिले जाईल.'}
+                                    कार्यालयाकडून ड्रायव्हर नियुक्त होताच नंबर येथे दिसेल.
                                 </p>
                             `}
                         </div>
@@ -532,30 +589,22 @@
             }
         }
 
-        async function removeCustomerRecord(id, type) {
-            if (confirm("ही नोंद काढून टाकायची आहे کا?")) {
-                const folder = type === 'booking' ? 'orders' : 'inquiries';
-                await fetch(dbUrl + `${folder}/${id}.json`, { method: "DELETE" });
+        async function removeCustomerRecord(key) {
+            if (confirm("ही बुकिंग नोंद कायमस्वरूपी काढून टाकायची आहे का?")) {
+                await fetch(dbUrl + `orders/${key}.json`, { method: "DELETE" });
                 searchCustomerHistory();
             }
         }
 
         async function clearCustomerSearchedHistory() {
             const searchPhone = document.getElementById('trackMobileInput').value.trim();
-            if (confirm("या नंबरच्या सर्व जुन्या नोंदी काढून टाकायच्या आहेत का?")) {
+            if (confirm("या नंबरच्या सर्व जुन्या बुकिंग नोंदी काढून टाकायच्या आहेत का?")) {
                 const resOrders = await fetch(dbUrl + "orders.json");
-                const resInq = await fetch(dbUrl + "inquiries.json");
                 const ordersObj = await resOrders.json() || {};
-                const inqObj = await resInq.json() || {};
 
                 for (let id in ordersObj) {
                     if (ordersObj[id].customer === searchPhone) {
                         await fetch(dbUrl + `orders/${id}.json`, { method: "DELETE" });
-                    }
-                }
-                for (let id in inqObj) {
-                    if (inqObj[id].customer === searchPhone) {
-                        await fetch(dbUrl + `inquiries/${id}.json`, { method: "DELETE" });
                     }
                 }
                 searchCustomerHistory();
@@ -645,25 +694,52 @@
         }
 
         async function submitUserRequest() {
-            const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value;
+            const palgharLoadingPoint = document.getElementById('palgharLoadingPoint').value.trim();
             const drop = document.getElementById('drop').options[document.getElementById('drop').selectedIndex].text;
-            const fullAddress = document.getElementById('fullAddress').value;
-            const material = document.getElementById('material').value;
+            const fullAddress = document.getElementById('fullAddress').value.trim();
+            const material = document.getElementById('material').value.trim();
             const cargoWeight = document.getElementById('cargoWeight').value;
-            const customerMobile = document.getElementById('mobile').value;
+            const customerMobile = document.getElementById('mobile').value.trim();
             
             const loadingDate = document.getElementById('loadingDate').value;
             const timeHour = document.getElementById('timeHour').value;
             const timeAmPm = document.getElementById('timeAmPm').value;
             const completeTimeString = `${timeHour} ${timeAmPm}`;
-
             const vehicle = document.getElementById('vehicle').value;
+
+            if(!palgharLoadingPoint || !fullAddress || !material || customerMobile.length !== 10) {
+                alert("कृपया सर्व माहिती व अचूक १० अंकी मोबाईल नंबर भरा!");
+                return;
+            }
+
+            let replyChannelChoice = "whatsapp";
+            let replyChannelValue = customerMobile;
+
+            if (currentMode === 'inquiry') {
+                replyChannelChoice = document.querySelector('input[name="replyChannel"]:checked').value;
+                if (replyChannelChoice === 'whatsapp') {
+                    replyChannelValue = document.getElementById('inquiryWhatsappInput').value.trim() || customerMobile;
+                    if (replyChannelValue.length !== 10) {
+                        alert("कृपया अचूक १० अंकी व्हॉट्सॲप नंबर भरा!");
+                        return;
+                    }
+                } else {
+                    replyChannelValue = document.getElementById('inquiryEmailInput').value.trim();
+                    if (!replyChannelValue || !replyChannelValue.includes('@')) {
+                        alert("कृपया अचूक ईमेल आयडी भरा!");
+                        return;
+                    }
+                }
+            }
+
             const recordId = (currentMode === 'booking' ? "ORD-" : "INQ-") + Math.floor(1000 + Math.random() * 9000);
 
             const recordData = {
                 id: recordId,
                 type: currentMode,
                 subType: currentMode === 'inquiry' ? document.getElementById('inquirySubtype').value : 'Direct Booking',
+                replyChannel: currentMode === 'inquiry' ? replyChannelChoice : 'phone',
+                replyTarget: currentMode === 'inquiry' ? replyChannelValue : customerMobile,
                 bookedOn: new Date().toLocaleDateString('en-IN'),
                 loadingDate: loadingDate,
                 loadingTime: completeTimeString,
@@ -674,7 +750,7 @@
                 vehicle: vehicle,
                 material: material,
                 weight: cargoWeight,
-                fare: calculatedPrice || 0,
+                fare: currentMode === 'booking' ? (calculatedPrice || 0) : 0,
                 status: currentMode === 'booking' ? "Confirmed" : "Pending Inquiry",
                 assignedDriverName: null,
                 assignedDriverPhone: null,
@@ -689,20 +765,27 @@
             });
 
             document.getElementById('transportForm').classList.add('hidden');
-            
             const successBox = document.getElementById('bookingSuccessBox');
             document.getElementById('successOrderId').innerText = recordData.id;
-            document.getElementById('successDateTime').innerText = `${loadingDate} (${completeTimeString})`;
             
             if(currentMode === 'inquiry') {
-                document.getElementById('successTitle').innerText = "चौकशी यशस्वीरीत्या नोंदवली गेली!";
-                document.getElementById('successDesc').innerText = "आपली चौकशी ॲडमिनकडे पोचली आहे. लवकरच मराठीमध्ये उत्तर मिळेल.";
+                document.getElementById('successTitle').innerText = "चौकशी यशस्वीरीत्या ॲडमिनकडे पाठवली!";
+                document.getElementById('successDesc').innerText = "आपली चौकशी ॲडमिन पॅनेलवर सुरक्षित प्राप्त झाली आहे.";
                 document.getElementById('fareSuccessRow').classList.add('hidden');
+                document.getElementById('dateTimeSuccessRow').classList.add('hidden');
+                
+                const channelNotice = document.getElementById('inquiryChannelNotice');
+                const channelName = document.getElementById('successChannelName');
+                channelName.innerText = replyChannelChoice === 'whatsapp' ? `WhatsApp (${replyChannelValue})` : `Email (${replyChannelValue})`;
+                channelNotice.classList.remove('hidden');
             } else {
                 document.getElementById('successTitle').innerText = "बुकिंग यशस्वीरीत्या नोंदवली गेली!";
-                document.getElementById('successDesc').innerText = "आपली ऑर्डर अधिकृतपणे सिस्टीममध्ये कन्फर्म झाली आहे.";
+                document.getElementById('successDesc').innerText = "आपली ऑर्डर अधिकृतपणे सिस्टीममध्ये कन्फर्म झाली आहे. लवकरच ड्रायव्हरचा कॉल येईल.";
+                document.getElementById('dateTimeSuccessRow').classList.remove('hidden');
+                document.getElementById('successDateTime').innerText = `${loadingDate} (${completeTimeString})`;
                 document.getElementById('successFare').innerText = `₹ ${calculatedPrice.toLocaleString('en-IN')}`;
                 document.getElementById('fareSuccessRow').classList.remove('hidden');
+                document.getElementById('inquiryChannelNotice').classList.add('hidden');
             }
             
             successBox.classList.remove('hidden');
@@ -716,6 +799,7 @@
             document.getElementById('fareResultCard').classList.add('hidden');
             isFareCardOpen = false;
             document.getElementById('calcBtnText').innerText = "अंदाजे भाडे तपासा (Show Fare)";
+            selectActionType('booking');
             loadData();
         }
 
