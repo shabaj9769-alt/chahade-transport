@@ -47,7 +47,7 @@
         <!-- Developer Strip -->
         <div class="bg-black/70 py-1.5 px-4 border-b border-amber-500/30 flex justify-between items-center text-[10px] text-amber-200">
             <span>चाहाडे ट्रान्सपोर्ट ॲडमिन कंट्रोल</span>
-            <span>वेबसाइट बनवण्यासाठी संपर्क: <a href="mailto:shabaj9769@gmail.com" class="font-bold text-amber-400 underline">shabaj9769@gmail.com</a></span>
+            <span>वेबसाइट बनवण्यासाठी संपर्क: <a href="mailto:shabaj9769@gmail.com" class="font-bold text-amber-400 underline">shabaj9769@gmail.com</a>[span_6](start_span)[span_6](end_span)</span>
         </div>
 
         <!-- Header -->
@@ -73,7 +73,7 @@
                 <button id="notifBtn" onclick="requestNotificationPermission()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-black rounded-lg shadow">चालू करा</button>
             </div>
 
-            <!-- VEHICLE RATE MANAGEMENT WITH WORKING ON/OFF SWITCH -->
+            <!-- VEHICLE RATE MANAGEMENT WITH ON/OFF TOGGLE -->
             <div class="bg-[#3a1005] border-2 border-amber-500/40 p-4 rounded-2xl space-y-3">
                 <div class="flex justify-between items-center border-b border-amber-600/30 pb-2">
                     <h3 class="text-xs font-black text-amber-300 uppercase tracking-wider">
@@ -201,6 +201,7 @@
         let cachedOrders = [];
         let cachedInquiries = [];
         let isFirstLoad = true;
+        let isSelectingDriver = false;
 
         async function getSavedCredentials() {
             try {
@@ -329,11 +330,11 @@
         }
 
         async function initAdminDashboard() {
-            await fetchAllCloudData();
-            setInterval(fetchAllCloudData, 5000);
+            await fetchAllCloudData(true);
+            setInterval(() => fetchAllCloudData(false), 5000);
         }
 
-        async function fetchAllCloudData() {
+        async function fetchAllCloudData(forceRender = false) {
             try {
                 const res = await fetch(dbUrl + ".json");
                 const data = await res.json() || {};
@@ -344,10 +345,8 @@
                     vehicleCategories = defaultVehicles;
                     await fetch(dbUrl + "vehicles.json", { method: "PUT", body: JSON.stringify(defaultVehicles) });
                 }
-                renderRateEditor();
 
                 cachedOwners = data.owners ? Object.keys(data.owners).map(k => ({ id: k, ...data.owners[k] })) : [];
-                renderOwners();
 
                 const newOrders = data.orders ? Object.values(data.orders) : [];
                 const newInquiries = data.inquiries ? Object.values(data.inquiries) : [];
@@ -363,12 +362,24 @@
                     }
                 }
 
+                const hasOrdersChanged = JSON.stringify(newOrders) !== JSON.stringify(cachedOrders);
+                const hasInquiriesChanged = JSON.stringify(newInquiries) !== JSON.stringify(cachedInquiries);
+
                 cachedOrders = newOrders;
                 cachedInquiries = newInquiries;
+
+                if (forceRender || isFirstLoad || (!isSelectingDriver && (hasOrdersChanged || hasInquiriesChanged))) {
+                    renderRateEditor();
+                    renderOwners();
+                    renderInquiries();
+                    renderBookings();
+                } else {
+                    document.getElementById('bookingCountBadge').innerText = cachedOrders.filter(o => !o.assignedDriverPhone).length;
+                    document.getElementById('assignedCountBadge').innerText = cachedOrders.filter(o => o.assignedDriverPhone).length;
+                    document.getElementById('inquiryCountBadge').innerText = cachedInquiries.length;
+                }
+
                 isFirstLoad = false;
-                
-                renderInquiries();
-                renderBookings();
             } catch(e) {}
         }
 
@@ -432,7 +443,7 @@
             vehicleCategories[idx].rate = newRate;
             await fetch(dbUrl + "vehicles.json", { method: "PUT", body: JSON.stringify(vehicleCategories) });
             alert("गाडीचा दर यशस्वीरीत्या बदलला गेला");
-            fetchAllCloudData();
+            fetchAllCloudData(true);
         }
 
         function openAddVehicleModal() { document.getElementById('addVehicleModal').classList.remove('hidden'); }
@@ -451,14 +462,14 @@
             document.getElementById('newVehName').value = "";
             document.getElementById('newVehRate').value = "";
             alert("नवीन गाडी यशस्वीरीत्या जोडली गेली");
-            fetchAllCloudData();
+            fetchAllCloudData(true);
         }
 
         async function deleteVehicle(idx) {
             if(confirm("ही गाडी सूचीतून काढून टाकायची आहे का?")) {
                 vehicleCategories.splice(idx, 1);
                 await fetch(dbUrl + "vehicles.json", { method: "PUT", body: JSON.stringify(vehicleCategories) });
-                fetchAllCloudData();
+                fetchAllCloudData(true);
             }
         }
 
@@ -497,13 +508,13 @@
             document.getElementById('ownerName').value = "";
             document.getElementById('ownerPhone').value = "";
             document.getElementById('ownerVehicleNo').value = "";
-            fetchAllCloudData();
+            fetchAllCloudData(true);
         }
 
         async function deleteOwner(id) {
             if(confirm("या ट्रक मालकाची माहिती काढून टाकायची का?")) {
                 await fetch(dbUrl + `owners/${id}.json`, { method: "DELETE" });
-                fetchAllCloudData();
+                fetchAllCloudData(true);
             }
         }
 
@@ -516,6 +527,8 @@
                 const isEmailChannel = (inq.replyChannel === 'email');
                 const replyTarget = inq.replyTarget || inq.customer;
                 const inquiryNoteContent = inq.inquiryNote ? inq.inquiryNote : 'कोणतीही अतिरिक्त नोंद नाही.';
+                const bookedDateText = inq.bookedOn || (inq.timestamp ? new Date(inq.timestamp).toLocaleDateString('en-IN') : 'उपलब्ध नाही');
+                const loadingSchedule = (inq.loadingDate ? `${inq.loadingDate} (${inq.loadingTime || ''})` : 'तारीख नोंद नाही');
                 
                 const mailSubject = encodeURIComponent(`चाहाडे ट्रान्सपोर्ट - चौकशी उत्तर #${inq.id}`);
                 const mailBody = encodeURIComponent(`नमस्ते,\n\nआपण चाहाडे ट्रान्सपोर्टकडे चौकशी (#${inq.id}) नोंदवली होती.\nमार्ग: ${inq.from} ते ${inq.to}\nविषय: ${inq.subType || 'चौकशी'}\nआपला संदेश: "${inquiryNoteContent}"\n\nआमचे उत्तर:\n[येथे उत्तर लिहा]\n\nधन्यवाद,\nचाहाडे ट्रान्सपोर्ट, पालघर.`);
@@ -527,12 +540,17 @@
                             <span>#${inq.id} [${inq.subType || 'चौकशी'}]</span>
                             <button onclick="deleteRecord('inquiries', '${inq.id}')" class="text-red-400 hover:text-red-300">पुसा</button>
                         </div>
+                        
+                        <div class="p-2 rounded bg-black/40 border border-orange-500/30 flex justify-between text-[11px] text-amber-200">
+                            <span>📅 नोंदणी तारीख: <strong>${bookedDateText}</strong></span>
+                            <span>⏰ हवी ती वेळ: <strong>${loadingSchedule}</strong></span>
+                        </div>
+
                         <p class="text-white">📍 भरणे: <strong>${inq.from}</strong> ➔ खाली करणे: <strong>${inq.to}</strong></p>
                         <p class="text-stone-300">🏠 पत्ता: ${inq.fullAddress}</p>
                         <p class="text-stone-300">📦 माल: ${inq.material} (${inq.vehicle || ''})</p>
                         <p class="text-amber-200 font-bold">📞 मुख्य नंबर: ${inq.customer}</p>
                         
-                        <!-- DETAILED INQUIRY NOTE DISPLAY -->
                         <div class="p-2.5 rounded-lg bg-[#1a0501] border border-orange-500/30 text-[11px] space-y-1">
                             <p class="text-amber-300 font-bold flex items-center gap-1">
                                 <i class="fa-solid fa-comment-dots text-orange-400"></i> ग्राहकाचा सविस्तर संदेश / प्रश्न:
@@ -579,7 +597,9 @@
             assignedAcc.innerHTML = assignedOrders.length === 0 ? '<p class="text-xs text-stone-400 italic py-2">कोणतीही असाइन केलेली ट्रिप नाही.</p>' : '';
 
             pendingOrders.forEach(ord => {
-                let ownerOptions = cachedOwners.map(ow => `<option value="${ow.name}|${ow.phone}|${ow.vehicleNo || 'NA'}">${ow.name} - ${ow.vehicleNo || ''} (${ow.phone})</option>`).join('');
+                let ownerOptions = cachedOwners.map(ow => `<option value="${ow.name}|${ow.phone}|${ow.vehicleNo || 'वाहन क्र नाही'}">${ow.name} - ${ow.vehicleNo || ''} (${ow.phone})</option>`).join('');
+                const bookedDateText = ord.bookedOn || (ord.timestamp ? new Date(ord.timestamp).toLocaleDateString('en-IN') : 'उपलब्ध नाही');
+                const loadingSchedule = `${ord.loadingDate || ''} (${ord.loadingTime || ''})`;
                 
                 pendingAcc.innerHTML += `
                     <div class="bg-[#3a1005] p-3 rounded-xl border border-amber-500/40 space-y-2 text-xs">
@@ -590,6 +610,12 @@
                                 <button onclick="deleteRecord('orders', '${ord.id}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </div>
+
+                        <div class="p-2 rounded bg-black/40 border border-amber-500/30 flex justify-between text-[11px] text-amber-200">
+                            <span>📅 नोंदणी तारीख: <strong>${bookedDateText}</strong></span>
+                            <span>⏰ गाडी भरण्याची वेळ: <strong>${loadingSchedule}</strong></span>
+                        </div>
+
                         <p class="text-white">📍 भरणे: <strong>${ord.from}</strong> ➔ खाली करणे: <strong>${ord.to}</strong> (${ord.vehicle})</p>
                         <p class="text-stone-300">🏠 पत्ता: ${ord.fullAddress}</p>
                         <p class="text-stone-300">📦 माल: ${ord.material} (${ord.weight || ''})</p>
@@ -597,12 +623,15 @@
                         
                         <div class="bg-[#200701] p-2.5 rounded-xl border border-amber-500/40 space-y-2 mt-1">
                             <p class="font-bold text-amber-200">ट्रक मालक नेमणूक (Assign Driver):</p>
-                            <select id="sel_${ord.id}" class="w-full bg-black text-white p-2 rounded-lg border border-amber-500/50 text-xs">
+                            <select id="sel_${ord.id}" 
+                                onfocus="isSelectingDriver = true"
+                                onblur="setTimeout(() => { isSelectingDriver = false; }, 1000)"
+                                class="w-full bg-black text-white p-2 rounded-lg border border-amber-500/50 text-xs">
                                 <option value="">-- ट्रक मालक निवडा --</option>
                                 ${ownerOptions}
                             </select>
                             <button onclick="assignOwner('${ord.id}')" class="w-full py-2 bg-amber-600 hover:bg-amber-500 text-stone-950 font-black rounded-lg text-xs shadow">
-                                नेमणूक करा व कस्टमरला पाठवा
+                                नेमणूक करा व ड्रायव्हरला WhatsApp पाठवा
                             </button>
                         </div>
                     </div>
@@ -610,6 +639,21 @@
             });
 
             assignedOrders.forEach(ord => {
+                const bookedDateText = ord.bookedOn || (ord.timestamp ? new Date(ord.timestamp).toLocaleDateString('en-IN') : 'उपलब्ध नाही');
+                const loadingSchedule = `${ord.loadingDate || ''} (${ord.loadingTime || ''})`;
+                
+                const driverMsg = encodeURIComponent(`*चाहाडे ट्रान्सपोर्ट - नवीन ट्रिप वाटप*\n\n` +
+                    `🆔 ऑर्डर आयडी: #${ord.id}\n` +
+                    `📅 तारीख व वेळ: ${loadingSchedule}\n` +
+                    `📍 लोडिंग पॉईंट: ${ord.from}\n` +
+                    `🎯 अनलोडिंग पॉईंट: ${ord.to}\n` +
+                    `🏠 सविस्तर पत्ता: ${ord.fullAddress}\n` +
+                    `📦 मालाचा प्रकार: ${ord.material} (${ord.weight || ''})\n` +
+                    `🚛 नेमलेली गाडी: ${ord.vehicle}\n` +
+                    `💰 भाडे: ₹${ord.fare}\n` +
+                    `📞 ग्राहक मोबाईल: ${ord.customer}\n\n` +
+                    `कृपया ग्राहकाला त्वरित फोन करून संपर्क साधावा.`);
+
                 assignedAcc.innerHTML += `
                     <div class="bg-[#3a1005] p-3 rounded-xl border border-emerald-500/40 space-y-2 text-xs">
                         <div class="flex justify-between font-black text-emerald-300 border-b border-emerald-500/20 pb-1">
@@ -619,13 +663,31 @@
                                 <button onclick="deleteRecord('orders', '${ord.id}')" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </div>
+
+                        <div class="p-2 rounded bg-black/40 border border-emerald-500/30 flex justify-between text-[11px] text-emerald-200">
+                            <span>📅 नोंदणी: <strong>${bookedDateText}</strong></span>
+                            <span>⏰ गाडी वेळ: <strong>${loadingSchedule}</strong></span>
+                        </div>
+
                         <p class="text-white">📍 <strong>${ord.from}</strong> ➔ <strong>${ord.to}</strong> (${ord.vehicle})</p>
+                        <p class="text-stone-300">🏠 पत्ता: ${ord.fullAddress}</p>
+                        <p class="text-stone-300">📦 माल: ${ord.material} (${ord.weight || ''})</p>
                         <p class="text-amber-200 font-bold">📞 ग्राहक: ${ord.customer}</p>
                         
                         <div class="bg-emerald-950/80 p-2.5 rounded-xl border border-emerald-500/50 text-xs text-emerald-200 space-y-1">
                             <p>✓ नियुक्त मालक: <strong>${ord.assignedDriverName}</strong></p>
                             <p>🚛 गाडी नंबर: <strong>${ord.assignedVehicleNo}</strong></p>
-                            <p>📞 नंबर: <strong>${ord.assignedDriverPhone}</strong></p>
+                            <p>📞 ड्रायव्हर नंबर: <strong>${ord.assignedDriverPhone}</strong></p>
+                        </div>
+
+                        <div class="pt-1 flex gap-2">
+                            <a href="https://wa.me/91${ord.assignedDriverPhone}?text=${driverMsg}" target="_blank"
+                                class="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-lg text-center shadow flex items-center justify-center gap-1.5">
+                                <i class="fa-brands fa-whatsapp"></i> ड्रायव्हरला WhatsApp वर सर्व तपशील पाठवा
+                            </a>
+                            <a href="tel:${ord.customer}" class="px-3 py-2 bg-amber-600 hover:bg-amber-500 text-stone-950 font-black rounded-lg flex items-center justify-center">
+                                <i class="fa-solid fa-phone"></i>
+                            </a>
                         </div>
                     </div>
                 `;
@@ -637,6 +699,8 @@
             if(!selectElem || !selectElem.value) { alert("कृपया आधी ट्रक मालक निवडा"); return; }
             const [name, phone, vehicleNo] = selectElem.value.split('|');
 
+            const ord = cachedOrders.find(o => o.id === orderId);
+
             await fetch(dbUrl + `orders/${orderId}.json`, {
                 method: "PATCH",
                 body: JSON.stringify({ 
@@ -645,14 +709,38 @@
                     assignedVehicleNo: vehicleNo 
                 })
             });
-            alert("ट्रक मालक यशस्वीरीत्या असाइन झाला! ट्रिप असाइन फोल्डरमध्ये हलवली गेली.");
-            fetchAllCloudData();
+
+            isSelectingDriver = false;
+
+            if (ord) {
+                const loadingSchedule = `${ord.loadingDate || ''} (${ord.loadingTime || ''})`;
+                const driverMsg = encodeURIComponent(`*चाहाडे ट्रान्सपोर्ट - नवीन ट्रिप वाटप*\n\n` +
+                    `🆔 ऑर्डर आयडी: #${ord.id}\n` +
+                    `📅 तारीख व वेळ: ${loadingSchedule}\n` +
+                    `📍 लोडिंग पॉईंट: ${ord.from}\n` +
+                    `🎯 अनलोडिंग पॉईंट: ${ord.to}\n` +
+                    `🏠 सविस्तर पत्ता: ${ord.fullAddress}\n` +
+                    `📦 मालाचा प्रकार: ${ord.material} (${ord.weight || ''})\n` +
+                    `🚛 नेमलेली गाडी: ${ord.vehicle}\n` +
+                    `💰 भाडे: ₹${ord.fare}\n` +
+                    `📞 ग्राहक मोबाईल: ${ord.customer}\n\n` +
+                    `कृपया ग्राहकाला त्वरित फोन करून संपर्क साधावा.`);
+
+                const openWa = confirm("ट्रक मालक यशस्वीरीत्या असाइन झाला!\n\nआता या ड्रायव्हरच्या WhatsApp वर ट्रिपचा संपूर्ण पत्ता व तपशील पाठवायचा आहे का?");
+                if (openWa) {
+                    window.open(`https://wa.me/91${phone}?text=${driverMsg}`, '_blank');
+                }
+            } else {
+                alert("ट्रक मालक यशस्वीरीत्या असाइन झाला!");
+            }
+
+            fetchAllCloudData(true);
         }
 
         async function deleteRecord(folder, id) {
             if(confirm("ही नोंद पुसायची आहे का?")) {
                 await fetch(dbUrl + `${folder}/${id}.json`, { method: "DELETE" });
-                fetchAllCloudData();
+                fetchAllCloudData(true);
             }
         }
     </script>
